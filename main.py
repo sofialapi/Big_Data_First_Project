@@ -3,6 +3,7 @@ import re
 from config import get_spark_session, get_llm
 from metadata_discovery import discover_meta_and_register_views
 from langchain_core.prompts import ChatPromptTemplate
+import time
 
 def generate_sql_query(llm, schema_ddl, user_question):
     """
@@ -17,8 +18,9 @@ def generate_sql_query(llm, schema_ddl, user_question):
         "[REGOLE RIGIDE DI VERIDICITÀ]\n"
         "1. Usa solo le tabelle e le colonne elencate nello schema sopra.\n"
         "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle. Rispondi dicendo che mancano i dati.\n"
-        "3. Se nello schema vedi colonne testuali (string), usa la clausola LIKE in modo case-insensitive se appropriato.\n"
-        "4. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni."
+        "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i valori testuali nel database sono in inglese. "
+        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini italiani dell'utente con i reali valori stringa (es. se l'utente chiede 'recupero completo' e tra i valori vedi 'Recovered', usa 'Recovered').\n"
+        "5. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni."
     )
 
     prompt_template = ChatPromptTemplate.from_messages([
@@ -71,6 +73,8 @@ def extract_sql(llm_output):
         return match.group(1).strip()
     return llm_output.replace("```sql", "").replace("```", "").strip()
 
+import time  # <-- Assicurati che ci sia questo import in cima al file main.py
+
 def main():
     print("====================================================")
     print(" INTERFACCIA GENERATIVA TAG PER BIG DATA CLINICI    ")
@@ -80,13 +84,17 @@ def main():
     folder_path = input("Inserisci il percorso della cartella contenente i file .csv clinici: ").strip()
     
     try:
+        start_discovery = time.time()
         schema_ddl, registered_tables = discover_meta_and_register_views(folder_path)
-        print(f"\n[INFO] Discovery completato con successo. Registrate {len(registered_tables)} tabelle in Spark SQL.")
-    except Exception as e:
-        print(f"\n[ERRORE DI INIZIALIZZAZIONE] impossibile caricare i dati: {str(e)}")
-        sys.exit(1)
+        end_discovery = time.time()
         
-    # Inizializziamo i motori software
+        print(f"\n[BENCHMARK] Tempo di Metadata Discovery: {end_discovery - start_discovery:.4f} secondi")
+        print(f"[INFO] Discovery completato con successo. Registrate {len(registered_tables)} tabelle in Spark SQL.")
+    except Exception as e:
+        print(f"\n[ERRORE DI INIZIALIZZAZIONE] Impossibile caricare i dati: {str(e)}")
+        sys.exit(1)
+
+    # Inizializzazione motori software 
     spark = get_spark_session()
     llm = get_llm()
     
@@ -106,23 +114,39 @@ def main():
             continue
             
         try:
+            # Misura tempo GenAI (Groq) per SQL
+            start_llm_sql = time.time()
             print("[LLM] Generazione della query Spark SQL in corso tramite Groq...")
             llm_output = generate_sql_query(llm, schema_ddl, user_question)
-            
             # Estrazione e pulizia del codice SQL generato
             sql_query = extract_sql(llm_output)
+            end_llm_sql = time.time()
+            time_llm_sql = end_llm_sql - start_llm_sql
             print(f"\n[SPARK SQL GENERATA]:\n{sql_query}\n")
+            print(f"[BENCHMARK] Tempo generazione SQL (Groq LLM): {time_llm_sql:.4f} secondi")
             
+            # Misura tempo esecuzione Big Data (Apache Spark)
             # Esecuzione della query su Apache Spark (Fase Big Data)
             print("[SPARK] Esecuzione della query sulle tabelle in memoria...")
+            start_spark = time.time()
             spark_df = spark.sql(sql_query)
-            
             # Convertiamo il DataFrame in una stringa testuale leggibile per passarla all'LLM
             # Mostriamo le prime 50 righe del risultato dell'analisi clinica
             query_result_str = spark_df._jdf.showString(50, 100, False)
+            end_spark = time.time()
             
+            time_spark = end_spark - start_spark
+            print(f"[BENCHMARK] Tempo esecuzione Query (Apache Spark): {time_spark:.4f} secondi")
+            
+            # Misura tempo GenAI per la risposta discorsiva
             print("[LLM] Elaborazione del risultato e formattazione in linguaggio naturale...")
+            start_llm_nl = time.time()
             final_answer = generate_natural_language_answer(llm, user_question, sql_query, query_result_str)
+            end_llm_nl = time.time()
+            
+            time_llm_nl = end_llm_nl - start_llm_nl
+            print(f"[BENCHMARK] Tempo formattazione risposta (Groq LLM): {time_llm_nl:.4f} secondi")
+            print(f"[BENCHMARK] TEMPO TOTALE ELABORAZIONE: {time_llm_sql + time_spark + time_llm_nl:.4f} secondi")
             
             print(f"\nSystem > {final_answer}")
             
