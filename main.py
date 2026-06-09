@@ -21,6 +21,7 @@ def generate_sql_query(llm, schema_ddl, user_question):
         "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i valori testuali nel database sono in inglese. "
         "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini italiani dell'utente con i reali valori stringa (es. se l'utente chiede 'recupero completo' e tra i valori vedi 'Recovered', usa 'Recovered').\n"
         "5. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni."
+        "6. STRATEGIA DI AGGREGAZIONE: Quando l'utente chiede distribuzioni, conteggi o correlazioni tra categorie (es. trattamenti ed esiti), assicurati di calcolare aggregati significativi (usando COUNT, GROUP BY) senza ordinare ciecamente per colonne testuali che potrebbero saturare il LIMIT con un solo valore. Se una colonna contiene punteggi continui o sparsi, valuta la media (AVG) o raggruppamenti sensati per mostrare la panoramica di TUTTI i trattamenti disponibili."
     )
 
     prompt_template = ChatPromptTemplate.from_messages([
