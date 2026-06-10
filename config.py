@@ -10,12 +10,16 @@ from langchain_openai import ChatOpenAI
 def get_spark_session():
     """
     Inizializza e restituisce la SparkSession.
-    Configurata in modalità locale sfruttando i core della VM.
+    Configurata con parametri di ottimizzazione per la distribuzione dei Big Data.
     """
     spark = SparkSession.builder \
         .appName("TAG_Clinical_Analytics") \
         .master("local[*]") \
-        .config("spark.sql.shuffle.partitions", "4") \
+        .config("spark.sql.shuffle.partitions", "200") \
+        .config("spark.default.parallelism", "200") \
+        .config("spark.memory.fraction", "0.8") \
+        .config("spark.executor.memory", "4g") \
+        .config("spark.driver.memory", "2g") \
         .getOrCreate()
     return spark
 
