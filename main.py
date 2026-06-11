@@ -1,9 +1,9 @@
 import sys
 import re
+import time
 from config import get_spark_session, get_llm
 from metadata_discovery import discover_meta_and_register_views
 from langchain_core.prompts import ChatPromptTemplate
-import time
 
 def generate_sql_query(llm, schema_ddl, user_question):
     """
@@ -11,7 +11,7 @@ def generate_sql_query(llm, schema_ddl, user_question):
     """
     # Prompt per la generazione dell'SQL (Veridicità)
     system_instruction = (
-        "Sei un assistente esperto in Big Data clinici e un traduttore text-to-SQL per Apache Spark.\n"
+        "Sei un assistente hacker/esperto in Big Data clinici e un traduttore text-to-SQL per Apache Spark.\n"
         "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta basandoti ESCLUSIVAMENTE sullo schema fornito.\n\n"
         "[SCHEMA DEL DATABASE CLINICO]\n"
         "{schema_ddl}\n\n"
@@ -20,7 +20,7 @@ def generate_sql_query(llm, schema_ddl, user_question):
         "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle. Rispondi dicendo che mancano i dati.\n"
         "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i valori testuali nel database sono in inglese. "
         "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini italiani dell'utente con i reali valori stringa (es. se l'utente chiede 'recupero completo' e tra i valori vedi 'Recovered', usa 'Recovered').\n"
-        "5. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni."
+        "5. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni.\n"
         "6. STRATEGIA DI AGGREGAZIONE: Quando l'utente chiede distribuzioni, conteggi o correlazioni tra categorie (es. trattamenti ed esiti), assicurati di calcolare aggregati significativi (usando COUNT, GROUP BY) senza ordinare ciecamente per colonne testuali che potrebbero saturare il LIMIT con un solo valore. Se una colonna contiene punteggi continui o sparsi, valuta la media (AVG) o raggruppamenti sensati per mostrare la panoramica di TUTTI i trattamenti disponibili."
     )
 
@@ -74,7 +74,6 @@ def extract_sql(llm_output):
         return match.group(1).strip()
     return llm_output.replace("```sql", "").replace("```", "").strip()
 
-import time  # <-- Assicurati che ci sia questo import in cima al file main.py
 
 def main():
     print("====================================================")
@@ -98,6 +97,29 @@ def main():
     # Inizializzazione motori software 
     spark = get_spark_session()
     llm = get_llm()
+    
+    # --- LAYER DI CONFIGURAZIONE DISTRIBUITA ADATTIVA (BIG DATA TUNING) ---
+    try:
+        if len(registered_tables) > 0:
+            tabella_principale = registered_tables[0]
+            # Calcoliamo la cardinalità fisica reale del dataset caricato
+            total_rows = spark.table(tabella_principale).count()
+            
+            print(f"[TUNING] Dimensione totale del dataset rilevata: {total_rows:,} righe.")
+            
+            if total_rows > 1000000:
+                # Caso Big Data: Forziamo la parallelizzazione massiva (Simulazione Cluster HDFS)
+                spark.conf.set("spark.sql.shuffle.partitions", "200")
+                spark.conf.set("spark.default.parallelism", "200")
+                print("[TUNING] 🚀 ATTIVATA DISTRIBUZIONE BIG DATA: Configurate 200 partizioni di Shuffle.")
+            else:
+                # Caso Small Data: Riduciamo le partizioni a 4 per prevenire l'overhead di coordinamento
+                spark.conf.set("spark.sql.shuffle.partitions", "4")
+                spark.conf.set("spark.default.parallelism", "4")
+                print("[TUNING] 🛴 OTTIMIZZAZIONE LOCALE: Configurate 4 partizioni per evitare l'overhead di shuffle.")
+    except Exception as e:
+        print(f"[WARN] Impossibile calibrare dinamicamente le partizioni di shuffle: {str(e)}")
+    # ----------------------------------------------------------------------
     
     print("\nSistema pronto! Fai una domanda sui tuoi dati clinici (digita 'exit' per uscire).")
     
@@ -127,7 +149,6 @@ def main():
             print(f"[BENCHMARK] Tempo generazione SQL (Groq LLM): {time_llm_sql:.4f} secondi")
             
             # Misura tempo esecuzione Big Data (Apache Spark)
-            # Esecuzione della query su Apache Spark (Fase Big Data)
             print("[SPARK] Esecuzione della query sulle tabelle in memoria...")
             start_spark = time.time()
             spark_df = spark.sql(sql_query)

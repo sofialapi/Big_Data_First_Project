@@ -9,18 +9,20 @@ from langchain_openai import ChatOpenAI
 
 def get_spark_session():
     """
-    Inizializza e restituisce la SparkSession.
-    Configurata con parametri di ottimizzazione per la distribuzione dei Big Data.
+    Inizializza la SparkSession con allocazione ottimale della memoria.
+    Il partizionamento verrà poi calibrato dinamicamente in base al volume.
     """
+    findspark.init(os.getenv("SPARK_HOME", "/home/sofia/spark-3.5.8"))
+    
     spark = SparkSession.builder \
-        .appName("TAG_Clinical_Analytics") \
+        .appName("TAG_Adaptive_Clinical_Analytics") \
         .master("local[*]") \
-        .config("spark.sql.shuffle.partitions", "200") \
-        .config("spark.default.parallelism", "200") \
         .config("spark.memory.fraction", "0.8") \
         .config("spark.executor.memory", "4g") \
         .config("spark.driver.memory", "2g") \
+        .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
         .getOrCreate()
+        
     return spark
 
 def get_llm():
