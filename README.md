@@ -68,6 +68,30 @@ python3 main.py
 
 Il programma richiederà l'inserimento del percorso della cartella contenente i dati (ad esempio: ./dataset_storage/hospital_management_dataset). Una volta completata la fase di Metadata Discovery, il prompt sarà pronto per ricevere le domande in linguaggio naturale. Per chiudere l'applicazione e arrestare la sessione Spark, digitare exit.
 
-```
+## Invocazione del programma tramite Interfaccia Grafica (GUI)
+
+Per un'esperienza d'uso totalmente disaccoppiata dal terminale è stata sviluppata un'interfaccia grafica asincrona. Questa mappa l'intero pattern architetturale (Metadata Discovery, Adaptive Tuning e Pipeline TAG) gestendo la computazione in thread separati per preservare la reattività della finestra.
+
+Poiché le librerie grafiche native di sistema sono separate dal core di Python su distribuzioni Linux, è necessario installare il pacchetto grafico tramite il gestore di pacchetti apt della macchina virtuale:
+
+```bash
+sudo apt update
+sudo apt install python3-tk -y
 
 ```
+Con l'ambiente virtuale (venv) attivato, installare l'estensione per abilitare il rilascio nativo dei file nelle finestre:
+
+```bash
+pip install tkinterdnd2
+
+```
+Per consentire a Tkinter di accedere correttamente al server grafico (X11/Wayland) del desktop di Ubuntu (evitando l'errore TclError: no display name), assicurarsi di lanciare il comando dal terminale nativo della VM o esportare la variabile di visualizzazione locale:
+
+```bash
+export DISPLAY=:0
+python3 gui.py
+
+```
+
+## Modalità d'uso della GUI
+è possibile selezionare la cartella desiderata con un classico drag and drop; Non appena il sistema visualizza [INFO] Sistema pronto!, la barra di digitazione inferiore si sbloccherà. Sarà possibile scrivere le domande in linguaggio naturale e premere Invio o fare clic su Invia per visualizzare la risposta discorsiva del modello. Il pulsante inferiore "Concludi interrogazione" interrompe i canali della JVM, arresta la SparkSession in sicurezza per prevenire memory leak e chiude l'applicazione.
