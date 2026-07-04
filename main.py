@@ -111,12 +111,12 @@ def main():
                 # Caso Big Data: Forziamo la parallelizzazione massiva (Simulazione Cluster HDFS)
                 spark.conf.set("spark.sql.shuffle.partitions", "200")
                 spark.conf.set("spark.default.parallelism", "200")
-                print("[TUNING] 🚀 ATTIVATA DISTRIBUZIONE BIG DATA: Configurate 200 partizioni di Shuffle.")
+                print("[TUNING] ATTIVATA DISTRIBUZIONE BIG DATA: Configurate 200 partizioni di Shuffle.")
             else:
                 # Caso Small Data: Riduciamo le partizioni a 4 per prevenire l'overhead di coordinamento
                 spark.conf.set("spark.sql.shuffle.partitions", "4")
                 spark.conf.set("spark.default.parallelism", "4")
-                print("[TUNING] 🛴 OTTIMIZZAZIONE LOCALE: Configurate 4 partizioni per evitare l'overhead di shuffle.")
+                print("[TUNING] OTTIMIZZAZIONE LOCALE: Configurate 4 partizioni per evitare l'overhead di shuffle.")
     except Exception as e:
         print(f"[WARN] Impossibile calibrare dinamicamente le partizioni di shuffle: {str(e)}")
     # ----------------------------------------------------------------------
