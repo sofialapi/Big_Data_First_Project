@@ -2,19 +2,241 @@
   {
     "id": 1,
     "difficulty": "Easy",
-    "question": "Qual è il numero totale di corse presenti nel dataset?",
+    "question": "Qual è il numero totale di corse registrate nel dataset?",
     "ground_truth_sql": "SELECT COUNT(*) FROM {table_name}"
   },
   {
     "id": 2,
     "difficulty": "Easy",
-    "question": "Qual è l'importo medio totale (total_amount) delle corse?",
+    "question": "Qual è l'importo medio totale (total_amount) incassato per corsa?",
     "ground_truth_sql": "SELECT AVG(total_amount) FROM {table_name}"
   },
   {
     "id": 3,
+    "difficulty": "Easy",
+    "question": "Qual è la distanza massima (trip_distance) percorsa in una singola corsa?",
+    "ground_truth_sql": "SELECT MAX(trip_distance) FROM {table_name}"
+  },
+  {
+    "id": 4,
+    "difficulty": "Easy",
+    "question": "Qual è l'importo totale delle mance (tip_amount) raccolte nel dataset?",
+    "ground_truth_sql": "SELECT SUM(tip_amount) FROM {table_name}"
+  },
+  {
+    "id": 5,
+    "difficulty": "Easy",
+    "question": "Quante corse sono state effettuate con un solo passeggero (passenger_count = 1)?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name} WHERE passenger_count = 1"
+  },
+  {
+    "id": 6,
+    "difficulty": "Easy",
+    "question": "Qual è la tariffa base media (fare_amount) delle corse?",
+    "ground_truth_sql": "SELECT AVG(fare_amount) FROM {table_name}"
+  },
+  {
+    "id": 7,
+    "difficulty": "Easy",
+    "question": "Quante corse hanno avuto una distanza di percorrenza pari a 0?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name} WHERE trip_distance = 0"
+  },
+  {
+    "id": 8,
+    "difficulty": "Easy",
+    "question": "Qual è il valore massimo pagato per i pedaggi (tolls_amount)?",
+    "ground_truth_sql": "SELECT MAX(tolls_amount) FROM {table_name}"
+  },
+  {
+    "id": 9,
+    "difficulty": "Easy",
+    "question": "Mostrami il numero di corse divise per numero di passeggeri (passenger_count).",
+    "ground_truth_sql": "SELECT passenger_count, COUNT(*) AS total_trips FROM {table_name} GROUP BY passenger_count"
+  },
+  {
+    "id": 10,
+    "difficulty": "Easy",
+    "question": "Qual è l'importo totale incassato (total_amount) per tutte le corse?",
+    "ground_truth_sql": "SELECT SUM(total_amount) FROM {table_name}"
+  },
+  {
+    "id": 11,
+    "difficulty": "Easy",
+    "question": "Quante corse hanno registrato una mancia (tip_amount) maggiore di zero?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name} WHERE tip_amount > 0"
+  },
+  {
+    "id": 12,
+    "difficulty": "Easy",
+    "question": "Qual è il costo medio dei pedaggi (tolls_amount) per corsa?",
+    "ground_truth_sql": "SELECT AVG(tolls_amount) FROM {table_name}"
+  },
+  {
+    "id": 13,
     "difficulty": "Medium",
     "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
     "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM {table_name} GROUP BY payment_type"
+  },
+  {
+    "id": 14,
+    "difficulty": "Medium",
+    "question": "Qual è il numero totale di corse effettuate per ciascuna zona di partenza (PULocationID)? Ordina per numero di corse decrescente.",
+    "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS total_trips FROM {table_name} GROUP BY PULocationID ORDER BY total_trips DESC"
+  },
+  {
+    "id": 15,
+    "difficulty": "Medium",
+    "question": "Qual è la mancia media (tip_amount) per ciascun tipo di tariffa (RatecodeID)?",
+    "ground_truth_sql": "SELECT RatecodeID, AVG(tip_amount) AS avg_tip FROM {table_name} GROUP BY RatecodeID"
+  },
+  {
+    "id": 16,
+    "difficulty": "Medium",
+    "question": "Mostrami le 10 zone di arrivo (DOLocationID) più frequenti con il relativo importo medio totale.",
+    "ground_truth_sql": "SELECT DOLocationID, COUNT(*) AS trip_count, AVG(total_amount) AS avg_amount FROM {table_name} GROUP BY DOLocationID ORDER BY trip_count DESC LIMIT 10"
+  },
+  {
+    "id": 17,
+    "difficulty": "Medium",
+    "question": "Calcola la distanza media percorsa e l'importo medio per le corse con più di 4 passeggeri.",
+    "ground_truth_sql": "SELECT AVG(trip_distance) AS avg_dist, AVG(total_amount) AS avg_tot FROM {table_name} WHERE passenger_count > 4"
+  },
+  {
+    "id": 18,
+    "difficulty": "Medium",
+    "question": "Quante corse hanno un importo totale (total_amount) superiore a 100 euro o dollari?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name} WHERE total_amount > 100"
+  },
+  {
+    "id": 19,
+    "difficulty": "Medium",
+    "question": "Mostrami la media della tariffa base (fare_amount) e dei pedaggi (tolls_amount) raggruppati per VendorID.",
+    "ground_truth_sql": "SELECT VendorID, AVG(fare_amount) AS avg_fare, AVG(tolls_amount) AS avg_tolls FROM {table_name} GROUP BY VendorID"
+  },
+  {
+    "id": 20,
+    "difficulty": "Medium",
+    "question": "Qual è il totale degli incassi (total_amount) e la mancia media per le corse pagate in contanti (payment_type = 2)?",
+    "ground_truth_sql": "SELECT SUM(total_amount) AS total_revenue, AVG(tip_amount) AS avg_tip FROM {table_name} WHERE payment_type = 2"
+  },
+  {
+    "id": 21,
+    "difficulty": "Medium",
+    "question": "Qual è la percentuale media di mancia rispetto alla tariffa base per il payment_type 1 (carta di credito)?",
+    "ground_truth_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage FROM {table_name} WHERE payment_type = 1 AND fare_amount > 0"
+  },
+  {
+    "id": 22,
+    "difficulty": "Medium",
+    "question": "Mostrami le 5 tratte da partenza a destinazione (PULocationID e DOLocationID) più popolari.",
+    "ground_truth_sql": "SELECT PULocationID, DOLocationID, COUNT(*) AS route_count FROM {table_name} GROUP BY PULocationID, DOLocationID ORDER BY route_count DESC LIMIT 5"
+  },
+  {
+    "id": 23,
+    "difficulty": "Medium",
+    "question": "Qual è il costo medio totale per corse con distanza percorsa tra 5 e 10 miglia o chilometri?",
+    "ground_truth_sql": "SELECT AVG(total_amount) FROM {table_name} WHERE trip_distance BETWEEN 5 AND 10"
+  },
+  {
+    "id": 24,
+    "difficulty": "Medium",
+    "question": "Quante corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name} WHERE extra > 0"
+  },
+  {
+    "id": 25,
+    "difficulty": "Medium",
+    "question": "Mostrami il totale dei pedaggi pagati (tolls_amount) per ciascun tipo di tariffa (RatecodeID).",
+    "ground_truth_sql": "SELECT RatecodeID, SUM(tolls_amount) AS total_tolls FROM {table_name} GROUP BY RatecodeID"
+  },
+  {
+    "id": 26,
+    "difficulty": "Hard",
+    "question": "Quali sono le 5 ore del giorno (0-23) con il maggior numero di corse e qual è la loro distanza media?",
+    "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS pickup_hour, COUNT(*) AS total_trips, AVG(trip_distance) AS avg_distance FROM {table_name} GROUP BY HOUR(tpep_pickup_datetime) ORDER BY total_trips DESC LIMIT 5"
+  },
+  {
+    "id": 27,
+    "difficulty": "Hard",
+    "question": "Calcola il totale del fatturato (total_amount) e la distanza media per ciascun giorno della settimana.",
+    "ground_truth_sql": "SELECT DAYOFWEEK(tpep_pickup_datetime) AS day_of_week, SUM(total_amount) AS total_revenue, AVG(trip_distance) AS avg_distance FROM {table_name} GROUP BY DAYOFWEEK(tpep_pickup_datetime) ORDER BY day_of_week"
+  },
+  {
+    "id": 28,
+    "difficulty": "Hard",
+    "question": "Mostrami le 3 zone di partenza (PULocationID) che generano il maggior fatturato totale per corse con pagamenti con carta di credito (payment_type = 1).",
+    "ground_truth_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue FROM {table_name} WHERE payment_type = 1 GROUP BY PULocationID ORDER BY total_revenue DESC LIMIT 3"
+  },
+  {
+    "id": 29,
+    "difficulty": "Hard",
+    "question": "Qual è la durata media in minuti delle corse nel dataset?",
+    "ground_truth_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes FROM {table_name}"
+  },
+  {
+    "id": 30,
+    "difficulty": "Hard",
+    "question": "Classifica i tipi di pagamento attribuendo 'Carta' al codice 1, 'Contanti' al codice 2 e 'Altro' per il resto, e calcola il fatturato totale per ciascuna categoria.",
+    "ground_truth_sql": "SELECT CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END AS metodo_pagamento, SUM(total_amount) AS fatturato_totale FROM {table_name} GROUP BY CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END"
+  },
+  {
+    "id": 31,
+    "difficulty": "Hard",
+    "question": "Mostrami il fatturato totale e il numero di corse per ogni ora della notte (dalle 00:00 alle 05:59).",
+    "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, COUNT(*) AS trips, SUM(total_amount) AS revenue FROM {table_name} WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour"
+  },
+  {
+    "id": 32,
+    "difficulty": "Hard",
+    "question": "Qual è la velocità media in miglia o chilometri orari delle corse per ciascun VendorID?",
+    "ground_truth_sql": "SELECT VendorID, AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph FROM {table_name} WHERE (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0 GROUP BY VendorID"
+  },
+  {
+    "id": 33,
+    "difficulty": "Hard",
+    "question": "Quali zone di partenza (PULocationID) hanno un numero di corse superiore a 10.000 e una mancia media superiore a 3?",
+    "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS trip_count, AVG(tip_amount) AS avg_tip FROM {table_name} GROUP BY PULocationID HAVING COUNT(*) > 10000 AND AVG(tip_amount) > 3"
+  },
+  {
+    "id": 34,
+    "difficulty": "Hard",
+    "question": "Calcola la distribuzione delle corse per fascia oraria: 'Mattina' (6-11), 'Pomeriggio' (12-17), 'Sera' (18-23), 'Notte' (0-5).",
+    "ground_truth_sql": "SELECT CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END AS fascia_oraria, COUNT(*) AS num_corse FROM {table_name} GROUP BY CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END"
+  },
+  {
+    "id": 35,
+    "difficulty": "Hard",
+    "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
+    "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM {table_name} GROUP BY PULocationID, DOLocationID HAVING COUNT(*) > 50 ORDER BY avg_duration_min DESC LIMIT 5"
+  },
+  {
+    "id": 36,
+    "difficulty": "Hard",
+    "question": "Calcola la percentuale di corse che hanno pagato un pedaggio (tolls_amount > 0) rispetto al totale delle corse.",
+    "ground_truth_sql": "SELECT (COUNT(CASE WHEN tolls_amount > 0 THEN 1 END) * 100.0 / COUNT(*)) AS toll_trip_percentage FROM {table_name}"
+  },
+  {
+    "id": 37,
+    "difficulty": "Hard",
+    "question": "Mostrami l'importo totale delle mance e della tariffa base suddivisi per tipo di tariffa (RatecodeID) per corse con più di 2 passeggeri.",
+    "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(fare_amount) AS total_fares FROM {table_name} WHERE passenger_count > 2 GROUP BY RatecodeID"
+  },
+  {
+    "id": 38,
+    "difficulty": "Hard",
+    "question": "Qual è il valore massimo e la media della mancia (tip_amount) per le corse la cui distanza è superiore alla distanza media generale?",
+    "ground_truth_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip FROM {table_name} WHERE trip_distance > (SELECT AVG(trip_distance) FROM {table_name})"
+  },
+  {
+    "id": 39,
+    "difficulty": "Hard",
+    "question": "Mostrami i 3 giorni del mese in cui si è registrato il maggior fatturato totale.",
+    "ground_truth_sql": "SELECT DAYOFMONTH(tpep_pickup_datetime) AS day_of_month, SUM(total_amount) AS total_revenue FROM {table_name} GROUP BY DAYOFMONTH(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3"
+  },
+  {
+    "id": 40,
+    "difficulty": "Hard",
+    "question": "Calcola l'incasso totale della tariffa aeroportuale (mTA_tax o congestion_surcharge) e della mancia per le corse appartenenti alla tariffa aeroporto (RatecodeID = 2 o 3).",
+    "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(tolls_amount) AS total_tolls, SUM(total_amount) AS total_revenue FROM {table_name} WHERE RatecodeID IN (2, 3) GROUP BY RatecodeID"
   }
 ]
