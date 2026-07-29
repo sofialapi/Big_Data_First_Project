@@ -1,69 +1,424 @@
 {
   "dataset_path": "./dataset_storage/yellow_tripdata_2022-10.parquet",
   "main_table_name": "yellow_tripdata_2022_10",
-  "total_queries": 3,
+  "total_queries": 40,
   "metrics": {
-    "sql_validity_rate_SVR": "100.00%",
-    "execution_accuracy_EX": "100.00%",
-    "nl_answer_correctness_NL_AC": "33.33%"
+    "sql_validity_rate_SVR": "2.50%",
+    "execution_accuracy_EX": "2.50%",
+    "nl_answer_correctness_NL_AC": "0.00%"
   },
   "average_latencies": {
-    "avg_sql_gen_sec": 0.4198,
-    "avg_spark_exec_sec": 1.7333,
-    "avg_nl_gen_sec": 1.0687,
-    "avg_total_sec": 3.2218
+    "avg_sql_gen_sec": 1.3215,
+    "avg_spark_exec_sec": 0.044,
+    "avg_nl_gen_sec": 0.0018,
+    "avg_total_sec": 1.3672
   },
   "detailed_results": [
     {
       "id": 1,
       "difficulty": "Easy",
-      "question": "Qual è il numero totale di corse presenti nel dataset?",
+      "question": "Qual è il numero totale di corse registrate nel dataset?",
       "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": false,
       "latency": {
-        "t_sql_sec": 0.7236,
-        "t_spark_sec": 1.9798,
-        "t_nl_sec": 0.5649,
-        "t_total_sec": 3.2682
+        "t_sql_sec": 52.858,
+        "t_spark_sec": 1.7611,
+        "t_nl_sec": 0.0705,
+        "t_total_sec": 54.6896
       },
-      "generated_sql": "SELECT COUNT(*) \nFROM yellow_tripdata_2022_10",
-      "nl_answer": "Il dataset contiene un totale di 3.675.411 corse. Questo numero rappresenta la quantità complessiva di trasferimenti o spostamenti registrati nel mese di ottobre 2022. Tale informazione può essere utile per comprendere il volume di attività e la dimensione del mercato dei trasporti in questione."
+      "generated_sql": "SELECT COUNT(*) \nFROM yellow_tripdata_2022_10"
     },
     {
       "id": 2,
       "difficulty": "Easy",
-      "question": "Qual è l'importo medio totale (total_amount) delle corse?",
+      "question": "Qual è l'importo medio totale (total_amount) incassato per corsa?",
       "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": true,
-      "is_exec_accurate": true,
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
       "is_nl_accurate": false,
-      "latency": {
-        "t_sql_sec": 0.2709,
-        "t_spark_sec": 1.2736,
-        "t_nl_sec": 1.1253,
-        "t_total_sec": 2.6698
-      },
-      "generated_sql": "SELECT AVG(total_amount) AS importo_medio_totale \nFROM yellow_tripdata_2022_10",
-      "nl_answer": "L'analisi dei dati delle corse effettuate nel mese di ottobre 2022 ha rivelato che l'importo medio totale per corsa è di circa 22,25 unità. Ciò significa che, in media, ogni corsa ha generato un incasso di questo importo. Questo dato può essere utile per comprendere il volume di affari generato dalle corse e per pianificare strategie di pricing e di gestione della flotta. Inoltre, può essere interessante analizzare ulteriormente i dati per capire se ci sono differenze significative nell'importo medio totale in base a fattori come l'ora del giorno, il giorno della settimana o la zona di partenza e arrivo."
+      "latency": {}
     },
     {
       "id": 3,
+      "difficulty": "Easy",
+      "question": "Qual è la distanza massima (trip_distance) percorsa in una singola corsa?",
+      "ground_truth_sql": "SELECT MAX(trip_distance) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 4,
+      "difficulty": "Easy",
+      "question": "Qual è l'importo totale delle mance (tip_amount) raccolte nel dataset?",
+      "ground_truth_sql": "SELECT SUM(tip_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 5,
+      "difficulty": "Easy",
+      "question": "Quante corse sono state effettuate con un solo passeggero (passenger_count = 1)?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE passenger_count = 1",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 6,
+      "difficulty": "Easy",
+      "question": "Qual è la tariffa base media (fare_amount) delle corse?",
+      "ground_truth_sql": "SELECT AVG(fare_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 7,
+      "difficulty": "Easy",
+      "question": "Quante corse hanno avuto una distanza di percorrenza pari a 0?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE trip_distance = 0",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 8,
+      "difficulty": "Easy",
+      "question": "Qual è il valore massimo pagato per i pedaggi (tolls_amount)?",
+      "ground_truth_sql": "SELECT MAX(tolls_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 9,
+      "difficulty": "Easy",
+      "question": "Mostrami il numero di corse divise per numero di passeggeri (passenger_count).",
+      "ground_truth_sql": "SELECT passenger_count, COUNT(*) AS total_trips FROM yellow_tripdata_2022_10 GROUP BY passenger_count",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 10,
+      "difficulty": "Easy",
+      "question": "Qual è l'importo totale incassato (total_amount) per tutte le corse?",
+      "ground_truth_sql": "SELECT SUM(total_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 11,
+      "difficulty": "Easy",
+      "question": "Quante corse hanno registrato una mancia (tip_amount) maggiore di zero?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE tip_amount > 0",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 12,
+      "difficulty": "Easy",
+      "question": "Qual è il costo medio dei pedaggi (tolls_amount) per corsa?",
+      "ground_truth_sql": "SELECT AVG(tolls_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 13,
       "difficulty": "Medium",
       "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
       "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM yellow_tripdata_2022_10 GROUP BY payment_type",
-      "is_sql_valid": true,
-      "is_exec_accurate": true,
-      "is_nl_accurate": true,
-      "latency": {
-        "t_sql_sec": 0.265,
-        "t_spark_sec": 1.9465,
-        "t_nl_sec": 1.5158,
-        "t_total_sec": 3.7273
-      },
-      "generated_sql": "SELECT \n  payment_type,\n  AVG(trip_distance) AS media_distanza,\n  AVG(total_amount) AS media_importo\nFROM \n  yellow_tripdata_2022_10\nGROUP BY \n  payment_type",
-      "nl_answer": "Dai dati emersi dall'analisi, possiamo notare che esistono cinque tipi di pagamento diversi, identificati dai codici 0, 1, 2, 3 e 4.\n\nIl tipo di pagamento con codice 0 presenta la distanza media più alta, con un valore di circa 75 chilometri, e anche l'importo medio più alto, pari a circa 29 euro.\n\nI tipi di pagamento con codici 1 e 2 hanno distanze medie molto più basse, rispettivamente di circa 3,63 e 3,63 chilometri, e importi medi di circa 23 e 18,58 euro.\n\nIl tipo di pagamento con codice 3 ha una distanza media di circa 2 chilometri e un importo medio di circa 8,60 euro.\n\nInfine, il tipo di pagamento con codice 4 presenta una distanza media di circa 3,46 chilometri e un importo medio molto basso, pari a circa 2,20 euro.\n\nIn generale, possiamo notare che i tipi di pagamento con codici 1, 2 e 4 sono associati a distanze molto più brevi rispetto al tipo di pagamento con codice 0, e anche gli importi medi sono significativamente più bassi. Ciò potrebbe indicare che questi tipi di pagamento sono più comunemente utilizzati per brevi tragitti urbani, mentre il tipo di pagamento con codice 0 potrebbe essere più comunemente utilizzato per tragitti più lunghi."
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 14,
+      "difficulty": "Medium",
+      "question": "Qual è il numero totale di corse effettuate per ciascuna zona di partenza (PULocationID)? Ordina per numero di corse decrescente.",
+      "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS total_trips FROM yellow_tripdata_2022_10 GROUP BY PULocationID ORDER BY total_trips DESC",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 15,
+      "difficulty": "Medium",
+      "question": "Qual è la mancia media (tip_amount) per ciascun tipo di tariffa (RatecodeID)?",
+      "ground_truth_sql": "SELECT RatecodeID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 GROUP BY RatecodeID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 16,
+      "difficulty": "Medium",
+      "question": "Mostrami le 10 zone di arrivo (DOLocationID) più frequenti con il relativo importo medio totale.",
+      "ground_truth_sql": "SELECT DOLocationID, COUNT(*) AS trip_count, AVG(total_amount) AS avg_amount FROM yellow_tripdata_2022_10 GROUP BY DOLocationID ORDER BY trip_count DESC LIMIT 10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 17,
+      "difficulty": "Medium",
+      "question": "Calcola la distanza media percorsa e l'importo medio per le corse con più di 4 passeggeri.",
+      "ground_truth_sql": "SELECT AVG(trip_distance) AS avg_dist, AVG(total_amount) AS avg_tot FROM yellow_tripdata_2022_10 WHERE passenger_count > 4",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 18,
+      "difficulty": "Medium",
+      "question": "Quante corse hanno un importo totale (total_amount) superiore a 100 euro o dollari?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE total_amount > 100",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 19,
+      "difficulty": "Medium",
+      "question": "Mostrami la media della tariffa base (fare_amount) e dei pedaggi (tolls_amount) raggruppati per VendorID.",
+      "ground_truth_sql": "SELECT VendorID, AVG(fare_amount) AS avg_fare, AVG(tolls_amount) AS avg_tolls FROM yellow_tripdata_2022_10 GROUP BY VendorID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 20,
+      "difficulty": "Medium",
+      "question": "Qual è il totale degli incassi (total_amount) e la mancia media per le corse pagate in contanti (payment_type = 2)?",
+      "ground_truth_sql": "SELECT SUM(total_amount) AS total_revenue, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 WHERE payment_type = 2",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 21,
+      "difficulty": "Medium",
+      "question": "Qual è la percentuale media di mancia rispetto alla tariffa base per il payment_type 1 (carta di credito)?",
+      "ground_truth_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage FROM yellow_tripdata_2022_10 WHERE payment_type = 1 AND fare_amount > 0",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 22,
+      "difficulty": "Medium",
+      "question": "Mostrami le 5 tratte da partenza a destinazione (PULocationID e DOLocationID) più popolari.",
+      "ground_truth_sql": "SELECT PULocationID, DOLocationID, COUNT(*) AS route_count FROM yellow_tripdata_2022_10 GROUP BY PULocationID, DOLocationID ORDER BY route_count DESC LIMIT 5",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 23,
+      "difficulty": "Medium",
+      "question": "Qual è il costo medio totale per corse con distanza percorsa tra 5 e 10 miglia o chilometri?",
+      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_2022_10 WHERE trip_distance BETWEEN 5 AND 10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 24,
+      "difficulty": "Medium",
+      "question": "Quante corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE extra > 0",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 25,
+      "difficulty": "Medium",
+      "question": "Mostrami il totale dei pedaggi pagati (tolls_amount) per ciascun tipo di tariffa (RatecodeID).",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tolls_amount) AS total_tolls FROM yellow_tripdata_2022_10 GROUP BY RatecodeID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 26,
+      "difficulty": "Hard",
+      "question": "Quali sono le 5 ore del giorno (0-23) con il maggior numero di corse e qual è la loro distanza media?",
+      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS pickup_hour, COUNT(*) AS total_trips, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_2022_10 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY total_trips DESC LIMIT 5",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 27,
+      "difficulty": "Hard",
+      "question": "Calcola il totale del fatturato (total_amount) e la distanza media per ciascun giorno della settimana.",
+      "ground_truth_sql": "SELECT DAYOFWEEK(tpep_pickup_datetime) AS day_of_week, SUM(total_amount) AS total_revenue, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_2022_10 GROUP BY DAYOFWEEK(tpep_pickup_datetime) ORDER BY day_of_week",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 28,
+      "difficulty": "Hard",
+      "question": "Mostrami le 3 zone di partenza (PULocationID) che generano il maggior fatturato totale per corse con pagamenti con carta di credito (payment_type = 1).",
+      "ground_truth_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 WHERE payment_type = 1 GROUP BY PULocationID ORDER BY total_revenue DESC LIMIT 3",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 29,
+      "difficulty": "Hard",
+      "question": "Qual è la durata media in minuti delle corse nel dataset?",
+      "ground_truth_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 30,
+      "difficulty": "Hard",
+      "question": "Classifica i tipi di pagamento attribuendo 'Carta' al codice 1, 'Contanti' al codice 2 e 'Altro' per il resto, e calcola il fatturato totale per ciascuna categoria.",
+      "ground_truth_sql": "SELECT CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END AS metodo_pagamento, SUM(total_amount) AS fatturato_totale FROM yellow_tripdata_2022_10 GROUP BY CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 31,
+      "difficulty": "Hard",
+      "question": "Mostrami il fatturato totale e il numero di corse per ogni ora della notte (dalle 00:00 alle 05:59).",
+      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, COUNT(*) AS trips, SUM(total_amount) AS revenue FROM yellow_tripdata_2022_10 WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 32,
+      "difficulty": "Hard",
+      "question": "Qual è la velocità media in miglia o chilometri orari delle corse per ciascun VendorID?",
+      "ground_truth_sql": "SELECT VendorID, AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph FROM yellow_tripdata_2022_10 WHERE (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0 GROUP BY VendorID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 33,
+      "difficulty": "Hard",
+      "question": "Quali zone di partenza (PULocationID) hanno un numero di corse superiore a 10.000 e una mancia media superiore a 3?",
+      "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS trip_count, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 GROUP BY PULocationID HAVING COUNT(*) > 10000 AND AVG(tip_amount) > 3",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 34,
+      "difficulty": "Hard",
+      "question": "Calcola la distribuzione delle corse per fascia oraria: 'Mattina' (6-11), 'Pomeriggio' (12-17), 'Sera' (18-23), 'Notte' (0-5).",
+      "ground_truth_sql": "SELECT CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END AS fascia_oraria, COUNT(*) AS num_corse FROM yellow_tripdata_2022_10 GROUP BY CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 35,
+      "difficulty": "Hard",
+      "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
+      "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM yellow_tripdata_2022_10 GROUP BY PULocationID, DOLocationID HAVING COUNT(*) > 50 ORDER BY avg_duration_min DESC LIMIT 5",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 36,
+      "difficulty": "Hard",
+      "question": "Calcola la percentuale di corse che hanno pagato un pedaggio (tolls_amount > 0) rispetto al totale delle corse.",
+      "ground_truth_sql": "SELECT (COUNT(CASE WHEN tolls_amount > 0 THEN 1 END) * 100.0 / COUNT(*)) AS toll_trip_percentage FROM yellow_tripdata_2022_10",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 37,
+      "difficulty": "Hard",
+      "question": "Mostrami l'importo totale delle mance e della tariffa base suddivisi per tipo di tariffa (RatecodeID) per corse con più di 2 passeggeri.",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(fare_amount) AS total_fares FROM yellow_tripdata_2022_10 WHERE passenger_count > 2 GROUP BY RatecodeID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 38,
+      "difficulty": "Hard",
+      "question": "Qual è il valore massimo e la media della mancia (tip_amount) per le corse la cui distanza è superiore alla distanza media generale?",
+      "ground_truth_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 WHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_2022_10)",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 39,
+      "difficulty": "Hard",
+      "question": "Mostrami i 3 giorni del mese in cui si è registrato il maggior fatturato totale.",
+      "ground_truth_sql": "SELECT DAYOFMONTH(tpep_pickup_datetime) AS day_of_month, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 GROUP BY DAYOFMONTH(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
+    },
+    {
+      "id": 40,
+      "difficulty": "Hard",
+      "question": "Calcola l'incasso totale della tariffa aeroportuale (mTA_tax o congestion_surcharge) e della mancia per le corse appartenenti alla tariffa aeroporto (RatecodeID = 2 o 3).",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(tolls_amount) AS total_tolls, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 WHERE RatecodeID IN (2, 3) GROUP BY RatecodeID",
+      "is_sql_valid": false,
+      "is_exec_accurate": false,
+      "is_nl_accurate": false,
+      "latency": {}
     }
   ]
 }
