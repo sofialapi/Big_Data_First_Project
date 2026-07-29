@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "difficulty": "Easy",
+    "question": "Qual è il numero totale di corse presenti nel dataset?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM {table_name}"
+  },
+  {
+    "id": 2,
+    "difficulty": "Easy",
+    "question": "Qual è l'importo medio totale (total_amount) delle corse?",
+    "ground_truth_sql": "SELECT AVG(total_amount) FROM {table_name}"
+  },
+  {
+    "id": 3,
+    "difficulty": "Medium",
+    "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
+    "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM {table_name} GROUP BY payment_type"
+  }
+]

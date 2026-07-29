@@ -1,0 +1,69 @@
+{
+  "dataset_path": "./dataset_storage/yellow_tripdata_2022-10.parquet",
+  "main_table_name": "yellow_tripdata_2022_10",
+  "total_queries": 3,
+  "metrics": {
+    "sql_validity_rate_SVR": "100.00%",
+    "execution_accuracy_EX": "100.00%",
+    "nl_answer_correctness_NL_AC": "33.33%"
+  },
+  "average_latencies": {
+    "avg_sql_gen_sec": 0.4198,
+    "avg_spark_exec_sec": 1.7333,
+    "avg_nl_gen_sec": 1.0687,
+    "avg_total_sec": 3.2218
+  },
+  "detailed_results": [
+    {
+      "id": 1,
+      "difficulty": "Easy",
+      "question": "Qual è il numero totale di corse presenti nel dataset?",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": false,
+      "latency": {
+        "t_sql_sec": 0.7236,
+        "t_spark_sec": 1.9798,
+        "t_nl_sec": 0.5649,
+        "t_total_sec": 3.2682
+      },
+      "generated_sql": "SELECT COUNT(*) \nFROM yellow_tripdata_2022_10",
+      "nl_answer": "Il dataset contiene un totale di 3.675.411 corse. Questo numero rappresenta la quantità complessiva di trasferimenti o spostamenti registrati nel mese di ottobre 2022. Tale informazione può essere utile per comprendere il volume di attività e la dimensione del mercato dei trasporti in questione."
+    },
+    {
+      "id": 2,
+      "difficulty": "Easy",
+      "question": "Qual è l'importo medio totale (total_amount) delle corse?",
+      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_2022_10",
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": false,
+      "latency": {
+        "t_sql_sec": 0.2709,
+        "t_spark_sec": 1.2736,
+        "t_nl_sec": 1.1253,
+        "t_total_sec": 2.6698
+      },
+      "generated_sql": "SELECT AVG(total_amount) AS importo_medio_totale \nFROM yellow_tripdata_2022_10",
+      "nl_answer": "L'analisi dei dati delle corse effettuate nel mese di ottobre 2022 ha rivelato che l'importo medio totale per corsa è di circa 22,25 unità. Ciò significa che, in media, ogni corsa ha generato un incasso di questo importo. Questo dato può essere utile per comprendere il volume di affari generato dalle corse e per pianificare strategie di pricing e di gestione della flotta. Inoltre, può essere interessante analizzare ulteriormente i dati per capire se ci sono differenze significative nell'importo medio totale in base a fattori come l'ora del giorno, il giorno della settimana o la zona di partenza e arrivo."
+    },
+    {
+      "id": 3,
+      "difficulty": "Medium",
+      "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
+      "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM yellow_tripdata_2022_10 GROUP BY payment_type",
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 0.265,
+        "t_spark_sec": 1.9465,
+        "t_nl_sec": 1.5158,
+        "t_total_sec": 3.7273
+      },
+      "generated_sql": "SELECT \n  payment_type,\n  AVG(trip_distance) AS media_distanza,\n  AVG(total_amount) AS media_importo\nFROM \n  yellow_tripdata_2022_10\nGROUP BY \n  payment_type",
+      "nl_answer": "Dai dati emersi dall'analisi, possiamo notare che esistono cinque tipi di pagamento diversi, identificati dai codici 0, 1, 2, 3 e 4.\n\nIl tipo di pagamento con codice 0 presenta la distanza media più alta, con un valore di circa 75 chilometri, e anche l'importo medio più alto, pari a circa 29 euro.\n\nI tipi di pagamento con codici 1 e 2 hanno distanze medie molto più basse, rispettivamente di circa 3,63 e 3,63 chilometri, e importi medi di circa 23 e 18,58 euro.\n\nIl tipo di pagamento con codice 3 ha una distanza media di circa 2 chilometri e un importo medio di circa 8,60 euro.\n\nInfine, il tipo di pagamento con codice 4 presenta una distanza media di circa 3,46 chilometri e un importo medio molto basso, pari a circa 2,20 euro.\n\nIn generale, possiamo notare che i tipi di pagamento con codici 1, 2 e 4 sono associati a distanze molto più brevi rispetto al tipo di pagamento con codice 0, e anche gli importi medi sono significativamente più bassi. Ciò potrebbe indicare che questi tipi di pagamento sono più comunemente utilizzati per brevi tragitti urbani, mentre il tipo di pagamento con codice 0 potrebbe essere più comunemente utilizzato per tragitti più lunghi."
+    }
+  ]
+}

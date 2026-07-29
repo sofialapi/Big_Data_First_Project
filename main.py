@@ -11,17 +11,19 @@ def generate_sql_query(llm, schema_ddl, user_question):
     """
     # Prompt per la generazione dell'SQL (Veridicità)
     system_instruction = (
-        "Sei un assistente hacker/esperto in Big Data clinici e un traduttore text-to-SQL per Apache Spark.\n"
-        "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta basandoti ESCLUSIVAMENTE sullo schema fornito.\n\n"
-        "[SCHEMA DEL DATABASE CLINICO]\n"
+        "Sei un esperto di analisi Big Data e un traduttore Text-to-SQL ad alte prestazioni per Apache Spark.\n"
+        "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta ed efficiente "
+        "basandoti ESCLUSIVAMENTE sullo schema fornito.\n\n"
+        "[SCHEMA DEL DATABASE]\n"
         "{schema_ddl}\n\n"
         "[REGOLE RIGIDE DI VERIDICITÀ]\n"
         "1. Usa solo le tabelle e le colonne elencate nello schema sopra.\n"
         "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle. Rispondi dicendo che mancano i dati.\n"
-        "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i valori testuali nel database sono in inglese. "
-        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini italiani dell'utente con i reali valori stringa (es. se l'utente chiede 'recupero completo' e tra i valori vedi 'Recovered', usa 'Recovered').\n"
-        "5. Restituisci come risposta SOLO ed ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni.\n"
-        "6. STRATEGIA DI AGGREGAZIONE: Quando l'utente chiede distribuzioni, conteggi o correlazioni tra categorie (es. trattamenti ed esiti), assicurati di calcolare aggregati significativi (usando COUNT, GROUP BY) senza ordinare ciecamente per colonne testuali che potrebbero saturare il LIMIT con un solo valore. Se una colonna contiene punteggi continui o sparsi, valuta la media (AVG) o raggruppamenti sensati per mostrare la panoramica di TUTTI i trattamenti disponibili."
+        "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i nomi delle colonne o i valori nel database possono essere in inglese.\n"
+        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini dell'utente.\n"
+        "5. Restituisci come risposta SOLO ED ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni.\n"
+        "6. STRATEGIA DI AGGREGAZIONE: Per conteggi, medie, somme e distribuzioni usa opportunamente GROUP BY, COUNT, AVG, SUM. "
+        "Se si usano funzioni temporali (es. YEAR(), MONTH()), applicale correttamente alle colonne timestamp/date."
     )
 
     prompt_template = ChatPromptTemplate.from_messages([
@@ -39,10 +41,11 @@ def generate_natural_language_answer(llm, user_question, sql_query, query_result
     Prende il risultato del calcolo di Spark e lo fa tradurre in linguaggio naturale dall'LLM.
     """
     system_instruction = (
-        "Sei un assistente medico-amministrativo esperto.\n"
-        "Dato il risultato di un'analisi dati eseguita su un cluster Big Data, formula una risposta chiara, "
-        "professionale e discorsiva in linguaggio naturale che risponda direttamente alla domanda iniziale dell'utente.\n"
-        "Non menzionare i dettagli tecnici della query SQL o la struttura delle tabelle, concentrati sul significato clinico/gestionale del dato."
+        "Sei un assistente analista dati e business intelligence esperto.\n"
+        "Dato il risultato di un'analisi eseguita su un cluster Big Data, formula una risposta chiara, "
+        "professionale e discorsiva in linguaggio naturale che risponda direttamente alla domanda dell'utente.\n"
+        "Non menzionare dettagli tecnici di implementazione SQL, concentrati sul significato operativo, "
+        "economico o quantitativo dei dati emersi."
     )
     
     human_message = (
@@ -81,8 +84,8 @@ def main():
     print("====================================================\n")
     
     # 1. Input della cartella e Metadata Discovery
-    folder_path = input("Inserisci il percorso della cartella contenente i file .csv clinici: ").strip()
-    
+    folder_path = input("Inserisci il percorso della cartella o del file .parquet/.csv: ").strip()
+        
     try:
         start_discovery = time.time()
         schema_ddl, registered_tables = discover_meta_and_register_views(folder_path)
