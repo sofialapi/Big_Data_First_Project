@@ -206,7 +206,7 @@
   {
     "id": 35,
     "difficulty": "Hard",
-    "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
+    "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga, tra le tratte con almeno 50 corse?",
     "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM {table_name} GROUP BY PULocationID, DOLocationID HAVING COUNT(*) > 50 ORDER BY avg_duration_min DESC LIMIT 5"
   },
   {
@@ -231,7 +231,7 @@
     "id": 39,
     "difficulty": "Hard",
     "question": "Mostrami i 3 giorni del mese in cui si è registrato il maggior fatturato totale.",
-    "ground_truth_sql": "SELECT DAYOFMONTH(tpep_pickup_datetime) AS day_of_month, SUM(total_amount) AS total_revenue FROM {table_name} GROUP BY DAYOFMONTH(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3"
+    "ground_truth_sql": "SELECT TO_DATE(tpep_pickup_datetime) AS day, SUM(total_amount) AS total_revenue FROM {table_name} GROUP BY TO_DATE(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3"
   },
   {
     "id": 40,

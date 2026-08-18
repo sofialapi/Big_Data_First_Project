@@ -9,7 +9,7 @@ def generate_sql_query(llm, schema_ddl, user_question):
     """
     Invia lo schema del database e la domanda dell'utente a Groq per generare la query Spark SQL.
     """
-    # Prompt per la generazione dell'SQL (Veridicità)
+    # Prompt per la generazione dell'SQL (Veridicità + Linee Guida Generali Text-to-SQL)
     system_instruction = (
         "Sei un esperto di analisi Big Data e un traduttore Text-to-SQL ad alte prestazioni per Apache Spark.\n"
         "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta ed efficiente "
@@ -20,10 +20,19 @@ def generate_sql_query(llm, schema_ddl, user_question):
         "1. Usa solo le tabelle e le colonne elencate nello schema sopra.\n"
         "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle. Rispondi dicendo che mancano i dati.\n"
         "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i nomi delle colonne o i valori nel database possono essere in inglese.\n"
-        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini dell'utente.\n"
+        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini dell'utente nei filtri WHERE.\n"
         "5. Restituisci come risposta SOLO ED ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni.\n"
-        "6. STRATEGIA DI AGGREGAZIONE: Per conteggi, medie, somme e distribuzioni usa opportunamente GROUP BY, COUNT, AVG, SUM. "
-        "Se si usano funzioni temporali (es. YEAR(), MONTH()), applicale correttamente alle colonne timestamp/date."
+        "6. STRATEGIA DI AGGREGAZIONE E METRICHE:\n"
+        "   - Per termini come 'importo medio', 'fatturato', 'totale complessivo' o 'spesa', prediligi la colonna del totale finale ("
+        "es. 'total_amount', 'total_cost', 'price_total') rispetto alle singole sotto-componenti o tariffe base ("
+        "es. 'fare_amount', 'subtotal'), a meno che non siano esplicitamente richieste dall'utente.\n"
+        "   - Per il calcolo di durate temporali da due colonne TIMESTAMP, usa la differenza in secondi calcolata come "
+        "(UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time)) e convertila nella dimensione richiesta (es. / 60 per i minuti).\n"
+        "   - Quando la domanda richiede 'i giorni del mese' o 'le date' con maggior volume, raggruppa estraendo la data intera "
+        "(es. TO_DATE(timestamp_col) oppure DAYOFMONTH(timestamp_col)).\n"
+        "   - Per conteggi, medie, somme e distribuzioni usa opportunamente GROUP BY, COUNT, AVG, SUM.\n"
+        "Quando calcoli percentuali o rapporti basati su divisioni (es. tip_amount / fare_amount), aggiungi sempre la condizione WHERE denominatore > 0 per evitare divisioni per zero o valori non validi.\n"
+        
     )
 
     prompt_template = ChatPromptTemplate.from_messages([

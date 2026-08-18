@@ -1,414 +1,359 @@
 {
   "dataset_path": "./dataset_storage/yellow_tripdata_2022-10.parquet",
   "main_table_name": "yellow_tripdata_2022_10",
-  "total_queries": 40,
+  "start_id": 20,
+  "total_queries": 21,
   "metrics": {
-    "sql_validity_rate_SVR": "2.50%",
-    "execution_accuracy_EX": "2.50%",
-    "nl_answer_correctness_NL_AC": "0.00%"
+    "sql_validity_rate_SVR": "95.24%",
+    "execution_accuracy_EX": "80.95%",
+    "nl_answer_correctness_NL_AC": "80.95%"
   },
   "average_latencies": {
-    "avg_sql_gen_sec": 1.3215,
-    "avg_spark_exec_sec": 0.044,
-    "avg_nl_gen_sec": 0.0018,
-    "avg_total_sec": 1.3672
+    "avg_sql_gen_sec": 6.3455,
+    "avg_spark_exec_sec": 1.0549,
+    "avg_nl_gen_sec": 2.1242,
+    "avg_total_sec": 9.5246
   },
   "detailed_results": [
-    {
-      "id": 1,
-      "difficulty": "Easy",
-      "question": "Qual è il numero totale di corse registrate nel dataset?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": true,
-      "is_exec_accurate": true,
-      "is_nl_accurate": false,
-      "latency": {
-        "t_sql_sec": 52.858,
-        "t_spark_sec": 1.7611,
-        "t_nl_sec": 0.0705,
-        "t_total_sec": 54.6896
-      },
-      "generated_sql": "SELECT COUNT(*) \nFROM yellow_tripdata_2022_10"
-    },
-    {
-      "id": 2,
-      "difficulty": "Easy",
-      "question": "Qual è l'importo medio totale (total_amount) incassato per corsa?",
-      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 3,
-      "difficulty": "Easy",
-      "question": "Qual è la distanza massima (trip_distance) percorsa in una singola corsa?",
-      "ground_truth_sql": "SELECT MAX(trip_distance) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 4,
-      "difficulty": "Easy",
-      "question": "Qual è l'importo totale delle mance (tip_amount) raccolte nel dataset?",
-      "ground_truth_sql": "SELECT SUM(tip_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 5,
-      "difficulty": "Easy",
-      "question": "Quante corse sono state effettuate con un solo passeggero (passenger_count = 1)?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE passenger_count = 1",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 6,
-      "difficulty": "Easy",
-      "question": "Qual è la tariffa base media (fare_amount) delle corse?",
-      "ground_truth_sql": "SELECT AVG(fare_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 7,
-      "difficulty": "Easy",
-      "question": "Quante corse hanno avuto una distanza di percorrenza pari a 0?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE trip_distance = 0",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 8,
-      "difficulty": "Easy",
-      "question": "Qual è il valore massimo pagato per i pedaggi (tolls_amount)?",
-      "ground_truth_sql": "SELECT MAX(tolls_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 9,
-      "difficulty": "Easy",
-      "question": "Mostrami il numero di corse divise per numero di passeggeri (passenger_count).",
-      "ground_truth_sql": "SELECT passenger_count, COUNT(*) AS total_trips FROM yellow_tripdata_2022_10 GROUP BY passenger_count",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 10,
-      "difficulty": "Easy",
-      "question": "Qual è l'importo totale incassato (total_amount) per tutte le corse?",
-      "ground_truth_sql": "SELECT SUM(total_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 11,
-      "difficulty": "Easy",
-      "question": "Quante corse hanno registrato una mancia (tip_amount) maggiore di zero?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE tip_amount > 0",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 12,
-      "difficulty": "Easy",
-      "question": "Qual è il costo medio dei pedaggi (tolls_amount) per corsa?",
-      "ground_truth_sql": "SELECT AVG(tolls_amount) FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 13,
-      "difficulty": "Medium",
-      "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
-      "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM yellow_tripdata_2022_10 GROUP BY payment_type",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 14,
-      "difficulty": "Medium",
-      "question": "Qual è il numero totale di corse effettuate per ciascuna zona di partenza (PULocationID)? Ordina per numero di corse decrescente.",
-      "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS total_trips FROM yellow_tripdata_2022_10 GROUP BY PULocationID ORDER BY total_trips DESC",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 15,
-      "difficulty": "Medium",
-      "question": "Qual è la mancia media (tip_amount) per ciascun tipo di tariffa (RatecodeID)?",
-      "ground_truth_sql": "SELECT RatecodeID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 GROUP BY RatecodeID",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 16,
-      "difficulty": "Medium",
-      "question": "Mostrami le 10 zone di arrivo (DOLocationID) più frequenti con il relativo importo medio totale.",
-      "ground_truth_sql": "SELECT DOLocationID, COUNT(*) AS trip_count, AVG(total_amount) AS avg_amount FROM yellow_tripdata_2022_10 GROUP BY DOLocationID ORDER BY trip_count DESC LIMIT 10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 17,
-      "difficulty": "Medium",
-      "question": "Calcola la distanza media percorsa e l'importo medio per le corse con più di 4 passeggeri.",
-      "ground_truth_sql": "SELECT AVG(trip_distance) AS avg_dist, AVG(total_amount) AS avg_tot FROM yellow_tripdata_2022_10 WHERE passenger_count > 4",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 18,
-      "difficulty": "Medium",
-      "question": "Quante corse hanno un importo totale (total_amount) superiore a 100 euro o dollari?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE total_amount > 100",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
-    {
-      "id": 19,
-      "difficulty": "Medium",
-      "question": "Mostrami la media della tariffa base (fare_amount) e dei pedaggi (tolls_amount) raggruppati per VendorID.",
-      "ground_truth_sql": "SELECT VendorID, AVG(fare_amount) AS avg_fare, AVG(tolls_amount) AS avg_tolls FROM yellow_tripdata_2022_10 GROUP BY VendorID",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
-    },
     {
       "id": 20,
       "difficulty": "Medium",
       "question": "Qual è il totale degli incassi (total_amount) e la mancia media per le corse pagate in contanti (payment_type = 2)?",
       "ground_truth_sql": "SELECT SUM(total_amount) AS total_revenue, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 WHERE payment_type = 2",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
       "is_nl_accurate": false,
-      "latency": {}
+      "latency": {
+        "t_sql_sec": 1.0261,
+        "t_spark_sec": 3.3271,
+        "t_nl_sec": 0.9506,
+        "t_total_sec": 5.3038
+      },
+      "generated_sql": "SELECT\n  SUM(total_amount) AS totale_incassi,\n  AVG(tip_amount) AS media_mancia\nFROM\n  yellow_tripdata_2022_10\nWHERE\n  payment_type = 2",
+      "nl_answer": "Nel mese di ottobre 2022, le corse che sono state pagate in contanti hanno generato un totale di **circa 12,632,300 $** di incassi.  \nLa mancia media per queste corse è di **solo 0,0016 $** (circa 0,16 centesimi), un valore estremamente basso rispetto al prezzo medio della corsa.  \n\nQuesta discrepanza suggerisce che, quando i passeggeri scelgono il pagamento in contanti, la propensione a lasciare una mancia è quasi inesistente, oppure che i dati relativi alle mance non sono stati registrati correttamente.  \nPer massimizzare i ricavi, potrebbe essere utile promuovere modalità di pagamento elettroniche (che spesso includono opzioni di mancia automatica) o rivedere il processo di registrazione delle mance per le corse in contanti."
     },
     {
       "id": 21,
       "difficulty": "Medium",
       "question": "Qual è la percentuale media di mancia rispetto alla tariffa base per il payment_type 1 (carta di credito)?",
       "ground_truth_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage FROM yellow_tripdata_2022_10 WHERE payment_type = 1 AND fare_amount > 0",
-      "is_sql_valid": false,
+      "is_sql_valid": true,
       "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 0.4874,
+        "t_spark_sec": 0.9518,
+        "t_nl_sec": 0.9718,
+        "t_total_sec": 2.4109
+      },
+      "generated_sql": "SELECT AVG(tip_amount / fare_amount * 100) AS avg_tip_percentage\nFROM yellow_tripdata_2022_10\nWHERE payment_type = 1",
+      "nl_answer": "La percentuale media di mancia rispetto alla tariffa base per i pagamenti con carta di credito (payment_type = 1) è di **circa 30,1 %**.  \n\nQuesta cifra indica che, in media, i passeggeri che scelgono la carta di credito aggiungono un importo pari a circa un terzo della tariffa di base. Tale livello di mancia è relativamente elevato rispetto a quello osservato per altri metodi di pagamento (ad esempio contanti o carte di debito), suggerendo che la comodità e la percezione di sicurezza offerte dalla carta di credito possono incentivare i clienti a lasciare una mancia più consistente.\n\n**Implicazioni operative ed economiche**\n\n- **Ricavi per i conducenti**: Un tip medio del 30 % può rappresentare un contributo significativo al reddito complessivo dei conducenti, soprattutto in periodi di tariffa più bassa o in zone con concorrenza elevata.\n- **Strategie di pricing**: Se l’obiettivo è aumentare la soddisfazione del cliente o incentivare l’uso di determinati metodi di pagamento, si potrebbe considerare di promuovere la carta di credito con offerte o sconti, sfruttando la propensione a lasciare mancia più alta.\n- **Analisi di mercato**: Confrontare questa percentuale con altri periodi o con altre città può aiutare a capire se il comportamento dei clienti è stabile o se è influenzato da fattori stagionali, promozioni o cambiamenti nelle politiche di tariffazione.\n\n**Limitazioni**\n\n- Il valore è calcolato su un singolo mese (ottobre 2022) e su un dataset specifico; le tendenze potrebbero variare in altri periodi o in altre regioni.\n- La media può essere influenzata da outlier (ad esempio corse molto costose con mancia elevata). Una analisi più dettagliata (mediana, percentili) potrebbe fornire una visione più robusta.\n\nIn sintesi, la mancia media del 30 % per i pagamenti con carta di credito evidenzia un comportamento di pagamento più generoso rispetto ad altri metodi, con potenziali benefici sia per i conducenti sia per la strategia di fidelizzazione dei clienti."
     },
     {
       "id": 22,
       "difficulty": "Medium",
       "question": "Mostrami le 5 tratte da partenza a destinazione (PULocationID e DOLocationID) più popolari.",
       "ground_truth_sql": "SELECT PULocationID, DOLocationID, COUNT(*) AS route_count FROM yellow_tripdata_2022_10 GROUP BY PULocationID, DOLocationID ORDER BY route_count DESC LIMIT 5",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 0.4658,
+        "t_spark_sec": 2.3379,
+        "t_nl_sec": 1.3911,
+        "t_total_sec": 4.1948
+      },
+      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  COUNT(*) AS trip_count\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  PULocationID,\n  DOLocationID\nORDER BY\n  trip_count DESC\nLIMIT 5;",
+      "nl_answer": "**Le cinque tratte più frequentate (in ordine di volume di viaggi) per il mese di ottobre 2022**\n\n| Partenza (PULocationID) | Destinazione (DOLocationID) | Viaggi totali |\n|--------------------------|-----------------------------|---------------|\n| 237 | 236 | 24 949 |\n| 236 | 237 | 21 398 |\n| 237 | 237 | 16 971 |\n| 264 | 264 | 16 195 |\n| 236 | 236 | 15 645 |\n\n**Cosa significa questo dato**\n\n1. **Alto traffico tra 237 e 236**  \n   La tratta 237 → 236 è la più popolare, con quasi 25 mila viaggi. Questo indica un forte flusso di passeggeri tra le due zone, probabilmente legato a punti di interesse condivisi (es. zone commerciali, centri di trasporto pubblico o aree di lavoro). La reciproca tratta 236 → 237 è anch’essa molto usata, suggerendo un traffico bidirezionale intenso.\n\n2. **Domanda interna alle stesse zone**  \n   Le tratte 237 → 237 e 236 → 236, oltre a 264 → 264, mostrano che molti viaggi avvengono all’interno della stessa area. Ciò può indicare una forte attività locale (shopping, servizi, eventi) o la necessità di spostamenti di breve distanza per motivi di lavoro o di vita quotidiana.\n\n3. **Implicazioni operative**  \n   - **Gestione della flotta**: le zone 236 e 237 dovrebbero essere priorizzate per il posizionamento di veicoli, soprattutto nei periodi di punta.  \n   - **Pianificazione dei percorsi**: la densità di viaggi tra queste due aree suggerisce la possibilità di ottimizzare i percorsi di consegna o di trasporto pubblico.  \n   - **Politiche di prezzo**: la domanda elevata può giustificare tariffe dinamiche o promozioni mirate per bilanciare l’offerta e la domanda.  \n   - **Investimenti infrastrutturali**: la concentrazione di viaggi potrebbe indicare la necessità di migliorare la capacità di trasporto pubblico o di creare percorsi ciclabili.\n\n4. **Contesto temporale**  \n   Questi numeri riflettono il traffico di ottobre 2022. Se si confrontano con altri mesi, si potrebbero individuare trend stagionali (es. aumento di viaggi verso le zone turistiche in estate) o effetti di eventi speciali (es. festival, chiusure stradali).\n\nIn sintesi, le tratte 237 → 236 e 236 → 237 dominano il panorama dei viaggi di taxi a New York per quel periodo, seguite da viaggi all’interno delle stesse zone. Queste informazioni possono guidare decisioni strategiche su allocazione delle risorse, pricing e sviluppo di servizi di trasporto."
     },
     {
       "id": 23,
       "difficulty": "Medium",
       "question": "Qual è il costo medio totale per corse con distanza percorsa tra 5 e 10 miglia o chilometri?",
       "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_2022_10 WHERE trip_distance BETWEEN 5 AND 10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
       "is_nl_accurate": false,
-      "latency": {}
+      "latency": {
+        "t_sql_sec": 0.4511,
+        "t_spark_sec": 1.5735,
+        "t_nl_sec": 1.3639,
+        "t_total_sec": 3.3886
+      },
+      "generated_sql": "SELECT AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_2022_10\nWHERE trip_distance BETWEEN 5 AND 10;",
+      "nl_answer": "Il valore medio che hai ottenuto, **≈ $34,93**, rappresenta la tariffa complessiva (tassa base, pedaggi, mance, ecc.) che i passeggeri hanno pagato per le corse di lunghezza compresa tra 5 e 10 miglia (o chilometri) nel dataset di ottobre 2022.\n\n### Cosa significa questo numero?\n\n| Aspetto | Interpretazione |\n|---------|-----------------|\n| **Tariffa media** | Un costo medio di quasi 35 $ indica che, per un viaggio di media lunghezza (circa 7–8 miglia), il prezzo finale è significativamente più alto rispetto a corse più brevi. |\n| **Confronto con la media generale** | Se la media complessiva delle corse di tutti i tipi è, ad esempio, di 20–25 $, questo intervallo di distanza è più costoso di 10–15 $ in media. |\n| **Costo per miglio** | Dividendo 34,93 per la distanza media (≈ 7,5 miglia) si ottiene un costo medio di circa 4,7 $ per miglio, un valore utile per valutare la redditività di percorsi più lunghi. |\n| **Implicazioni operative** | - **Pianificazione dei prezzi**: i corse di 5–10 miglia possono essere targettizzate con tariffe dinamiche o promozioni per aumentare l’occupazione. <br> - **Gestione delle flotte**: i veicoli che servono regolarmente questa fascia di distanza potrebbero richiedere manutenzione più frequente a causa dell’usura maggiore. <br> - **Budgeting**: per un servizio di ride‑hailing, sapere che una corsa media di questa lunghezza costa quasi 35 $ aiuta a stimare i ricavi e a pianificare i costi di carburante e di personale. |\n\n### Come usarlo\n\n1. **Analisi di margine** – Confronta questo valore con i costi operativi (carburante, manutenzione, stipendi) per capire il margine di profitto su corse di 5–10 miglia.  \n2. **Strategia di pricing** – Se il margine è basso, potresti considerare tariffe leggermente più alte o offerte di sconto per attrarre clienti in questa fascia di distanza.  \n3. **Ottimizzazione della rete** – Identifica le aree urbane dove le corse di 5–10 miglia sono più frequenti e valuta la possibilità di aumentare la disponibilità di veicoli in quei quartieri.  \n\nIn sintesi, il costo medio di circa 35 $ per corse tra 5 e 10 miglia è un indicatore chiave per la gestione delle tariffe, la pianificazione delle risorse e la valutazione della redditività delle attività di trasporto urbano."
     },
     {
       "id": 24,
       "difficulty": "Medium",
       "question": "Quante corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)?",
       "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_2022_10 WHERE extra > 0",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 9.8175,
+        "t_spark_sec": 0.4865,
+        "t_nl_sec": 2.1377,
+        "t_total_sec": 12.4417
+      },
+      "generated_sql": "SELECT COUNT(*) AS num_trips_with_extra\nFROM yellow_tripdata_2022_10\nWHERE extra > 0;",
+      "nl_answer": "Nel mese di ottobre 2022, il dataset “yellow_tripdata_2022_10” mostra che **2 133 032 corse** hanno registrato un supplemento per traffico/ora di punta (ovvero un valore di `extra` maggiore di zero).  \n\nQuesta cifra rappresenta un quantitativo significativo di viaggi in cui è stato applicato il prezzo dinamico, indice di periodi di alta domanda. Dal punto di vista operativo, indica che durante quel mese i tassisti hanno dovuto gestire un volume considerevole di corse in cui la tariffa è aumentata per compensare la congestione del traffico o i picchi di richiesta.  \n\nDal punto di vista economico, ogni “extra” aggiunge un importo alla tariffa complessiva, contribuendo a incrementare i ricavi sia per la compagnia di taxi sia per i conducenti. Se si confronta con il totale delle corse del mese (che non è stato fornito qui), si può valutare la percentuale di viaggi soggetti a surge pricing, offrendo un’indicazione della frequenza con cui i clienti pagano tariffe superiori a causa di condizioni di traffico elevate.  \n\nIn sintesi, oltre 2,1 milioni di corse in ottobre 2022 hanno beneficiato di un supplemento per traffico/ora di punta, evidenziando la rilevanza del pricing dinamico nel settore dei taxi urbani."
     },
     {
       "id": 25,
       "difficulty": "Medium",
       "question": "Mostrami il totale dei pedaggi pagati (tolls_amount) per ciascun tipo di tariffa (RatecodeID).",
       "ground_truth_sql": "SELECT RatecodeID, SUM(tolls_amount) AS total_tolls FROM yellow_tripdata_2022_10 GROUP BY RatecodeID",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 7.6542,
+        "t_spark_sec": 0.7445,
+        "t_nl_sec": 1.9356,
+        "t_total_sec": 10.3343
+      },
+      "generated_sql": "SELECT\n  RatecodeID,\n  SUM(tolls_amount) AS total_tolls\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  RatecodeID;",
+      "nl_answer": "**Totale dei pedaggi per ciascun tipo di tariffa (RatecodeID)**  \n\n| RatecodeID | Totale pedaggi (USD) | % del totale complessivo |\n|------------|----------------------|--------------------------|\n| 1.0        | 966 511,49           | 45,1 % |\n| 2.0        | 807 160,96           | 37,6 % |\n| 3.0        | 153 289,31           | 7,2 % |\n| 4.0        | 15 779,30            | 0,7 % |\n| 5.0        | 78 972,39            | 3,7 % |\n| 6.0        | 8,99                 | 0,00 % |\n| 99.0       | 25 173,13            | 1,2 % |\n| **NULL**   | 96 992,30            | 4,5 % |\n| **Totale** | **2 143 887,87**     | 100 % |\n\n### Cosa significa questo risultato\n\n1. **Dominio dei RatecodeID 1 e 2**  \n   - Questi due codici rappresentano quasi l’80 % di tutti i pedaggi pagati.  \n   - Probabilmente corrispondono ai percorsi più frequenti (ad esempio, viaggi urbani regolari e viaggi verso gli aeroporti).  \n   - L’alta concentrazione di pedaggi in questi due gruppi indica che le strategie di pricing e di gestione dei costi dovrebbero concentrarsi su di essi.\n\n2. **RatecodeID 3 e 5**  \n   - Contribuiscono rispettivamente al 7,2 % e al 3,7 % del totale.  \n   - Possono rappresentare percorsi di media lunghezza o tariffe speciali (es. viaggi di lunga distanza con tariffa fissa).  \n   - Anche se non dominanti, la loro quota è significativa e merita un monitoraggio costante.\n\n3. **RatecodeID 4, 6 e 99**  \n   - Questi codici hanno un impatto minimo (meno dell’1 % del totale).  \n   - Il RatecodeID 6, con un valore di soli 8,99 USD, è praticamente trascurabile.  \n   - Il RatecodeID 99, sebbene piccolo, potrebbe indicare un tipo di tariffa speciale o un errore di classificazione.\n\n4. **RatecodeID NULL**  \n   - Rappresenta circa il 4,5 % del totale.  \n   - L’assenza di un codice tariffario può derivare da errori di registrazione o da transazioni non standard.  \n   - È consigliabile verificare la qualità dei dati per questo gruppo, poiché i pedaggi non attribuiti a una tariffa specifica possono distorcere le analisi di costo.\n\n### Implicazioni operative ed economiche\n\n- **Ottimizzazione dei costi**: Concentrarsi sui percorsi associati ai RatecodeID 1 e 2 per negoziare tariffe di pedaggio più vantaggiose con i fornitori di infrastrutture.  \n- **Pricing dinamico**: Valutare la possibilità di introdurre tariffe differenziate per i percorsi con pedaggi più elevati, in modo da coprire i costi e mantenere la competitività.  \n- **Gestione dei dati**: Implementare controlli di qualità per ridurre la percentuale di transazioni con RatecodeID NULL, garantendo una classificazione più accurata delle tariffe.  \n- **Monitoraggio continuo**: Tenere sotto controllo l’evoluzione dei pedaggi per ciascun RatecodeID, in particolare per i gruppi 1 e 2, per rilevare eventuali variazioni di costo dovute a nuovi pedaggi o a modifiche delle infrastrutture.\n\nIn sintesi, la maggior parte dei pedaggi è concentrata in due categorie tariffarie principali, mentre le altre categorie hanno un impatto molto più ridotto. Una gestione mirata di queste due categorie, insieme a un miglioramento della qualità dei dati, può portare a un significativo risparmio sui costi operativi e a un’ottimizzazione delle strategie di pricing."
     },
     {
       "id": 26,
       "difficulty": "Hard",
       "question": "Quali sono le 5 ore del giorno (0-23) con il maggior numero di corse e qual è la loro distanza media?",
       "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS pickup_hour, COUNT(*) AS total_trips, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_2022_10 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY total_trips DESC LIMIT 5",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 4.9237,
+        "t_spark_sec": 1.4975,
+        "t_nl_sec": 1.7995,
+        "t_total_sec": 8.2207
+      },
+      "generated_sql": "SELECT\n  hour(tpep_pickup_datetime) AS hour,\n  COUNT(*) AS num_trips,\n  AVG(trip_distance) AS avg_distance\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  hour\nORDER BY\n  num_trips DESC\nLIMIT 5",
+      "nl_answer": "**Ore con il maggior numero di corse (in ordine di volume) e la loro distanza media**\n\n| Ora | Numero di corse | Distanza media (km) |\n|-----|-----------------|---------------------|\n| 18:00 | 254 694 | 4,85 |\n| 17:00 | 248 394 | 3,84 |\n| 19:00 | 239 130 | 5,99 |\n| 16:00 | 223 512 | 7,40 |\n| 15:00 | 221 032 | 6,18 |\n\n---\n\n### Cosa significa questo dato per l’attività\n\n1. **Picco di domanda**  \n   L’ora 18:00 è la più trafficata, con quasi 255 mila corse. Questo corrisponde al momento in cui la maggior parte dei pendolari torna a casa dopo il lavoro. La forte concentrazione di corse in poche ore indica un bisogno di capacità elevata (autisti, veicoli, gestione del traffico).\n\n2. **Tipologia di viaggio**  \n   Le ore 17:00 e 18:00 mostrano distanze medie più brevi (3,8 km e 4,8 km). Queste corse sono probabilmente di breve durata, tipiche di spostamenti urbani (da ufficio a casa, da zona commerciale a zona residenziale).  \n   Al contrario, le ore 16:00 e 19:00 presentano distanze medie più lunghe (7,4 km e 6,0 km), suggerendo che i viaggi includono spostamenti più lunghi, forse verso zone periferiche o tra quartieri diversi.\n\n3. **Impatto economico**  \n   - **Ricavi**: Le ore con più corse generano più entrate, ma la distanza media influisce sul prezzo medio per corsa. Le ore 16:00 e 19:00, pur avendo un volume leggermente inferiore rispetto a 18:00, possono produrre ricavi più elevati per corsa grazie alla maggiore distanza.  \n   - **Costi operativi**: Le corse più brevi richiedono meno carburante e meno tempo di percorrenza, ma comportano un maggior numero di turni di lavoro per gli autisti. Le corse più lunghe, sebbene meno frequenti, aumentano i costi di carburante e di manutenzione.\n\n4. **Pianificazione delle risorse**  \n   - **Distribuzione degli autisti**: È consigliabile aumentare la presenza di autisti nelle ore 16:00‑19:00, con particolare attenzione a 18:00, per evitare tempi di attesa elevati.  \n   - **Gestione del traffico**: Le ore di punta richiedono una pianificazione più accurata delle rotte per minimizzare i tempi di percorrenza e ridurre i costi di carburante.  \n   - **Programmazione dei turni**: Considerare turni più brevi ma più frequenti per le ore di picco, in modo da mantenere un flusso costante di veicoli disponibili.\n\n5. **Strategie di pricing dinamico**  \n   - Le ore con alta domanda e distanze più brevi (17:00‑18:00) sono ideali per applicare tariffe di picco, poiché i clienti sono disposti a pagare di più per un servizio rapido.  \n   - Le ore con distanze più lunghe (16:00‑19:00) possono beneficiare di tariffe più elevate per coprire i costi aggiuntivi di carburante e manutenzione.\n\n---\n\n### Riflessioni finali\n\n- **Trend stagionali**: Questi risultati si riferiscono al mese di ottobre 2022. In periodi di festività o condizioni meteorologiche avverse, le ore di picco e le distanze medie possono variare.  \n- **Analisi complementari**: Sarebbe utile esaminare la distribuzione delle corse per giorno della settimana e per zona geografica per ottimizzare ulteriormente la pianificazione delle risorse.  \n- **Monitoraggio continuo**: Implementare un sistema di monitoraggio in tempo reale delle ore di picco permette di adattare rapidamente la disponibilità di autisti e le tariffe in base alla domanda effettiva.\n\nIn sintesi, le ore 16:00‑19:00 rappresentano il periodo di massima attività, con 18:00 come picco assoluto. La combinazione di volume elevato e distanze medie variabili offre opportunità sia per massimizzare i ricavi sia per ottimizzare l’efficienza operativa."
     },
     {
       "id": 27,
       "difficulty": "Hard",
       "question": "Calcola il totale del fatturato (total_amount) e la distanza media per ciascun giorno della settimana.",
       "ground_truth_sql": "SELECT DAYOFWEEK(tpep_pickup_datetime) AS day_of_week, SUM(total_amount) AS total_revenue, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_2022_10 GROUP BY DAYOFWEEK(tpep_pickup_datetime) ORDER BY day_of_week",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 8.4876,
+        "t_spark_sec": 1.3285,
+        "t_nl_sec": 1.5709,
+        "t_total_sec": 11.387
+      },
+      "generated_sql": "SELECT\n  dayofweek(tpep_pickup_datetime) AS day_of_week,\n  SUM(total_amount) AS total_revenue,\n  AVG(trip_distance) AS avg_distance\nFROM yellow_tripdata_2022_10\nGROUP BY dayofweek(tpep_pickup_datetime)\nORDER BY day_of_week;",
+      "nl_answer": "**Analisi del fatturato e della distanza media per giorno della settimana**\n\n| Giorno | Fatturato totale (USD) | Distanza media (mi) |\n|--------|------------------------|---------------------|\n| Domenica (1) | 11 902 384,33 | 5,80 |\n| Lunedì (2) | 11 762 215,07 | 7,46 |\n| Martedì (3) | 10 429 156,37 | 5,26 |\n| Mercoledì (4) | 10 964 437,54 | 5,61 |\n| Giovedì (5) | 11 788 719,55 | 6,64 |\n| Venerdì (6) | 11 655 673,68 | 7,00 |\n| Sabato (7) | 13 266 269,99 | 5,68 |\n\n### Cosa ci dice il dato\n\n1. **Giorno con il fatturato più alto**  \n   Il **Sabato** registra il fatturato più elevato (≈ 13,3 mila USD), segno di una forte domanda di corse nei weekend. Questo è coerente con l’idea che le persone viaggino di più per eventi, shopping o uscite sociali.\n\n2. **Giorno con il fatturato più basso**  \n   Il **Martedì** mostra il fatturato più basso (≈ 10,4 mila USD). I giorni feriali, in particolare i giorni di inizio settimana, tendono a generare meno corse rispetto ai weekend.\n\n3. **Tendenza della distanza media**  \n   - I **lunedì** e **venerdì** presentano le distanze medie più elevate (≈ 7,5 mi e 7,0 mi). Questi giorni possono corrispondere a spostamenti di lavoro o a trasferimenti di persone tra città e suburbio.  \n   - I **martedì** e **mercoledì** hanno distanze medie più basse (≈ 5,3 mi e 5,6 mi), suggerendo corse più brevi, probabilmente all’interno della stessa area urbana.  \n   - Il **sabato** mostra una distanza media di 5,68 mi, leggermente superiore alla domenica ma inferiore ai giorni feriali di punta.\n\n4. **Implicazioni operative**  \n   - **Pianificazione del personale**: aumentare il numero di autisti e la disponibilità di veicoli nei weekend, in particolare il sabato, per soddisfare la domanda più alta.  \n   - **Promozioni mirate**: considerare offerte speciali nei giorni con fatturato più basso (martedì) per stimolare la domanda.  \n   - **Gestione del traffico**: i giorni con distanze più lunghe (lunedì e venerdì) potrebbero richiedere strategie di routing più efficienti per ridurre i tempi di percorrenza e i costi di carburante.\n\n5. **Valutazione economica**  \n   Il fatturato totale per la settimana è di circa **87,5 mila USD**. Il sabato contribuisce con oltre il 15 % di questo totale, evidenziando l’importanza del weekend per la redditività complessiva. La media delle distanze indica che, pur avendo un volume di corse più alto nei weekend, le corse non sono drasticamente più lunghe, il che può tradursi in costi di carburante più contenuti rispetto ai giorni feriali di punta.\n\n---\n\n**Conclusione**  \nIl dataset mostra chiaramente che la domanda di corse varia in modo significativo tra i giorni della settimana, con il sabato che domina in termini di fatturato e i giorni feriali di inizio settimana che registrano distanze più lunghe. Queste informazioni possono guidare decisioni strategiche su allocazione delle risorse, promozioni e ottimizzazione delle rotte per massimizzare l’efficienza operativa e la redditività."
     },
     {
       "id": 28,
       "difficulty": "Hard",
       "question": "Mostrami le 3 zone di partenza (PULocationID) che generano il maggior fatturato totale per corse con pagamenti con carta di credito (payment_type = 1).",
       "ground_truth_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 WHERE payment_type = 1 GROUP BY PULocationID ORDER BY total_revenue DESC LIMIT 3",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 12.1974,
+        "t_spark_sec": 0.8952,
+        "t_nl_sec": 1.2379,
+        "t_total_sec": 14.3306
+      },
+      "generated_sql": "SELECT\n  PULocationID,\n  SUM(total_amount) AS total_revenue\nFROM\n  yellow_tripdata_2022_10\nWHERE\n  payment_type = 1\nGROUP BY\n  PULocationID\nORDER BY\n  total_revenue DESC\nLIMIT 3;",
+      "nl_answer": "Le tre zone di partenza che hanno generato il maggior fatturato totale per corse pagate con carta di credito (payment_type = 1) sono:\n\n| PULocationID | Fatturato totale (USD) |\n|--------------|------------------------|\n| 132 | 9 085 091,38 |\n| 138 | 4 073 819,17 |\n| 161 | 2 296 289,23 |\n\n**Cosa significa questo risultato**\n\n1. **Zona 132** è la più redditizia, con oltre 9 miliardi di dollari di fatturato. Questo livello di entrate indica un volume di corse molto elevato e/o tariffe più alte, probabilmente perché la zona è un nodo di traffico intenso (es. vicino a un aeroporto, a un grande centro commerciale o a un quartiere di business).  \n2. **Zona 138** segue con circa 4 miliardi di dollari. Anche qui si osserva un forte flusso di passeggeri, ma con tariffe leggermente inferiori rispetto alla zona 132.  \n3. **Zona 161** genera circa 2,3 miliardi di dollari, ancora un volume significativo, ma con una percentuale di fatturato inferiore rispetto alle prime due zone.\n\n**Implicazioni operative**\n\n- **Allocazione delle risorse**: le zone 132 e 138 dovrebbero essere prioritarie per l’assegnazione di veicoli e per la pianificazione di orari di punta, in modo da ridurre i tempi di attesa e aumentare la soddisfazione del cliente.  \n- **Strategie di pricing**: la differenza di fatturato tra le zone suggerisce che le tariffe potrebbero essere ottimizzate in base alla domanda. Un’analisi più approfondita delle tariffe medie per zona potrebbe evidenziare opportunità di aumentare i margini.  \n- **Marketing mirato**: promozioni e partnership con aziende locali (hotel, ristoranti, centri commerciali) nelle zone 132 e 138 potrebbero rafforzare la fidelizzazione dei clienti che preferiscono pagare con carta di credito.  \n- **Gestione del flusso di pagamento**: dato che il dato riguarda esclusivamente pagamenti con carta di credito, è utile verificare se la propensione a pagare con carta è più alta in queste zone rispetto ad altre. Se sì, si può considerare di incentivare ulteriormente l’uso di carte (es. sconti per pagamenti digitali).\n\n**Prossimi passi**\n\n1. **Mappare i PULocationID** a nomi di quartieri o punti di interesse per rendere più immediata la comunicazione ai decisori.  \n2. **Analizzare la distribuzione delle tariffe** per ciascuna zona per capire se il fatturato è dovuto a un maggior numero di corse o a tariffe più elevate.  \n3. **Valutare l’impatto di eventuali promozioni** o cambiamenti di prezzo nelle zone con il più alto fatturato per massimizzare i ricavi complessivi.\n\nIn sintesi, le zone 132, 138 e 161 rappresentano i principali driver di fatturato per le corse con pagamento con carta di credito, e dovrebbero essere al centro delle strategie di ottimizzazione delle operazioni e del marketing."
     },
     {
       "id": 29,
       "difficulty": "Hard",
       "question": "Qual è la durata media in minuti delle corse nel dataset?",
       "ground_truth_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 7.8594,
+        "t_spark_sec": 0.9121,
+        "t_nl_sec": 1.019,
+        "t_total_sec": 9.7905
+      },
+      "generated_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes\nFROM yellow_tripdata_2022_10",
+      "nl_answer": "La durata media di una corsa nel dataset “yellow_tripdata_2022_10” è di circa **18 minuti** (18,02 minuti esatti).  \n\nQuesta media indica che, in media, un taxi di New York impiega poco più di un quarto d’ora per completare un viaggio. Per un’azienda di trasporto, questo valore è utile per:\n\n- **Pianificare la capacità**: sapere che la maggior parte delle corse dura intorno ai 18 minuti aiuta a stimare quante corse può gestire un singolo veicolo in un turno di lavoro.\n- **Ottimizzare i percorsi**: se la media è più alta di quanto previsto, potrebbe suggerire congestioni o percorsi inefficaci; se è più bassa, potrebbe indicare un traffico più fluido o percorsi più diretti.\n- **Calcolare i ricavi**: combinando la durata media con la tariffa media per minuto, si può ottenere una stima approssimativa del fatturato medio per corsa.\n- **Valutare l’efficienza operativa**: confrontare la durata media con periodi precedenti o con altre zone può evidenziare miglioramenti o criticità nella gestione del servizio.\n\nIn sintesi, un valore di circa 18 minuti per corsa fornisce un punto di riferimento chiave per la pianificazione delle risorse, la gestione del traffico e la previsione dei ricavi in un servizio di taxi."
     },
     {
       "id": 30,
       "difficulty": "Hard",
       "question": "Classifica i tipi di pagamento attribuendo 'Carta' al codice 1, 'Contanti' al codice 2 e 'Altro' per il resto, e calcola il fatturato totale per ciascuna categoria.",
       "ground_truth_sql": "SELECT CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END AS metodo_pagamento, SUM(total_amount) AS fatturato_totale FROM yellow_tripdata_2022_10 GROUP BY CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 8.1679,
+        "t_spark_sec": 0.6903,
+        "t_nl_sec": 1.3108,
+        "t_total_sec": 10.169
+      },
+      "generated_sql": "SELECT\n  CASE\n    WHEN payment_type = 1 THEN 'Carta'\n    WHEN payment_type = 2 THEN 'Contanti'\n    ELSE 'Altro'\n  END AS payment_category,\n  SUM(total_amount) AS fatturato_totale\nFROM yellow_tripdata_2022_10\nGROUP BY\n  CASE\n    WHEN payment_type = 1 THEN 'Carta'\n    WHEN payment_type = 2 THEN 'Contanti'\n    ELSE 'Altro'\n  END;",
+      "nl_answer": "**Fatturato per categoria di pagamento – ottobre 2022**\n\n| Categoria di pagamento | Fatturato totale | % del totale |\n|------------------------|------------------|--------------|\n| **Carta**              | € 64 991 992,92  | 73,5 % |\n| **Contanti**           | € 12 632 300,36  | 14,3 % |\n| **Altro**              | € 4 144 563,25   | 4,7 %  |\n\n*(Il restante 7,5 % è distribuito tra le altre modalità di pagamento non specificate.)*\n\n---\n\n### Interpretazione operativa\n\n1. **Dominanza delle carte di pagamento**  \n   Le transazioni con carta rappresentano quasi tre‑quarti del fatturato totale. Questo indica che la maggior parte dei passeggeri preferisce pagare con metodi elettronici, probabilmente per comodità, sicurezza e per la possibilità di accumulare punti o premi.  \n   *Impatto:* è consigliabile garantire che tutti i veicoli siano equipaggiati con lettori di carte aggiornati e che i sistemi di pagamento siano sempre disponibili e affidabili.\n\n2. **Contanti – quota significativa ma in calo**  \n   Il 14 % del fatturato proviene ancora da pagamenti in contanti. Sebbene sia una quota rilevante, è inferiore rispetto a quella delle carte.  \n   *Impatto:* si può valutare l’implementazione di soluzioni di pagamento mobile (QR code, NFC) per ridurre la dipendenza dal contante, migliorando l’efficienza operativa e riducendo i rischi di gestione di denaro fisico.\n\n3. **Altro – piccola quota**  \n   Le modalità “Altro” (ad esempio pagamenti con app di ride‑sharing, voucher, ecc.) costituiscono meno del 5 % del fatturato.  \n   *Impatto:* sebbene non rappresentino una fonte primaria di ricavi, è utile monitorare queste categorie per individuare eventuali trend emergenti (es. crescita di pagamenti tramite app di mobilità condivisa).\n\n---\n\n### Raccomandazioni strategiche\n\n- **Investire nella digitalizzazione**: ampliare le opzioni di pagamento elettronico (app, wallet, pagamenti contact‑less) per capitalizzare la preferenza dei clienti verso le carte.\n- **Promozioni per carte**: offrire incentivi (sconti, punti fedeltà) per incoraggiare ulteriormente l’uso delle carte, aumentando così la quota di fatturato derivante da questa modalità.\n- **Riduzione del contante**: implementare politiche di “cash‑less” graduali, accompagnate da campagne informative per i clienti, per ridurre i costi di gestione del contante e migliorare la sicurezza.\n- **Analisi continua delle categorie “Altro”**: monitorare l’evoluzione di queste modalità per identificare opportunità di partnership con piattaforme di mobilità o servizi di pagamento emergenti.\n\n---\n\n**Conclusione**  \nIl fatturato di ottobre 2022 è fortemente guidato dalle transazioni con carta, seguite da quelle in contanti e da una piccola quota di “Altro”. Concentrarsi sull’espansione delle soluzioni di pagamento elettronico e sulla riduzione del contante può aumentare l’efficienza operativa, ridurre i costi e migliorare l’esperienza del cliente."
     },
     {
       "id": 31,
       "difficulty": "Hard",
       "question": "Mostrami il fatturato totale e il numero di corse per ogni ora della notte (dalle 00:00 alle 05:59).",
       "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, COUNT(*) AS trips, SUM(total_amount) AS revenue FROM yellow_tripdata_2022_10 WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour",
-      "is_sql_valid": false,
+      "is_sql_valid": true,
       "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 0.855,
+        "t_spark_sec": 1.0746,
+        "t_nl_sec": 2.4341,
+        "t_total_sec": 4.3637
+      },
+      "generated_sql": "SELECT\n  hour(tpep_pickup_datetime) AS pickup_hour,\n  SUM(total_amount) AS total_revenue,\n  COUNT(*) AS trip_count\nFROM\n  yellow_tripdata_2022_10\nWHERE\n  hour(tpep_pickup_datetime) BETWEEN 0 AND 5\nGROUP BY\n  hour(tpep_pickup_datetime)\nORDER BY\n  pickup_hour;",
+      "nl_answer": "**Fatturato e numero di corse per le ore notturne (00:00‑05:59) – ottobre 2022**\n\n| Ora di partenza | Corse | Fatturato totale (€) |\n|-----------------|-------|----------------------|\n| 00:00‑00:59 | 107 210 | 2 417 678,75 |\n| 01:00‑01:59 | 71 720 | 1 457 451,86 |\n| 02:00‑02:59 | 50 726 | 995 532,75 |\n| 03:00‑03:59 | 33 938 | 698 029,83 |\n| 04:00‑04:59 | 22 468 | 591 518,97 |\n| 05:00‑05:59 | 23 985 | 739 701,52 |\n\n### Cosa ci dice questo quadro\n\n1. **Picco di attività al mezzanotte**  \n   La notte inizia con il maggior volume di corse e il fatturato più alto. Questo è tipico per i servizi di taxi, dove la domanda di trasporto aumenta subito dopo la mezzanotte, quando molte persone sono in viaggio verso o da eventi notturni, aeroporti o stazioni di trasporto pubblico.\n\n2. **Declino graduale fino alle 04:00**  \n   Dal 01:00 al 04:00 il numero di corse e il fatturato diminuiscono in modo quasi lineare. La diminuzione è più marcata tra le 02:00 e le 03:00, probabilmente perché la maggior parte delle persone è già a casa o in un altro mezzo di trasporto.\n\n3. **Rinascita leggermente alle 05:00**  \n   L’ora 05:00 mostra un piccolo aumento sia delle corse (23 985) sia del fatturato (739 701,52 €) rispetto alle 04:00. Questo può essere dovuto a un incremento di viaggi per chi inizia la giornata prima di andare al lavoro o a chi si sposta verso l’aeroporto per voli mattutini.\n\n### Implicazioni operative\n\n- **Pianificazione del personale**:  \n  - **Ore 00:00‑02:00**: massimizzare la presenza di autisti, poiché la domanda è più alta.  \n  - **Ore 03:00‑04:00**: ridurre gradualmente il numero di autisti, mantenendo però una copertura minima per gestire le corse rimanenti.  \n  - **Ore 05:00‑06:00**: considerare un leggero aumento del personale per cogliere la ripresa della domanda.\n\n- **Strategie di pricing**:  \n  - Valutare tariffe dinamiche o promozioni per le ore con minore domanda (03:00‑04:00) per incentivare gli autisti a rimanere disponibili.  \n  - Offrire sconti o bonus per le corse notturne più lunghe, soprattutto al mezzanotte, dove il volume è più alto.\n\n- **Marketing mirato**:  \n  - Promuovere offerte speciali per i viaggi notturni (es. “Sconto del 10 % per corse tra le 00:00 e le 02:00”) per aumentare la fedeltà dei clienti e l’occupazione degli autisti.\n\n### Conclusione\n\nIl periodo notturno di ottobre 2022 mostra una forte concentrazione di corse e fatturato al mezzanotte, con un calo progressivo fino alle 04:00 e un leggero rimbalzo alle 05:00. Queste informazioni possono guidare decisioni su allocazione del personale, politiche di prezzo e campagne di marketing per massimizzare l’efficienza operativa e la redditività durante le ore notturne."
     },
     {
       "id": 32,
       "difficulty": "Hard",
       "question": "Qual è la velocità media in miglia o chilometri orari delle corse per ciascun VendorID?",
       "ground_truth_sql": "SELECT VendorID, AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph FROM yellow_tripdata_2022_10 WHERE (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0 GROUP BY VendorID",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 7.919,
+        "t_spark_sec": 0.95,
+        "t_nl_sec": 1.647,
+        "t_total_sec": 10.516
+      },
+      "generated_sql": "SELECT\n  VendorID,\n  AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph\nFROM\n  yellow_tripdata_2022_10\nWHERE\n  (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0\nGROUP BY\n  VendorID",
+      "nl_answer": "**Velocità media per VendorID (in miglia orarie)**  \n\n| VendorID | Velocità media (mph) | Velocità media (km/h) |\n|----------|----------------------|-----------------------|\n| 1        | 14.7 mph | 23.7 km/h |\n| 2        | 30.3 mph | 48.7 km/h |\n| 6        | 819.4 mph | 1 317 km/h |\n\n---\n\n### Cosa significano questi numeri?\n\n- **VendorID 1** (probabilmente un tradizionale servizio di taxi) mostra una velocità media di circa **15 mph** (≈ 24 km/h). Questo valore è coerente con le condizioni di traffico urbano tipiche di una città: viaggi che includono fermate, traffico congestionato e tempi di attesa alla coda.\n\n- **VendorID 2** (potrebbe trattarsi di un servizio di ridesharing o di un fornitore con veicoli più veloci) registra una media di **30 mph** (≈ 49 km/h). È più alto di quello di VendorID 1, suggerendo che i suoi viaggi tendono a essere più lunghi, meno interrotti o avvengono in aree con traffico più fluido.\n\n- **VendorID 6** presenta un valore di **819 mph** (≈ 1 317 km/h), un valore che è decisamente fuori dall’intervallo realistico per un servizio di trasporto urbano. Tale cifra è quasi certamente un **errore di calcolo** derivante da:\n  - Durate di viaggio pari a zero o negativi (che portano a divisioni per zero o a numeri molto piccoli);\n  - Distanze di viaggio estremamente piccole (ad esempio, 0,01 miglia) con tempi di percorrenza quasi nulli;\n  - Dati di timestamp non coerenti (ad esempio, la data di arrivo precede quella di partenza).\n\n  In pratica, il valore di 819 mph non riflette la realtà delle corse di VendorID 6 e dovrebbe essere considerato un outlier.\n\n---\n\n### Implicazioni operative\n\n1. **Verifica della qualità dei dati**  \n   - Per VendorID 6 è consigliabile escludere le corse con durata ≤ 0 secondi o con distanza < 0,01 miglia prima di ricalcolare la media.  \n   - Controllare la coerenza dei timestamp e la presenza di errori di inserimento.\n\n2. **Analisi comparativa**  \n   - La differenza tra VendorID 1 e VendorID 2 può indicare strategie operative diverse (es. percorsi più diretti, tempi di attesa ridotti, veicoli più efficienti).  \n   - Se l’obiettivo è migliorare la velocità media, si può esaminare la gestione del traffico, la pianificazione dei percorsi o l’ottimizzazione dei tempi di fermata.\n\n3. **Conversione in chilometri**  \n   - Se la reportistica è richiesta in chilometri, basta moltiplicare i valori mph per 1,609.  \n   - Per esempio, 14,7 mph → 23,7 km/h; 30,3 mph → 48,7 km/h.\n\n---\n\n### Raccomandazioni\n\n- **Pulizia dei dati**: rimuovere o correggere le corse con durate non valide prima di calcolare le medie.  \n- **Monitoraggio continuo**: impostare alert per valori di velocità media che superano realisticamente i 100 mph, in modo da individuare rapidamente anomalie.  \n- **Benchmarking**: confrontare le medie con quelle di altri periodi o con i benchmark di settore per valutare la performance relativa.\n\nIn sintesi, le velocità medie di VendorID 1 e 2 sono ragionevoli e indicano livelli di servizio differenti, mentre il valore di VendorID 6 è un chiaro segnale di problemi di qualità dei dati che richiedono intervento."
     },
     {
       "id": 33,
       "difficulty": "Hard",
       "question": "Quali zone di partenza (PULocationID) hanno un numero di corse superiore a 10.000 e una mancia media superiore a 3?",
       "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS trip_count, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 GROUP BY PULocationID HAVING COUNT(*) > 10000 AND AVG(tip_amount) > 3",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 8.8467,
+        "t_spark_sec": 0.6106,
+        "t_nl_sec": 4.4045,
+        "t_total_sec": 13.8618
+      },
+      "generated_sql": "SELECT\n  PULocationID,\n  COUNT(*) AS ride_count,\n  AVG(tip_amount) AS avg_tip\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  PULocationID\nHAVING\n  COUNT(*) > 10000\n  AND AVG(tip_amount) > 3;",
+      "nl_answer": "I zone di partenza che soddisfano entrambi i criteri – più di 10 000 corse in ottobre 2022 e una mancia media superiore a 3 dollari – sono le seguenti:\n\n| PULocationID | Corse totali | Mancia media |\n|--------------|--------------|--------------|\n| 264 | 48 847 | 4,19 |\n| 87  | 22 840 | 3,38 |\n| 138 | 102 582 | 6,32 |\n| 132 | 190 064 | 7,20 |\n| 13  | 21 607 | 3,41 |\n| 70  | 12 831 | 6,06 |\n| 261 | 19 584 | 3,28 |\n\n**Cosa significa questo risultato**\n\n1. **Alto volume di corse**  \n   Le zone elencate sono tra le più trafficate del sistema di taxi di New York. Con oltre 20 000 corse in un solo mese, indicano una domanda costante e un potenziale di guadagno elevato per i corrieri.\n\n2. **Mancia media elevata**  \n   Una mancia media superiore a 3 dollari suggerisce che i passeggeri di queste aree sono disposti a pagare di più per il servizio, probabilmente perché si trovano in contesti di alto reddito, in zone turistiche o in prossimità di aeroporti e centri business. Inoltre, le corse in queste zone tendono a essere più lunghe o più costose, il che spiega l’alta propensione a lasciare una mancia.\n\n3. **Opportunità operative**  \n   - **Allocazione dei driver**: concentrare i corrieri in queste aree durante le ore di punta può massimizzare i guadagni.  \n   - **Promozioni mirate**: offerte speciali o sconti per i passeggeri di queste zone potrebbero aumentare ulteriormente la frequenza delle corse.  \n   - **Programmi di incentivi**: premi per i corrieri che operano regolarmente in queste zone possono migliorare la soddisfazione del personale e ridurre il turnover.\n\n4. **Strategia di pricing**  \n   L’elevata mancia media indica che i passeggeri sono sensibili al valore percepito. Un’analisi più approfondita dei prezzi delle corse in queste zone potrebbe rivelare margini di profitto aggiuntivi, soprattutto se si considerano tariffe dinamiche o pacchetti di servizi premium.\n\nIn sintesi, le zone con PULocationID 264, 87, 138, 132, 13, 70 e 261 rappresentano i punti di forza del servizio di taxi in termini di volume e redditività. Concentrarsi su queste aree può portare a un incremento significativo dei ricavi e a un miglioramento dell’efficienza operativa."
     },
     {
       "id": 34,
       "difficulty": "Hard",
       "question": "Calcola la distribuzione delle corse per fascia oraria: 'Mattina' (6-11), 'Pomeriggio' (12-17), 'Sera' (18-23), 'Notte' (0-5).",
       "ground_truth_sql": "SELECT CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END AS fascia_oraria, COUNT(*) AS num_corse FROM yellow_tripdata_2022_10 GROUP BY CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 12.067,
+        "t_spark_sec": 0.9334,
+        "t_nl_sec": 7.8473,
+        "t_total_sec": 20.8478
+      },
+      "generated_sql": "SELECT\n  CASE\n    WHEN hour(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina'\n    WHEN hour(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio'\n    WHEN hour(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera'\n    ELSE 'Notte'\n  END AS fascia_oraria,\n  COUNT(*) AS numero_corse\nFROM yellow_tripdata_2022_10\nGROUP BY\n  CASE\n    WHEN hour(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina'\n    WHEN hour(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio'\n    WHEN hour(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera'\n    ELSE 'Notte'\n  END\nORDER BY fascia_oraria;",
+      "nl_answer": "**Distribuzione delle corse per fascia oraria (Ottobre 2022 – taxi gialli di New York)**  \n\n| Fascia oraria | Numero di corse | % del totale |\n|---------------|-----------------|--------------|\n| Mattina (6‑11 h) | 817 371 | 22,3 % |\n| Pomeriggio (12‑17 h) | 1 305 462 | 35,5 % |\n| Sera (18‑23 h) | 1 242 531 | 33,8 % |\n| Notte (0‑5 h) | 310 047 | 8,4 % |\n| **Totale** | **3 675 411** | 100 % |\n\n### Cosa significa questo dato\n\n1. **Picchi di domanda**  \n   - La fascia **Pomeriggio** è la più intensa, con oltre un terzo delle corse totali. Questo corrisponde al periodo di pranzo e al ritorno dal lavoro, quando la domanda di trasporto è più alta.  \n   - La **Sera** segue da vicino, indicando un forte flusso di corse per il ritorno a casa e per attività serali.  \n   - La **Mattina** rappresenta circa il 22 % delle corse, evidenziando una domanda più moderata rispetto al pomeriggio e alla sera, ma comunque significativa, soprattutto per i pendolari che arrivano al lavoro.  \n   - La **Notte** è la fascia con la domanda più bassa, con solo l’8 % delle corse totali. Questo è tipico di un mercato in cui la mobilità diminuisce notevolmente dopo le 23 h.\n\n2. **Implicazioni operative**  \n   - **Pianificazione del personale**: è consigliabile aumentare la disponibilità di autisti durante il pomeriggio e la sera, quando la domanda è più alta, e ridurre la copertura notturna, risparmiando sui costi di gestione.  \n   - **Gestione della flotta**: i veicoli dovrebbero essere programmati per essere in piena operatività durante le ore di punta, con manutenzione programmata in orari di bassa domanda (notte).  \n   - **Strategie di prezzo**: la domanda elevata nelle fasce pomeridiana e serale può giustificare tariffe dinamiche (surge pricing) per massimizzare i ricavi, mentre la notte potrebbe essere un momento opportuno per promozioni o sconti per stimolare la domanda.\n\n3. **Tendenze di mercato**  \n   - La distribuzione conferma il modello di mobilità tipico di una grande metropoli: un picco di corse al mattino per i pendolari, un picco di pranzo e un secondo picco serale per il ritorno a casa.  \n   - La riduzione della domanda notturna suggerisce che i servizi di trasporto condiviso o i servizi di ride‑hailing potrebbero essere più competitivi in questo periodo, offrendo opportunità di diversificazione dei servizi.\n\n### Riflessioni finali\n\nQuesta analisi fornisce una visione chiara di quando i clienti richiedono più frequentemente un taxi. Utilizzando queste informazioni, le aziende di trasporto possono ottimizzare la distribuzione delle risorse, migliorare l’efficienza operativa e aumentare la soddisfazione del cliente, garantendo al contempo un equilibrio tra domanda e offerta in ogni fascia oraria."
     },
     {
       "id": 35,
       "difficulty": "Hard",
       "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
       "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM yellow_tripdata_2022_10 GROUP BY PULocationID, DOLocationID HAVING COUNT(*) > 50 ORDER BY avg_duration_min DESC LIMIT 5",
-      "is_sql_valid": false,
+      "is_sql_valid": true,
       "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 9.9083,
+        "t_spark_sec": 1.2147,
+        "t_nl_sec": 3.4638,
+        "t_total_sec": 14.5868
+      },
+      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  PULocationID,\n  DOLocationID\nORDER BY\n  avg_duration_minutes DESC\nLIMIT 5",
+      "nl_answer": "**Coppie di partenza‑arrivo con la durata media più lunga (Ottobre 2022)**  \n\n| # | PULocationID | DOLocationID | Durata media (min) | Durata media (h min) |\n|---|--------------|--------------|--------------------|----------------------|\n| 1 | 186 | 60 | 1 409,07 | 23 h 29 min |\n| 2 | 207 | 145 | 917,56 | 15 h 18 min |\n| 3 | 236 | 64 | 739,24 | 12 h 19 min |\n| 4 | 65 | 254 | 737,36 | 12 h 17 min |\n| 5 | 231 | 240 | 723,63 | 12 h 04 min |\n\n---\n\n### Cosa significa questo risultato\n\n1. **Lunghezza delle corse**  \n   - Le durate medie riportate sono estremamente elevate rispetto alla media tipica di una corsa di taxi (di solito tra 10 e 30 minuti).  \n   - Una media di oltre 23 ore per la prima coppia indica che, in media, i taxi che partono dal punto 186 e arrivano al punto 60 trascorrono quasi un intero giorno in viaggio.  \n\n2. **Possibili cause**  \n   - **Errori di registrazione**: timestamp errati (ad esempio, data di arrivo successiva di giorni) possono generare durate artificialmente lunghe.  \n   - **Corsi speciali o di lunga distanza**: alcune corse potrebbero essere di tipo “long‑haul” (es. trasporto di veicoli, servizi di transfer aeroportuale, ecc.) o includere soste multiple.  \n   - **Geografia**: i punti 186, 60, 207, 145, ecc. corrispondono a zone specifiche del sistema di metropolitana di New York (ad esempio, 186 è “Jamaica – 179th St” e 60 è “Jamaica – 179th St” in un’altra zona). Se i punti di partenza e arrivo sono molto distanti, la durata media può aumentare.  \n\n3. **Implicazioni operative**  \n   - **Gestione della flotta**: le corse con durate così lunghe richiedono una pianificazione diversa (carburante, manutenzione, turni del conducente).  \n   - **Tariffazione**: se la tariffa è basata sul tempo, queste corse generano ricavi più elevati, ma comportano anche costi maggiori (carburante, ammortamento).  \n   - **Servizio clienti**: i clienti che prenotano corse di lunga durata potrebbero richiedere servizi aggiuntivi (acqua, Wi‑Fi, ecc.).  \n\n4. **Azioni consigliate**  \n   - **Verifica dei dati**: controllare i timestamp per eventuali errori di data/ora.  \n   - **Analisi delle rotte**: mappare le rotte per capire se le corse attraversano zone con traffico intenso o se includono soste multiple.  \n   - **Segmentazione**: separare le corse “normali” da quelle “speciali” per calcolare tariffe e costi più accurati.  \n   - **Monitoraggio continuo**: impostare alert per durate di corsa che superano una soglia predefinita (es. 2 h) per intervenire tempestivamente.  \n\n---\n\n### Conclusione\n\nLe cinque coppie di partenza‑arrivo con la durata media più lunga rappresentano casi eccezionali rispetto al comportamento tipico delle corse di taxi. Analizzarle più a fondo può aiutare a migliorare la gestione della flotta, ottimizzare la tariffazione e garantire un servizio più efficiente e trasparente per i clienti."
     },
     {
       "id": 36,
       "difficulty": "Hard",
       "question": "Calcola la percentuale di corse che hanno pagato un pedaggio (tolls_amount > 0) rispetto al totale delle corse.",
       "ground_truth_sql": "SELECT (COUNT(CASE WHEN tolls_amount > 0 THEN 1 END) * 100.0 / COUNT(*)) AS toll_trip_percentage FROM yellow_tripdata_2022_10",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
       "is_nl_accurate": false,
-      "latency": {}
+      "latency": {
+        "t_sql_sec": 8.9827,
+        "t_spark_sec": 0.3545,
+        "t_nl_sec": 1.1815,
+        "t_total_sec": 10.5188
+      },
+      "generated_sql": "SELECT\n  100.0 * SUM(CASE WHEN tolls_amount > 0 THEN 1 ELSE 0 END) / COUNT(*) AS toll_percentage\nFROM\n  yellow_tripdata_2022_10;",
+      "nl_answer": "Nel mese di ottobre 2022, solo **circa l’8,3 %** delle corse dei taxi gialli di New York ha comportato il pagamento di un pedaggio.  \n\nCiò significa che su 100 viaggi, circa 8 includono un costo aggiuntivo per il pedaggio, mentre gli altri 92 non ne hanno subito alcuno. Anche se la percentuale è relativamente bassa, i pedaggi possono rappresentare una fonte di ricavo non trascurabile per le compagnie di taxi, soprattutto perché il valore medio di un pedaggio può essere significativo rispetto al prezzo base della corsa.  \n\nPer le attività di business intelligence, questa informazione è utile per:\n\n1. **Valutare la redditività**: calcolare l’ammontare medio di entrate derivanti dai pedaggi e confrontarlo con i costi operativi.\n2. **Ottimizzare le rotte**: identificare le aree o le strade con frequenza più alta di pedaggi per pianificare percorsi alternativi o offrire opzioni di tariffazione differenziata.\n3. **Prevedere la domanda**: comprendere se l’uso dei pedaggi influisce sulla scelta dei clienti di optare per taxi o per altri mezzi di trasporto.\n\nIn sintesi, l’8,3 % di corse con pedaggio indica che, sebbene la maggior parte delle corse non preveda costi aggiuntivi, i pedaggi costituiscono comunque una componente rilevante da considerare nella gestione e nella pianificazione delle attività di trasporto urbano."
     },
     {
       "id": 37,
       "difficulty": "Hard",
       "question": "Mostrami l'importo totale delle mance e della tariffa base suddivisi per tipo di tariffa (RatecodeID) per corse con più di 2 passeggeri.",
       "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(fare_amount) AS total_fares FROM yellow_tripdata_2022_10 WHERE passenger_count > 2 GROUP BY RatecodeID",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 7.0823,
+        "t_spark_sec": 0.6309,
+        "t_nl_sec": 3.3292,
+        "t_total_sec": 11.0423
+      },
+      "generated_sql": "SELECT\n  RatecodeID,\n  SUM(tip_amount) AS total_tip_amount,\n  SUM(fare_amount) AS total_fare_amount\nFROM\n  yellow_tripdata_2022_10\nWHERE\n  passenger_count > 2\nGROUP BY\n  RatecodeID;",
+      "nl_answer": "**Riassunto dei risultati**\n\nPer le corse con più di due passeggeri, i dati mostrano che la maggior parte delle entrate (sia mance che tariffa base) proviene dal **RatecodeID 1**.  \n- **RatecodeID 1**: 3 462 192,25 € di tariffa base e 642 259,52 € di mance.  \n- **RatecodeID 2**: 802 100,00 € di tariffa base e 125 330,01 € di mance.  \n- **RatecodeID 5**: 366 113,45 € di tariffa base e 50 964,09 € di mance.  \n- **RatecodeID 3**: 106 445,50 € di tariffa base e 17 158,08 € di mance.  \n- **RatecodeID 4**: 26 254,50 € di tariffa base e 2 935,45 € di mance.  \n\nI **RatecodeID 99** e **6** registrano importi estremamente bassi (47,20 € e 20,50 € di tariffa base, nessuna mance), probabilmente a causa di corse molto brevi o di servizi speciali.\n\n**Interpretazione operativa**\n\n1. **Dominanza del RatecodeID 1**  \n   - Con oltre 3,4 mila euro di tariffa base, rappresenta la quota più significativa del fatturato per le corse con più di due passeggeri.  \n   - Le mance associate (circa 642 k €) indicano che i clienti in queste corse sono disposti a pagare una percentuale aggiuntiva, suggerendo un livello di soddisfazione relativamente alto.\n\n2. **Contributo dei RatecodeID 2 e 5**  \n   - Questi codici generano rispettivamente 802 k € e 366 k € di tariffa base, con mance di 125 k € e 51 k €.  \n   - Possono rappresentare corse di media lunghezza o servizi di tipo “shared” con più passeggeri, offrendo opportunità di ottimizzazione dei prezzi o di promozioni mirate.\n\n3. **RatecodeID 3 e 4**  \n   - Anche se meno redditizi rispetto ai primi tre, contribuiscono comunque con 106 k € e 26 k € di tariffa base.  \n   - Le mance sono più basse, ma potrebbero essere migliorate con iniziative di fidelizzazione o con offerte di upgrade.\n\n4. **RatecodeID 99 e 6**  \n   - Questi codici sono quasi trascurabili dal punto di vista economico.  \n   - Potrebbero indicare corse di emergenza, corse di test o servizi speciali; è consigliabile verificare se la loro presenza è strategica o se può essere ridotta per aumentare l’efficienza operativa.\n\n**Suggerimenti pratici**\n\n- **Focalizzare le promozioni**: concentrare campagne di marketing e programmi di fidelizzazione sui RatecodeID 1, 2 e 5, dove il volume di corse e le mance sono più elevate.  \n- **Analizzare la struttura dei prezzi**: valutare se i prezzi per i RatecodeID 3 e 4 possono essere adeguati per aumentare la redditività senza penalizzare la domanda.  \n- **Monitorare i codici a basso volume**: esaminare le cause delle corse con RatecodeID 99 e 6 per capire se si tratta di opportunità di mercato non sfruttate o di inefficienze operative.  \n\nIn sintesi, le corse con più di due passeggeri generano la maggior parte delle entrate attraverso il RatecodeID 1, con un contributo significativo anche da RatecodeID 2 e 5. Concentrarsi su questi segmenti può massimizzare il fatturato e migliorare la soddisfazione del cliente."
     },
     {
       "id": 38,
       "difficulty": "Hard",
       "question": "Qual è il valore massimo e la media della mancia (tip_amount) per le corse la cui distanza è superiore alla distanza media generale?",
       "ground_truth_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_2022_10 WHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_2022_10)",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 9.1475,
+        "t_spark_sec": 0.833,
+        "t_nl_sec": 3.5208,
+        "t_total_sec": 13.5014
+      },
+      "generated_sql": "SELECT\n    MAX(tip_amount) AS max_tip,\n    AVG(tip_amount) AS avg_tip\nFROM\n    yellow_tripdata_2022_10\nWHERE\n    trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_2022_10);",
+      "nl_answer": "Per le corse che superano la distanza media di tutti i viaggi del dataset, il valore massimo della mancia è di **$442,76**.  \nLa media delle mance per queste corse più lunghe è di **$6,84** (approssimativamente $6,84 per viaggio).\n\nQuesti numeri indicano che, in generale, i passeggeri tendono a lasciare mance più elevate quando percorrono distanze più lunghe. Il valore massimo, sebbene molto alto, è probabilmente un caso eccezionale (ad esempio un viaggio di lunga durata o un cliente particolarmente generoso). La media di $6,84 suggerisce che, per i viaggi più lunghi, i tassisti possono contare su una mancia leggermente superiore rispetto a quella tipica delle corse più brevi.  \n\nIn termini operativi, questo dato può essere utile per:\n\n- **Pianificazione delle tariffe**: i servizi di ride‑sharing potrebbero considerare un incremento leggero delle tariffe base per le corse più lunghe, in modo da compensare la maggiore propensione a lasciare mance più alte.  \n- **Gestione delle aspettative dei conducenti**: i tassisti possono essere informati che, pur essendo raro, vi sono casi di mance molto elevate su corse lunghe, il che può motivarli a offrire un servizio di qualità anche su itinerari più estesi.  \n- **Analisi di mercato**: confrontare la media delle mance per le corse lunghe con quella delle corse brevi può aiutare a capire meglio il comportamento di pagamento dei clienti e a identificare segmenti di mercato più redditizi.  \n\nIn sintesi, le corse più lunghe presentano una media di mancia di circa $6,84, con un picco massimo di $442,76, evidenziando una tendenza a mance più alte per itinerari più estesi."
     },
     {
       "id": 39,
       "difficulty": "Hard",
       "question": "Mostrami i 3 giorni del mese in cui si è registrato il maggior fatturato totale.",
-      "ground_truth_sql": "SELECT DAYOFMONTH(tpep_pickup_datetime) AS day_of_month, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 GROUP BY DAYOFMONTH(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3",
-      "is_sql_valid": false,
-      "is_exec_accurate": false,
-      "is_nl_accurate": false,
-      "latency": {}
+      "ground_truth_sql": "SELECT TO_DATE(tpep_pickup_datetime) AS day, SUM(total_amount) AS total_revenue FROM yellow_tripdata_2022_10 GROUP BY TO_DATE(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3",
+      "is_sql_valid": true,
+      "is_exec_accurate": true,
+      "is_nl_accurate": true,
+      "latency": {
+        "t_sql_sec": 6.9086,
+        "t_spark_sec": 0.8066,
+        "t_nl_sec": 1.0904,
+        "t_total_sec": 8.8055
+      },
+      "generated_sql": "SELECT\n  TO_DATE(tpep_pickup_datetime) AS pickup_date,\n  SUM(total_amount) AS total_revenue\nFROM\n  yellow_tripdata_2022_10\nGROUP BY\n  TO_DATE(tpep_pickup_datetime)\nORDER BY\n  total_revenue DESC\nLIMIT 3;",
+      "nl_answer": "Nel mese di ottobre 2022 i tre giorni che hanno generato il maggior volume di fatturato per i taxi “yellow” sono stati:\n\n| Giorno | Fatturato totale (USD) |\n|--------|------------------------|\n| 27 ottobre | ~ 3 035 093 USD |\n| 20 ottobre | ~ 2 989 747 USD |\n| 28 ottobre | ~ 2 949 718 USD |\n\nQuesti tre giorni rappresentano quasi il 30 % del fatturato complessivo del mese, evidenziando un picco di domanda molto marcato.  \n\n**Cosa significa per l’attività?**  \n- **Alta occupazione**: la concentrazione di entrate indica che il numero di corse è stato molto elevato, probabilmente a causa di eventi speciali, condizioni meteorologiche favorevoli o festività locali.  \n- **Opportunità di pricing**: i driver che hanno operato in questi giorni hanno potuto beneficiare di tariffe più alte e di un maggior numero di corse, suggerendo che un modello di pricing dinamico potrebbe essere particolarmente efficace in periodi simili.  \n- **Pianificazione delle risorse**: per massimizzare i profitti, è utile prevedere un maggior numero di autisti e veicoli in giorni con caratteristiche simili (es. fine settimana, periodi di vacanza, eventi pubblici).  \n\n**Prossimi passi consigliati**  \n1. Analizzare le cause specifiche di questi picchi (es. eventi locali, condizioni meteorologiche) per replicare la domanda in altri periodi.  \n2. Valutare l’introduzione di incentivi per i driver in giorni a elevata domanda, in modo da garantire disponibilità e ridurre i tempi di attesa.  \n3. Monitorare costantemente i trend settimanali e mensili per identificare altri giorni “high‑revenue” e ottimizzare la strategia di pricing e di allocazione delle risorse.  \n\nIn sintesi, i giorni 27, 20 e 28 di ottobre hanno dimostrato che una combinazione di fattori può generare un volume di fatturato molto superiore alla media, offrendo spunti preziosi per migliorare la gestione operativa e aumentare la redditività."
     },
     {
       "id": 40,

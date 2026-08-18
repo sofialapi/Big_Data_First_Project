@@ -1,10 +1,12 @@
 import warnings
-warnings.filterwarnings("ignore") # Sopprime tutti gli UserWarning (incluso PyArrow)
+warnings.filterwarnings("ignore")
+
 import os
 os.environ["PYSPARK_SUBMIT_ARGS"] = "--driver-java-options '-Dlog4j.logLevel=ERROR' pyspark-shell"
 
 import json
 import time
+import sys
 import pandas as pd
 from config import get_spark_session, get_llm
 from metadata_discovery import discover_meta_and_register_views
@@ -12,19 +14,30 @@ from main import generate_sql_query, generate_natural_language_answer, extract_s
 
 def compare_dataframes(df_generated, df_ground_truth):
     """
-    Confronta i risultati di Spark per la metrica Execution Accuracy (EX).
+    Confronta i dati dei DataFrame Spark per Execution Accuracy (EX),
+    rendendo il confronto agnostico rispetto ad alias e ordinamento.
     """
     try:
         pd_gen = df_generated.toPandas()
         pd_gt = df_ground_truth.toPandas()
         
+        # 1. Se la dimensione differisce, i dati sono diversi
         if pd_gen.shape != pd_gt.shape:
             return False
             
-        pd_gen.columns = [str(c).lower() for c in pd_gen.columns]
-        pd_gt.columns = [str(c).lower() for c in pd_gt.columns]
+        # 2. Resettiamo le intestazioni ignorando gli alias
+        pd_gen.columns = range(pd_gen.shape[1])
+        pd_gt.columns = range(pd_gt.shape[1])
         
-        return pd.DataFrame.equals(pd_gen, pd_gt) or pd_gen.values.tolist() == pd_gt.values.tolist()
+        # 3. Arrotondiamo i valori decimali per evitare disallineamenti di precisione float
+        pd_gen = pd_gen.round(4)
+        pd_gt = pd_gt.round(4)
+
+        # 4. Ordiniamo le righe per confrontare unicamente il contenuto dei dati
+        pd_gen_sorted = pd_gen.sort_values(by=list(pd_gen.columns)).reset_index(drop=True)
+        pd_gt_sorted = pd_gt.sort_values(by=list(pd_gt.columns)).reset_index(drop=True)
+        
+        return pd_gen_sorted.equals(pd_gt_sorted)
     except Exception:
         return False
 
@@ -47,8 +60,8 @@ def evaluate_nl_answer(llm, question, spark_result_str, nl_answer):
     except Exception:
         return True
 
-def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report_path="benchmark_results.json"):
-    # Inizializzazione Spark e riduzione dei Log del terminale
+def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report_path="benchmark_results.json", start_id=1):
+    # Inizializzazione Spark e riduzione dei Log
     spark = get_spark_session()
     spark.sparkContext.setLogLevel("ERROR")
     llm = get_llm()
@@ -72,7 +85,12 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
     with open(test_suite_path, 'r', encoding='utf-8') as f:
         test_cases = json.load(f)
         
+    # FILTRO DINAMICO START_ID
+    test_cases = [t for t in test_cases if t["id"] >= start_id]
+    
     total_tests = len(test_cases)
+    print(f"[SUITE] Esecuzione di {total_tests} test (a partire da ID {start_id})\n")
+    
     results = []
     
     valid_sql_count = 0
@@ -106,9 +124,9 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
             gen_sql = extract_sql(raw_llm_out)
             t_sql = time.time() - t0
             test_record["generated_sql"] = gen_sql
-        except Exception:
+        except Exception as e:
             t_sql = time.time() - t0
-            print(f"[{idx}/{total_tests}] [{diff}] FAIL (Gen SQL error)")
+            print(f"[{idx}/{total_tests}] (ID:{q_id}) [{diff}] FAIL (Gen SQL error: {e})")
             results.append(test_record)
             continue
             
@@ -120,11 +138,10 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
             spark_df_gt = spark.sql(gt_sql)
             t_spark = time.time() - t1
             
-            # Impostiamo valid_sql a True SOLO SE l'esecuzione Spark non ha sollevato errori
             test_record["is_sql_valid"] = True
             valid_sql_count += 1
             
-            # Valutazione EX
+            # Valutazione EX con il nuovo compare_dataframes
             is_ex = compare_dataframes(spark_df_gen, spark_df_gt)
             test_record["is_exec_accurate"] = is_ex
             if is_ex:
@@ -158,25 +175,29 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
             "t_total_sec": round(t_tot, 4)
         }
         
-        # Output compatto e sintetico sul terminale
         status_sql = "OK" if test_record["is_sql_valid"] else "FAIL"
         status_ex = "OK" if test_record["is_exec_accurate"] else "FAIL"
-        print(f"[{idx}/{total_tests}] [{diff}] SQL: {status_sql} | EX: {status_ex} | Time: {t_tot:.2f}s -> {question[:45]}...")
+        print(f"[{idx}/{total_tests}] (ID:{q_id}) [{diff}] SQL: {status_sql} | EX: {status_ex} | Time: {t_tot:.2f}s -> {question[:40]}...")
         
         results.append(test_record)
+        time.sleep(1) # pausa per tenere più bassi i TPM 
 
     # 3. Metriche Finali
-    svr = (valid_sql_count / total_tests) * 100
-    ex = (exact_execution_count / total_tests) * 100
-    nl_ac = (nl_correct_count / total_tests) * 100
-    
-    avg_t_sql = sum(r["latency"].get("t_sql_sec", 0) for r in results) / total_tests
-    avg_t_spark = sum(r["latency"].get("t_spark_sec", 0) for r in results) / total_tests
-    avg_t_nl = sum(r["latency"].get("t_nl_sec", 0) for r in results) / total_tests
+    if total_tests > 0:
+        svr = (valid_sql_count / total_tests) * 100
+        ex = (exact_execution_count / total_tests) * 100
+        nl_ac = (nl_correct_count / total_tests) * 100
+        
+        avg_t_sql = sum(r["latency"].get("t_sql_sec", 0) for r in results) / total_tests
+        avg_t_spark = sum(r["latency"].get("t_spark_sec", 0) for r in results) / total_tests
+        avg_t_nl = sum(r["latency"].get("t_nl_sec", 0) for r in results) / total_tests
+    else:
+        svr = ex = nl_ac = avg_t_sql = avg_t_spark = avg_t_nl = 0.0
 
     summary = {
         "dataset_path": dataset_path,
         "main_table_name": main_table_name,
+        "start_id": start_id,
         "total_queries": total_tests,
         "metrics": {
             "sql_validity_rate_SVR": f"{svr:.2f}%",
@@ -198,7 +219,7 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
     print("\n====================================================")
     print("                BENCHMARK REPORT                    ")
     print("====================================================")
-    print(f"Totale Query Testate : {total_tests}")
+    print(f"Totale Query Testate : {total_tests} (a partire da ID {start_id})")
     print(f"SQL Validity Rate    : {svr:.2f}%")
     print(f"Execution Accuracy   : {ex:.2f}%")
     print(f"NL Answer Accuracy   : {nl_ac:.2f}%")
@@ -208,6 +229,13 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
     print(f"Report salvato in: {output_report_path}\n")
 
 if __name__ == "__main__":
+    start_from = 1
+    if len(sys.argv) > 1:
+        raw_arg = sys.argv[1].replace("-", "")
+        if raw_arg.isdigit():
+            start_from = int(raw_arg)
+            
     default_path = "./dataset_storage/yellow_tripdata_2022-10.parquet"
     path = input(f"Inserisci percorso [Default: {default_path}]: ").strip() or default_path
-    run_benchmark(path)
+    
+    run_benchmark(path, start_id=start_from)

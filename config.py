@@ -20,6 +20,7 @@ def get_spark_session():
         .config("spark.memory.fraction", "0.8") \
         .config("spark.executor.memory", "4g") \
         .config("spark.driver.memory", "2g") \
+        .config("spark.ui.showConsoleProgress", "false") \
         .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
         .getOrCreate()
         
