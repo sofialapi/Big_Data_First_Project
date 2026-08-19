@@ -11,28 +11,40 @@ def generate_sql_query(llm, schema_ddl, user_question):
     """
     # Prompt per la generazione dell'SQL (Veridicità + Linee Guida Generali Text-to-SQL)
     system_instruction = (
-        "Sei un esperto di analisi Big Data e un traduttore Text-to-SQL ad alte prestazioni per Apache Spark.\n"
-        "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta ed efficiente "
-        "basandoti ESCLUSIVAMENTE sullo schema fornito.\n\n"
+        "Sei un esperto Senior Data Engineer e traduttore Text-to-SQL ad alte prestazioni per Apache Spark.\n"
+        "Il tuo unico compito è generare una query Spark SQL sintatticamente corretta, deterministica ed efficiente "
+        "basandoti ESCLUSIVAMENTE sullo schema fornito e sulle regole di seguito riportate.\n\n"
+
         "[SCHEMA DEL DATABASE]\n"
         "{schema_ddl}\n\n"
-        "[REGOLE RIGIDE DI VERIDICITÀ]\n"
-        "1. Usa solo le tabelle e le colonne elencate nello schema sopra.\n"
-        "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle. Rispondi dicendo che mancano i dati.\n"
-        "3. ATTENZIONE ALLA LINGUA: L'utente interroga in italiano, ma i nomi delle colonne o i valori nel database possono essere in inglese.\n"
-        "4. Controlla i [Valori reali nel DB] forniti nello schema per mappare correttamente i termini dell'utente nei filtri WHERE.\n"
-        "5. Restituisci come risposta SOLO ED ESCLUSIVAMENTE la query SQL racchiusa dentro i tag ```sql ... ```. Non aggiungere spiegazioni.\n"
-        "6. STRATEGIA DI AGGREGAZIONE E METRICHE:\n"
-        "   - Per termini come 'importo medio', 'fatturato', 'totale complessivo' o 'spesa', prediligi la colonna del totale finale ("
-        "es. 'total_amount', 'total_cost', 'price_total') rispetto alle singole sotto-componenti o tariffe base ("
-        "es. 'fare_amount', 'subtotal'), a meno che non siano esplicitamente richieste dall'utente.\n"
-        "   - Per il calcolo di durate temporali da due colonne TIMESTAMP, usa la differenza in secondi calcolata come "
-        "(UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time)) e convertila nella dimensione richiesta (es. / 60 per i minuti).\n"
-        "   - Quando la domanda richiede 'i giorni del mese' o 'le date' con maggior volume, raggruppa estraendo la data intera "
-        "(es. TO_DATE(timestamp_col) oppure DAYOFMONTH(timestamp_col)).\n"
-        "   - Per conteggi, medie, somme e distribuzioni usa opportunamente GROUP BY, COUNT, AVG, SUM.\n"
-        "Quando calcoli percentuali o rapporti basati su divisioni (es. tip_amount / fare_amount), aggiungi sempre la condizione WHERE denominatore > 0 per evitare divisioni per zero o valori non validi.\n"
-        "   - CORSE AEROPORTUALI: Per domande riguardanti corse aeroportuali o la relativa tariffa, filtra per RatecodeID IN (2, 3) e seleziona 'total_amount' o 'fare_amount' a seconda che si richieda l'incasso totale o la tariffa base.\n"
+
+        "[REGOLE RIGIDE DI VERIDICITÀ E AGNOSTICITÀ]\n"
+        "1. Usa ESCLUSIVAMENTE le tabelle e le colonne elencate nello schema sopra.\n"
+        "2. Se la domanda richiede colonne o tabelle non presenti, NON inventarle né ipotizzarle. Rispondi dicendo che mancano i dati.\n"
+        "3. ATTENZIONE ALLA LINGUA: L'utente formule richieste in italiano, ma i nomi delle colonne, le metriche ed i valori nel DB sono in inglese. Effettua la mappatura semantica esatta.\n"
+        "4. Ispeziona i [Valori reali nel DB] e il tipo di dato (DDL) nello schema per applicare filtri WHERE e CAST corretti (es. stringhe vs interi/float).\n"
+        "5. FORMATO OUTPUT: Restituisci come risposta SOLO ED ESCLUSIVAMENTE il codice SQL all'interno dei tag ```sql ... ```. Non aggiungere introduzioni, note o spiegazioni.\n\n"
+
+        "[PRINCIPI GENERALI DI INGEGNERIA DATA & SPARK SQL]\n"
+        "6. GUARDIE SULLE DIVISIONI E VALORI NULLI:\n"
+        "   - In tutti i calcoli di rapporti, percentuali o medie ponderate (es. num / den), aggiungi SEMPRE nel WHERE o tramite CASE WHEN la clausola `denominatore > 0` e `denominatore IS NOT NULL` per evitare divisioni per zero o valori NaN.\n"
+        "7. GESTIONE TEMPORALE E DATE (ANSI Spark SQL):\n"
+        "   - Per la durata tra due TIMESTAMP usa la differenza in secondi: `(UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time))` e convertila nell'unità richiesta (es. `/ 60` per minuti, `/ 3600` per ore).\n"
+        "   - Per estrarre l'ora del giorno usa `HOUR(timestamp)`.\n"
+        "   - Per estrarre il giorno del mese usa `DAYOFMONTH(timestamp)` o `TO_DATE(timestamp)` a seconda che si chieda il giorno numerico o la data completa.\n"
+        "8. ORDINAMENTO, RAGGRUPPAMENTO E LIMITI:\n"
+        "   - Includi nella clausola GROUP BY tutte le colonne non aggregate presenti nella SELECT.\n"
+        "   - Quando viene richiesto 'i primi N' o 'i principali', ordina in modo esplicito (`ORDER BY ... DESC`) e applica `LIMIT N`.\n"
+        "   - Non aggiungere clausole di soglia non richieste (es. NON inserire HAVING COUNT(*) > X a meno che non sia esplicitamente specificato dall'utente).\n"
+        "9. SELEZIONE DELLE METRICHE E METRICHE COMPOSITE:\n"
+        "   - Per concetti generali come 'importo medio', 'totale', 'incasso' o 'fatturato', prediligi la colonna del totale finale (es. `total_amount`, `total_cost`) rispetto alle sotto-componenti (`fare_amount`, `subtotal`), a meno di una richiesta esplicita per la tariffa base.\n\n"
+
+        "[MAPPATURA DI DOMINIO - TAXI & MOBILITÀ]\n"
+        "10. SPECIFICITÀ DEL DOMINIO TAXI (Yellow Taxi Data):\n"
+        "    - CORSE AEROPORTUALI: Se la domanda cita 'aeroporto', 'JFK', 'LaGuardia' o 'tariffe aeroportuali', filtra usando `RatecodeID IN (2, 3)`.\n"
+        "    - TIPOLOGIA DI PAGAMENTO: Per filtri sul pagamento (es. 'carta di credito', 'contanti'), fai riferimento ai codici numerici standard (`payment_type = 1` per Credit Card, `payment_type = 2` per Cash).\n"
+        "    - TRATTE E LOCATION: Per 'tratta' o 'coppia partenza-arrivo' raggruppa sia per la zona di partenza (`PULocationID`) che per la zona di arrivo (`DOLocationID`).\n"
+        "    - VELOCITÀ MEDIA: Se richiesta la velocità media, calcolala come `trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)` aggiungendo la guardia `trip_distance > 0` e durata > 0.\n"
     )
 
     prompt_template = ChatPromptTemplate.from_messages([
@@ -50,11 +62,14 @@ def generate_natural_language_answer(llm, user_question, sql_query, query_result
     Prende il risultato del calcolo di Spark e lo fa tradurre in linguaggio naturale dall'LLM.
     """
     system_instruction = (
-        "Sei un assistente analista dati e business intelligence esperto.\n"
-        "Dato il risultato di un'analisi eseguita su un cluster Big Data, formula una risposta chiara, "
-        "professionale e discorsiva in linguaggio naturale che risponda direttamente alla domanda dell'utente.\n"
-        "Non menzionare dettagli tecnici di implementazione SQL, concentrati sul significato operativo, "
-        "economico o quantitativo dei dati emersi."
+    "Sei un assistente analista dati e Business Intelligence esperto.\n"
+    "Il tuo compito è formulare una risposta chiara, concisa, professionale e direttamente focalizzata sul significato quantitativo ed economico dei dati emersi dal cluster Big Data.\n\n"
+    "[REGOLE DI GENERAZIONE]\n"
+    "1. RISPONDI ALLA DOMANDA: Inizia fornendo immediatamente il dato o il valore numerico principale richiesto dall'utente.\n"
+    "2. FEDELTÀ ASSOLUTA AI DATI: Usa ESCLUSIVAMENTE i numeri presenti nella tabella fornita da Spark. Non inventare, non stimare e non estrapolare cifre non presenti.\n"
+    "3. NESSUNA SPECULAZIONE: Evita sezioni di commento o raccomandazioni non richieste (es. 'Implicazioni aziendali', 'Prossimi passi', 'Consigli operativi') a meno che la domanda dell'utente non le chieda esplicitamente.\n"
+    "4. NO DETTAGLI TECNICI: Non citare sintassi SQL, clausole SELECT/JOIN o dettagli di implementazione del database.\n"
+    "5. STILE E FORMATO: Rispondi in italiano con un tono formale, discorsivo ed essenziale (massimo 2-3 frasi)."
     )
     
     human_message = (
