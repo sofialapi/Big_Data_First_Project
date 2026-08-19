@@ -42,17 +42,22 @@ def compare_dataframes(df_generated, df_ground_truth):
         return False
 
 def evaluate_nl_answer(llm, question, spark_result_str, nl_answer):
-    """
-    LLM-as-a-Judge per la metrica NL Answer Accuracy.
-    """
     prompt = f"""
-    Sei un giudice per la valutazione di sistemi Big Data QA.
-    Domanda dell'utente: {question}
-    Risultato grezzo di Spark: {spark_result_str}
-    Risposta generata in linguaggio naturale: {nl_answer}
-
-    La risposta in linguaggio naturale riporta in modo corretto e veritiero i dati estratti da Spark senza allucinazioni?
-    Rispondi SOLTANTO con una parola: 'YES' oppure 'NO'.
+    Sei un valutatore severo per un sistema di Text-to-SQL.
+    
+    Domanda: {question}
+    Dati Reali Estratti da Spark:
+    {spark_result_str}
+    
+    Risposta in Linguaggio Naturale generata:
+    {nl_answer}
+    
+    VALUTAZIONE:
+    La risposta in linguaggio naturale riporta in modo ACCURATO i dati numerici e le entità presenti nel risultato Spark?
+    - Rispondi 'YES' se i numeri e i fatti chiave menzionati nella risposta corrispondono a quelli della tabella Spark.
+    - Rispondi 'NO' solo se ci sono discrepanze numeriche palesi o se la risposta dichiara il falso rispetto alla tabella Spark.
+    
+    Rispondi unicamente con la parola: 'YES' oppure 'NO'.
     """
     try:
         response = llm.invoke(prompt).content.strip().upper()
