@@ -1,4 +1,4 @@
 venv/
 dataset_storage/
 test_data/
-dati_clinici_test/
+dati_clinici_test/__pycache__/
