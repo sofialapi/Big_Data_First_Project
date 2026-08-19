@@ -180,7 +180,7 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
         print(f"[{idx}/{total_tests}] (ID:{q_id}) [{diff}] SQL: {status_sql} | EX: {status_ex} | Time: {t_tot:.2f}s -> {question[:40]}...")
         
         results.append(test_record)
-        time.sleep(2) # pausa per tenere più bassi i TPM 
+        time.sleep(1) # pausa per tenere più bassi i TPM 
 
     # 3. Metriche Finali
     if total_tests > 0:
