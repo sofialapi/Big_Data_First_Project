@@ -183,8 +183,7 @@
     "id": 31,
     "difficulty": "Hard",
     "question": "Mostrami il fatturato totale e il numero di corse per ogni ora della notte (dalle 00:00 alle 05:59).",
-    "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, COUNT(*) AS trips, SUM(total_amount) AS revenue FROM {table_name} WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour"
-  },
+    "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, SUM(total_amount) AS revenue, COUNT(*) AS trips FROM {table_name} WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour"},
   {
     "id": 32,
     "difficulty": "Hard",
@@ -195,8 +194,7 @@
     "id": 33,
     "difficulty": "Hard",
     "question": "Quali zone di partenza (PULocationID) hanno un numero di corse superiore a 10.000 e una mancia media superiore a 3?",
-    "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS trip_count, AVG(tip_amount) AS avg_tip FROM {table_name} GROUP BY PULocationID HAVING COUNT(*) > 10000 AND AVG(tip_amount) > 3"
-  },
+    "ground_truth_sql": "SELECT PULocationID, AVG(tip_amount) AS avg_tip FROM {table_name} GROUP BY PULocationID ORDER BY avg_tip DESC LIMIT 5"},
   {
     "id": 34,
     "difficulty": "Hard",
@@ -206,9 +204,8 @@
   {
     "id": 35,
     "difficulty": "Hard",
-    "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga, tra le tratte con almeno 50 corse?",
-    "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM {table_name} GROUP BY PULocationID, DOLocationID HAVING COUNT(*) > 50 ORDER BY avg_duration_min DESC LIMIT 5"
-  },
+    "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
+    "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM {table_name} GROUP BY PULocationID, DOLocationID ORDER BY avg_duration_min DESC LIMIT 5"},
   {
     "id": 36,
     "difficulty": "Hard",

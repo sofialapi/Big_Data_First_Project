@@ -32,7 +32,7 @@ def generate_sql_query(llm, schema_ddl, user_question):
         "(es. TO_DATE(timestamp_col) oppure DAYOFMONTH(timestamp_col)).\n"
         "   - Per conteggi, medie, somme e distribuzioni usa opportunamente GROUP BY, COUNT, AVG, SUM.\n"
         "Quando calcoli percentuali o rapporti basati su divisioni (es. tip_amount / fare_amount), aggiungi sempre la condizione WHERE denominatore > 0 per evitare divisioni per zero o valori non validi.\n"
-        
+        "   - CORSE AEROPORTUALI: Per domande riguardanti corse aeroportuali o la relativa tariffa, filtra per RatecodeID IN (2, 3) e seleziona 'total_amount' o 'fare_amount' a seconda che si richieda l'incasso totale o la tariffa base.\n"
     )
 
     prompt_template = ChatPromptTemplate.from_messages([
