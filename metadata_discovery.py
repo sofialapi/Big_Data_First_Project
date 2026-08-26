@@ -29,19 +29,17 @@ def discover_meta_and_register_views(path_input):
     if is_s3:
         folder_table_name = clean_table_name(path_input)
         
-        # Se il percorso punta direttamente a file Parquet o a una directory S3
-        if path_input.endswith('.parquet') or path_input.endswith('/'):
-            # In Spark, passare una cartella S3 o un wildcard '*.parquet' carica in automatico tutti i file Parquet sottostanti
-            s3_path = path_input if path_input.endswith('.parquet') or path_input.endswith('*.parquet') else os.path.join(path_input, "*.parquet")
-            df = spark.read.parquet(s3_path)
-        else:
-            # Fallback generico di lettura Parquet per directory S3 senza slash finale
+        # Se punta direttamente a un file .parquet specifico
+        if path_input.endswith('.parquet') and not path_input.endswith('*.parquet'):
             df = spark.read.parquet(path_input)
+        else:
+            # Se è una directory, usiamo il pattern *.parquet
+            s3_path = path_input if path_input.endswith('*.parquet') else os.path.join(path_input, "*.parquet")
+            df = spark.read.parquet(s3_path)
             
         df.createOrReplaceTempView(folder_table_name)
         registered_tables.append(folder_table_name)
         schema_description += _extract_table_schema(df, folder_table_name)
-
     # CASO 2: SINGOLO FILE LOCALE (.parquet o .csv)
     elif os.path.isfile(path_input):
         table_name = clean_table_name(path_input)
