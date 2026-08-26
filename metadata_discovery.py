@@ -19,11 +19,13 @@ def discover_meta_and_register_views(path_input):
     registered_tables = []
     
     # Clean-up helper per trasformare i nomi di file/cartelle in identificatori SQL validi
-    def clean_table_name(name):
-        # Rimuove l'eventuale slash finale nei percorsi S3
-        clean_name = name.rstrip("/")
-        base = os.path.splitext(os.path.basename(os.path.normpath(clean_name)))[0]
-        return base.replace("-", "_").replace(".", "_").replace(" ", "_")
+    def clean_table_name(path_str):
+        # Estrae il nome base e rimuove estensioni e caratteri wildcard come *
+        base_name = os.path.basename(path_str.rstrip('/'))
+        base_name = base_name.replace('*.parquet', '').replace('.parquet', '').replace('*', '')
+        # Se dopo la pulizia il nome è vuoto o invalido, assegna un nome di default
+        clean_name = ''.join(c if c.isalnum() or c == '_' else '_' for c in base_name).strip('_')
+        return clean_name if clean_name else "taxi_data"
 
     # CASO 1: PERCORSO S3 (s3:// o s3a://)
     if is_s3:
