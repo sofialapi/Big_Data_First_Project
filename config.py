@@ -20,16 +20,18 @@ def get_spark_session():
     builder = SparkSession.builder.appName("TAG_Adaptive_Clinical_Analytics")
 
     if IS_EMR:
-        # Configurazione per AWS EMR (Cluster distribuito YARN + S3/EMRFS)
+        # Include i JAR nativi di EMR/Hadoop nel classpath Spark
+        emr_jars = "/usr/lib/spark/jars/*:/usr/lib/hadoop/lib/*:/usr/lib/hadoop-hdfs/*"
+        
         builder = builder \
             .master("yarn") \
+            .config("spark.driver.extraClassPath", emr_jars) \
+            .config("spark.executor.extraClassPath", emr_jars) \
             .config("spark.executor.memory", "4g") \
             .config("spark.driver.memory", "4g") \
-            .config("spark.executor.cores", "2") \
-            .config("spark.hadoop.fs.s3.impl", "com.amazon.ws.emr.hadoop.fs.EmrFileSystem") \
-            .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+            .config("spark.executor.cores", "2")
     else:
-        # Configurazione Locale standard (VirtualBox / PC)
+        # Configurazione Locale standard
         builder = builder \
             .master("local[*]") \
             .config("spark.memory.fraction", "0.8") \
