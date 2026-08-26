@@ -7,6 +7,7 @@ os.environ["PYSPARK_SUBMIT_ARGS"] = "--driver-java-options '-Dlog4j.logLevel=ERR
 import json
 import time
 import sys
+import argparse
 import pandas as pd
 from config import get_spark_session, get_llm
 from metadata_discovery import discover_meta_and_register_views
@@ -72,8 +73,9 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
     llm = get_llm()
     
     print("\n====================================================")
-    print("   STANDARDIZED BENCHMARK RUNNER (TAG EVALUATOR)    ")
+    print("     STANDARDIZED BENCHMARK RUNNER (TAG EVALUATOR)    ")
     print("====================================================")
+    print(f"[DATASET PATH] {dataset_path}")
     
     # 1. Metadata Discovery
     start_disc = time.time()
@@ -146,7 +148,7 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
             test_record["is_sql_valid"] = True
             valid_sql_count += 1
             
-            # Valutazione EX con il nuovo compare_dataframes
+            # Valutazione EX con compare_dataframes
             is_ex = compare_dataframes(spark_df_gen, spark_df_gt)
             test_record["is_exec_accurate"] = is_ex
             if is_ex:
@@ -187,7 +189,7 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
         results.append(test_record)
         time.sleep(1) # pausa per tenere più bassi i TPM 
 
-    # 3. Metriche Finali
+    # 3. Metrike Finali
     if total_tests > 0:
         svr = (valid_sql_count / total_tests) * 100
         ex = (exact_execution_count / total_tests) * 100
@@ -234,13 +236,21 @@ def run_benchmark(dataset_path, test_suite_path="test_suite.json", output_report
     print(f"Report salvato in: {output_report_path}\n")
 
 if __name__ == "__main__":
-    start_from = 1
-    if len(sys.argv) > 1:
-        raw_arg = sys.argv[1].replace("-", "")
-        if raw_arg.isdigit():
-            start_from = int(raw_arg)
-            
-    default_path = "./dataset_storage/yellow_tripdata_2022-10.parquet"
-    path = input(f"Inserisci percorso [Default: {default_path}]: ").strip() or default_path
+    parser = argparse.ArgumentParser(description="Run TAG Benchmark Evaluator on Local or S3 Datasets.")
+    parser.add_argument("--path", type=str, default=None, help="Percorso del dataset Parquet (locale o s3a://)")
+    parser.add_argument("--start_id", type=int, default=1, help="ID della prima query da cui iniziare il test")
     
-    run_benchmark(path, start_id=start_from)
+    args, unknown = parser.parse_known_args()
+    
+    # Se il parametro non viene passato via argomenti CLI, viene chiesto via prompt (compatibilità locale)
+    if args.path:
+        dataset_path = args.path
+    else:
+        # Gestione retro-compatibilità per argomenti posizionali vecchi (es: python benchmark_evaluator.py 1)
+        if len(sys.argv) > 1 and sys.argv[1].replace("-", "").isdigit():
+            args.start_id = int(sys.argv[1].replace("-", ""))
+            
+        default_path = "./dataset_storage/yellow_tripdata_2022-10.parquet"
+        dataset_path = input(f"Inserisci percorso [Default: {default_path}]: ").strip() or default_path
+
+    run_benchmark(dataset_path, start_id=args.start_id)

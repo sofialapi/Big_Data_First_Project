@@ -1,23 +1,43 @@
 import os
-import findspark
 from dotenv import load_dotenv
 
 load_dotenv()
 
-findspark.init(os.getenv("SPARK_HOME", "/home/sofia/spark-3.5.8"))
+# Rileva se si trova su AWS EMR o in un ambiente distribuito Hadoop/YARN
+IS_EMR = os.path.exists("/etc/hadoop/conf") or "EMR_CLUSTER_ID" in os.environ or os.path.exists("/usr/lib/spark")
+
+if not IS_EMR:
+    try:
+        import findspark
+        findspark.init(os.getenv("SPARK_HOME", "/home/sofia/spark-3.5.8"))
+    except Exception:
+        pass
 
 from pyspark.sql import SparkSession
 from langchain_openai import ChatOpenAI
 
 def get_spark_session():
-    findspark.init(os.getenv("SPARK_HOME", "/home/sofia/spark-3.5.8"))
-    
-    spark = SparkSession.builder \
-        .appName("TAG_Adaptive_Clinical_Analytics") \
-        .master("local[*]") \
-        .config("spark.memory.fraction", "0.8") \
-        .config("spark.executor.memory", "4g") \
-        .config("spark.driver.memory", "2g") \
+    builder = SparkSession.builder.appName("TAG_Adaptive_Clinical_Analytics")
+
+    if IS_EMR:
+        # Configurazione per AWS EMR (Cluster distribuito YARN + S3)
+        builder = builder \
+            .master("yarn") \
+            .config("spark.executor.memory", "4g") \
+            .config("spark.driver.memory", "4g") \
+            .config("spark.executor.cores", "2") \
+            .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+            .config("spark.hadoop.fs.s3a.aws.credentials.provider", 
+                    "com.amazonaws.auth.ContainerCredentialsProvider,com.amazonaws.auth.InstanceProfileCredentialsProvider")
+    else:
+        # Configurazione Locale standard (VirtualBox / PC)
+        builder = builder \
+            .master("local[*]") \
+            .config("spark.memory.fraction", "0.8") \
+            .config("spark.executor.memory", "4g") \
+            .config("spark.driver.memory", "2g")
+
+    spark = builder \
         .config("spark.ui.showConsoleProgress", "false") \
         .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
         .getOrCreate()
@@ -56,12 +76,12 @@ class ResilientFallbackLLM:
 
 def get_llm():
     # 1. Provider Principale (Groq)
-    primary_api_key = os.getenv("LLM_API_KEY")
+    primary_api_key = os.getenv("LLM_API_KEY") or os.getenv("GROQ_API_KEY")
     primary_base_url = os.getenv("LLM_BASE_URL")
     primary_model = os.getenv("LLM_MODEL_NAME", "openai/gpt-oss-20b")
     
     if not primary_api_key:
-        raise ValueError("ERRORE: 'LLM_API_KEY' non impostata.")
+        raise ValueError("ERRORE: 'LLM_API_KEY' o 'GROQ_API_KEY' non impostata.")
         
     primary_llm = ChatOpenAI(
         api_key=primary_api_key,
