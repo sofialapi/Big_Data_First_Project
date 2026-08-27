@@ -1,699 +1,698 @@
 {
-  "dataset_path": "dataset_storage/yellow_tripdata_t1_2022/",
-  "main_table_name": "yellow_tripdata_t1_2022",
+  "dataset_path": "dataset_storage/yellow_tripdata_s1_2022/",
+  "main_table_name": "yellow_tripdata_s1_2022",
   "start_id": 1,
   "total_queries": 40,
   "metrics": {
     "sql_validity_rate_SVR": "100.00%",
-    "execution_accuracy_EX": "80.00%",
+    "execution_accuracy_EX": "77.50%",
     "nl_answer_correctness_NL_AC": "92.50%"
   },
   "average_latencies": {
-    "avg_sql_gen_sec": 4.8034,
-    "avg_spark_exec_sec": 1.3269,
-    "avg_nl_gen_sec": 1.3588,
-    "avg_total_sec": 7.4892
+    "avg_sql_gen_sec": 5.1721,
+    "avg_spark_exec_sec": 1.3665,
+    "avg_nl_gen_sec": 1.1072,
+    "avg_total_sec": 7.6458
   },
   "detailed_results": [
     {
       "id": 1,
       "difficulty": "Easy",
       "question": "Qual è il numero totale di corse registrate nel dataset?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 1.0508,
-        "t_spark_sec": 3.4364,
-        "t_nl_sec": 0.7578,
-        "t_total_sec": 5.245
+        "t_sql_sec": 0.5278,
+        "t_spark_sec": 2.8425,
+        "t_nl_sec": 0.5711,
+        "t_total_sec": 3.9414
       },
-      "generated_sql": "SELECT COUNT(*) AS total_trips\nFROM yellow_tripdata_t1_2022;",
-      "nl_answer": "Il dataset contiene 9 071 244 corse."
+      "generated_sql": "SELECT COUNT(*) AS total_trips\nFROM yellow_tripdata_s1_2022;",
+      "nl_answer": "Il dataset contiene 19 817 583 corse registrate."
     },
     {
       "id": 2,
       "difficulty": "Easy",
       "question": "Qual è l'importo medio totale (total_amount) incassato per corsa?",
-      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
-      "is_exec_accurate": true,
+      "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.7364,
-        "t_spark_sec": 1.7713,
-        "t_nl_sec": 0.6394,
-        "t_total_sec": 3.1471
+        "t_sql_sec": 1.2374,
+        "t_spark_sec": 1.5957,
+        "t_nl_sec": 0.4669,
+        "t_total_sec": 3.2999
       },
-      "generated_sql": "SELECT AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_t1_2022;",
-      "nl_answer": "L'importo medio totale incassato per corsa è di **19,846838522590478**."
+      "generated_sql": "SELECT AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_s1_2022\nWHERE total_amount IS NOT NULL\n  AND total_amount > 0;",
+      "nl_answer": "L’importo medio totale incassato per corsa è di **21,12** unità di valuta (USD)."
     },
     {
       "id": 3,
       "difficulty": "Easy",
       "question": "Qual è la distanza massima (trip_distance) percorsa in una singola corsa?",
-      "ground_truth_sql": "SELECT MAX(trip_distance) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT MAX(trip_distance) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 1.8629,
-        "t_spark_sec": 1.5896,
-        "t_nl_sec": 0.6473,
-        "t_total_sec": 4.0998
+        "t_sql_sec": 0.4965,
+        "t_spark_sec": 0.9486,
+        "t_nl_sec": 0.5925,
+        "t_total_sec": 2.0376
       },
-      "generated_sql": "SELECT MAX(trip_distance) AS max_trip_distance\nFROM yellow_tripdata_t1_2022\nWHERE trip_distance IS NOT NULL;",
-      "nl_answer": "La distanza massima percorsa in una singola corsa è di **348 798,53** unità."
+      "generated_sql": "SELECT MAX(trip_distance) AS max_trip_distance\nFROM yellow_tripdata_s1_2022;",
+      "nl_answer": "La distanza massima percorsa in una singola corsa è di **357 192,65**."
     },
     {
       "id": 4,
       "difficulty": "Easy",
       "question": "Qual è l'importo totale delle mance (tip_amount) raccolte nel dataset?",
-      "ground_truth_sql": "SELECT SUM(tip_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT SUM(tip_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
-      "is_nl_accurate": false,
+      "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.5722,
-        "t_spark_sec": 0.9333,
-        "t_nl_sec": 0.6158,
-        "t_total_sec": 2.1213
+        "t_sql_sec": 0.7599,
+        "t_spark_sec": 0.5266,
+        "t_nl_sec": 0.873,
+        "t_total_sec": 2.1596
       },
-      "generated_sql": "SELECT SUM(tip_amount) AS total_tip_amount\nFROM yellow_tripdata_t1_2022\nWHERE tip_amount IS NOT NULL;",
-      "nl_answer": "L’importo totale delle mance (tip_amount) raccolte nel dataset è **22 941 752,07**."
+      "generated_sql": "SELECT SUM(tip_amount) AS total_tip\nFROM yellow_tripdata_s1_2022;",
+      "nl_answer": "L’importo totale delle mance (tip_amount) raccolte nel dataset è pari a **52 759 870,63**."
     },
     {
       "id": 5,
       "difficulty": "Easy",
       "question": "Quante corse sono state effettuate con un solo passeggero (passenger_count = 1)?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022 WHERE passenger_count = 1",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022 WHERE passenger_count = 1",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 6.2254,
-        "t_spark_sec": 0.702,
-        "t_nl_sec": 4.2607,
-        "t_total_sec": 11.1881
+        "t_sql_sec": 3.5988,
+        "t_spark_sec": 0.5698,
+        "t_nl_sec": 0.2203,
+        "t_total_sec": 4.3888
       },
-      "generated_sql": "SELECT COUNT(*) AS num_corse\nFROM yellow_tripdata_t1_2022\nWHERE passenger_count = 1",
-      "nl_answer": "Sono state effettuate complessivamente **6.571.311 corse** con un solo passeggero (`passenger_count = 1`), corrispondenti al valore `num_corse` restituito dall'elaborazione su Spark."
+      "generated_sql": "SELECT COUNT(*) AS numero_corse\nFROM yellow_tripdata_s1_2022\nWHERE passenger_count = 1.0",
+      "nl_answer": "14 204 666 corse sono state effettuate con un solo passeggero."
     },
     {
       "id": 6,
       "difficulty": "Easy",
       "question": "Qual è la tariffa base media (fare_amount) delle corse?",
-      "ground_truth_sql": "SELECT AVG(fare_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT AVG(fare_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.5077,
-        "t_spark_sec": 0.569,
-        "t_nl_sec": 0.3506,
-        "t_total_sec": 1.4272
+        "t_sql_sec": 3.9113,
+        "t_spark_sec": 0.584,
+        "t_nl_sec": 0.5617,
+        "t_total_sec": 5.057
       },
-      "generated_sql": "SELECT AVG(fare_amount) AS avg_fare_amount\nFROM yellow_tripdata_t1_2022\nWHERE fare_amount IS NOT NULL;",
-      "nl_answer": "La tariffa base media delle corse è di **13,4019** unità monetarie."
+      "generated_sql": "SELECT AVG(fare_amount) AS avg_fare_amount\nFROM yellow_tripdata_s1_2022",
+      "nl_answer": "La tariffa base media delle corse è di **14,245682625377775**."
     },
     {
       "id": 7,
       "difficulty": "Easy",
       "question": "Quante corse hanno avuto una distanza di percorrenza pari a 0?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022 WHERE trip_distance = 0",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022 WHERE trip_distance = 0",
       "is_sql_valid": true,
       "is_exec_accurate": true,
-      "is_nl_accurate": true,
+      "is_nl_accurate": false,
       "latency": {
-        "t_sql_sec": 4.2844,
-        "t_spark_sec": 0.5356,
-        "t_nl_sec": 0.7091,
-        "t_total_sec": 5.5291
+        "t_sql_sec": 0.6457,
+        "t_spark_sec": 0.5359,
+        "t_nl_sec": 3.8171,
+        "t_total_sec": 4.9986
       },
-      "generated_sql": "SELECT COUNT(*) AS numero_corse_distanza_zero\nFROM yellow_tripdata_t1_2022\nWHERE trip_distance = 0",
-      "nl_answer": "103 256 corse hanno avuto una distanza di percorrenza pari a 0."
+      "generated_sql": "SELECT COUNT(*) AS num_trips_with_zero_distance\nFROM yellow_tripdata_s1_2022\nWHERE trip_distance = 0;",
+      "nl_answer": "Il numero di corse con distanza di percorrenza pari a 0 è di **242.992**. Questo dato rappresenta il conteggio totale delle corse registrate nel dataset in cui il campo `trip_distance` è esattamente zero."
     },
     {
       "id": 8,
       "difficulty": "Easy",
       "question": "Qual è il valore massimo pagato per i pedaggi (tolls_amount)?",
-      "ground_truth_sql": "SELECT MAX(tolls_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT MAX(tolls_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
-      "is_nl_accurate": false,
+      "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.0403,
-        "t_spark_sec": 0.4953,
-        "t_nl_sec": 2.9855,
-        "t_total_sec": 6.5211
+        "t_sql_sec": 3.1789,
+        "t_spark_sec": 0.2382,
+        "t_nl_sec": 0.7032,
+        "t_total_sec": 4.1203
       },
-      "generated_sql": "SELECT MAX(tolls_amount) AS max_tolls_amount\nFROM yellow_tripdata_t1_2022",
-      "nl_answer": ""
+      "generated_sql": "SELECT MAX(tolls_amount) AS max_tolls_amount\nFROM yellow_tripdata_s1_2022",
+      "nl_answer": "Il valore massimo pagato per i pedaggi è **911,87**."
     },
     {
       "id": 9,
       "difficulty": "Easy",
       "question": "Mostrami il numero di corse divise per numero di passeggeri (passenger_count).",
-      "ground_truth_sql": "SELECT passenger_count, COUNT(*) AS total_trips FROM yellow_tripdata_t1_2022 GROUP BY passenger_count",
+      "ground_truth_sql": "SELECT passenger_count, COUNT(*) AS total_trips FROM yellow_tripdata_s1_2022 GROUP BY passenger_count",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.9573,
-        "t_spark_sec": 1.5196,
-        "t_nl_sec": 1.6113,
-        "t_total_sec": 7.0882
+        "t_sql_sec": 3.0363,
+        "t_spark_sec": 1.4324,
+        "t_nl_sec": 1.4069,
+        "t_total_sec": 5.8755
       },
-      "generated_sql": "SELECT\n  passenger_count,\n  COUNT(*) AS numero_corse\nFROM yellow_tripdata_t1_2022\nGROUP BY passenger_count\nORDER BY passenger_count",
-      "nl_answer": "Il valore più significativo è **6 571 311 corse per un passeggero**.  \nIn totale le corse si distribuiscono così: 1 passeggero = 6 571 311, 2 passeggeri = 1 272 819, 3 passeggeri = 319 057, 4 passeggeri = 129 557, 5 passeggeri = 179 727, 6 passeggeri = 119 065, 7 passeggeri = 34, 8 passeggeri = 27, 0 passeggeri = 188 585, NULL = 291 055."
+      "generated_sql": "SELECT passenger_count, COUNT(*) AS num_corse\nFROM yellow_tripdata_s1_2022\nGROUP BY passenger_count\nORDER BY passenger_count",
+      "nl_answer": "Il numero di corse per ciascun valore di passenger_count è il seguente:\n\n- NULL : 671 901 corse  \n- 0.0 : 403 221 corse  \n- 1.0 : 14 204 666 corse  \n- 2.0 : 2 864 197 corse  \n- 3.0 : 745 800 corse  \n- 4.0 : 315 039 corse  \n- 5.0 : 366 019 corse  \n- 6.0 : 246 538 corse  \n- 7.0 : 105 corse  \n- 8.0 : 78 corse"
     },
     {
       "id": 10,
       "difficulty": "Easy",
       "question": "Qual è l'importo totale incassato (total_amount) per tutte le corse?",
-      "ground_truth_sql": "SELECT SUM(total_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT SUM(total_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.1323,
-        "t_spark_sec": 0.4935,
-        "t_nl_sec": 0.8704,
-        "t_total_sec": 5.4962
+        "t_sql_sec": 2.6402,
+        "t_spark_sec": 0.5294,
+        "t_nl_sec": 0.6556,
+        "t_total_sec": 3.8252
       },
-      "generated_sql": "SELECT SUM(total_amount) AS total_incassato\nFROM yellow_tripdata_t1_2022",
-      "nl_answer": "L’importo totale incassato (total_amount) per tutte le corse è **1.8003551486701775E8**.  \nIn termini più leggibili, si tratta di circa **180 035 514,87** unità monetarie."
+      "generated_sql": "SELECT SUM(total_amount) AS total_incassato\nFROM yellow_tripdata_s1_2022",
+      "nl_answer": "L’importo totale incassato è **4.142422942412778 × 10⁸** (≈ 414 242 294,24)."
     },
     {
       "id": 11,
       "difficulty": "Easy",
       "question": "Quante corse hanno registrato una mancia (tip_amount) maggiore di zero?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022 WHERE tip_amount > 0",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022 WHERE tip_amount > 0",
       "is_sql_valid": true,
       "is_exec_accurate": true,
-      "is_nl_accurate": false,
+      "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.2699,
-        "t_spark_sec": 0.5597,
-        "t_nl_sec": 5.9125,
-        "t_total_sec": 9.7421
+        "t_sql_sec": 5.5155,
+        "t_spark_sec": 0.8331,
+        "t_nl_sec": 0.4819,
+        "t_total_sec": 6.8305
       },
-      "generated_sql": "SELECT COUNT(*) AS num_corse_con_mancia\nFROM yellow_tripdata_t1_2022\nWHERE tip_amount > 0",
-      "nl_answer": ""
+      "generated_sql": "SELECT COUNT(*) AS num_corse\nFROM yellow_tripdata_s1_2022\nWHERE tip_amount > 0",
+      "nl_answer": "15 116 427 corse hanno registrato una mancia (tip_amount) maggiore di zero."
     },
     {
       "id": 12,
       "difficulty": "Easy",
       "question": "Qual è il costo medio dei pedaggi (tolls_amount) per corsa?",
-      "ground_truth_sql": "SELECT AVG(tolls_amount) FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT AVG(tolls_amount) FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.8431,
-        "t_spark_sec": 0.1933,
-        "t_nl_sec": 0.5407,
-        "t_total_sec": 4.5771
+        "t_sql_sec": 3.4662,
+        "t_spark_sec": 0.1905,
+        "t_nl_sec": 0.533,
+        "t_total_sec": 4.1897
       },
-      "generated_sql": "SELECT AVG(tolls_amount) AS avg_tolls_amount_per_trip\nFROM yellow_tripdata_t1_2022",
-      "nl_answer": "Il costo medio dei pedaggi per corsa è di **0,4240602468649745**."
+      "generated_sql": "SELECT AVG(tolls_amount) AS avg_tolls_amount_per_trip\nFROM yellow_tripdata_s1_2022",
+      "nl_answer": "Il costo medio dei pedaggi per corsa è di **0,4955** unità monetarie."
     },
     {
       "id": 13,
       "difficulty": "Medium",
       "question": "Mostrami la distanza media (trip_distance) e l'importo medio (total_amount) per ciascun tipo di pagamento (payment_type).",
-      "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM yellow_tripdata_t1_2022 GROUP BY payment_type",
+      "ground_truth_sql": "SELECT payment_type, AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount FROM yellow_tripdata_s1_2022 GROUP BY payment_type",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.7884,
-        "t_spark_sec": 1.7053,
-        "t_nl_sec": 1.1586,
-        "t_total_sec": 6.6524
+        "t_sql_sec": 8.1112,
+        "t_spark_sec": 1.987,
+        "t_nl_sec": 0.9523,
+        "t_total_sec": 11.0504
       },
-      "generated_sql": "SELECT\n  payment_type,\n  AVG(trip_distance) AS avg_trip_distance,\n  AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_t1_2022\nGROUP BY payment_type\nORDER BY payment_type",
-      "nl_answer": "Per payment_type 0: distanza media 81,20 km, importo medio 25,20 €.  \nPer payment_type 1: distanza media 3,21 km, importo medio 20,58 €.  \nPer payment_type 2: distanza media 3,13 km, importo medio 16,70 €.  \nPer payment_type 3: distanza media 2,15 km, importo medio 7,47 €.  \nPer payment_type 4: distanza media 2,59 km, importo medio 3,38 €.  \nPer payment_type 5: distanza media 0,70 km, importo medio 3,93 €."
+      "generated_sql": "SELECT\n  payment_type,\n  AVG(trip_distance) AS avg_trip_distance,\n  AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_s1_2022\nGROUP BY payment_type",
+      "nl_answer": "Per il pagamento 0 la distanza media è 78,88 e l’importo medio 27,62; per il pagamento 5 la distanza media è 0,70 e l’importo medio 3,93; per il pagamento 1 la distanza media è 3,41 e l’importo medio 21,65; per il pagamento 3 la distanza media è 2,23 e l’importo medio 12,13; per il pagamento 2 la distanza media è 3,35 e l’importo medio 17,57; per il pagamento 4 la distanza media è 2,70 e l’importo medio ‑3,15."
     },
     {
       "id": 14,
       "difficulty": "Medium",
       "question": "Qual è il numero totale di corse effettuate per ciascuna zona di partenza (PULocationID)? Ordina per numero di corse decrescente.",
-      "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS total_trips FROM yellow_tripdata_t1_2022 GROUP BY PULocationID ORDER BY total_trips DESC",
+      "ground_truth_sql": "SELECT PULocationID, COUNT(*) AS total_trips FROM yellow_tripdata_s1_2022 GROUP BY PULocationID ORDER BY total_trips DESC",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.3705,
-        "t_spark_sec": 1.8283,
-        "t_nl_sec": 0.8728,
-        "t_total_sec": 3.0716
+        "t_sql_sec": 6.1025,
+        "t_spark_sec": 0.9291,
+        "t_nl_sec": 1.3461,
+        "t_total_sec": 8.3777
       },
-      "generated_sql": "SELECT\n  PULocationID,\n  COUNT(*) AS total_trips\nFROM\n  yellow_tripdata_t1_2022\nGROUP BY\n  PULocationID\nORDER BY\n  total_trips DESC;",
-      "nl_answer": "Il numero più alto di corse è **432 539** per la zona di partenza **237**, seguito da **407 951** per la zona **236**, **362 331** per la zona **132**, **355 191** per la zona **161**, **296 053** per la zona **186**, **295 210** per la zona **142**, **291 681** per la zona **162**, **284 243** per la zona **48**, **282 233** per la zona **170** e **271 997** per la zona **230**."
+      "generated_sql": "SELECT PULocationID, COUNT(*) AS num_corse\nFROM yellow_tripdata_s1_2022\nGROUP BY PULocationID\nORDER BY num_corse DESC",
+      "nl_answer": "Il numero più alto di corse è **948 555** per la zona di partenza **237**.  \nDi seguito le prime 10 zone in ordine decrescente:  \n237 (948 555), 132 (869 629), 236 (861 390), 161 (774 491), 142 (651 694), 162 (636 035), 186 (631 129), 48 (619 074), 170 (612 169), 230 (604 628)."
     },
     {
       "id": 15,
       "difficulty": "Medium",
       "question": "Qual è la mancia media (tip_amount) per ciascun tipo di tariffa (RatecodeID)?",
-      "ground_truth_sql": "SELECT RatecodeID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_t1_2022 GROUP BY RatecodeID",
+      "ground_truth_sql": "SELECT RatecodeID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_s1_2022 GROUP BY RatecodeID",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.6671,
-        "t_spark_sec": 0.7982,
-        "t_nl_sec": 0.8418,
-        "t_total_sec": 6.3071
+        "t_sql_sec": 3.7044,
+        "t_spark_sec": 1.4202,
+        "t_nl_sec": 1.4415,
+        "t_total_sec": 6.5661
       },
-      "generated_sql": "SELECT\n  RatecodeID,\n  AVG(tip_amount) AS avg_tip_amount\nFROM yellow_tripdata_t1_2022\nGROUP BY RatecodeID\nORDER BY RatecodeID",
-      "nl_answer": "La mancia media per ciascun RatecodeID è la seguente:  \n- NULL : 3.21, 1.0 : 2.27, 2.0 : 8.67, 3.0 : 10.22, 4.0 : 7.93, 5.0 : 7.43, 6.0 : 1.92, 99.0 : 0.004."
+      "generated_sql": "SELECT\n  RatecodeID,\n  AVG(tip_amount) AS avg_tip_amount\nFROM yellow_tripdata_s1_2022\nGROUP BY RatecodeID\nORDER BY RatecodeID",
+      "nl_answer": "La mancia media varia da 0,0044 (RatecodeID 99) a 10,68 (RatecodeID 3).  \nIn dettaglio: RatecodeID NULL = 3,64; 1,0 = 2,34; 2,0 = 8,72; 3,0 = 10,68; 4,0 = 8,46; 5,0 = 8,10; 6,0 = 1,57; 99,0 = 0,0044."
     },
     {
       "id": 16,
       "difficulty": "Medium",
       "question": "Mostrami le 10 zone di arrivo (DOLocationID) più frequenti con il relativo importo medio totale.",
-      "ground_truth_sql": "SELECT DOLocationID, COUNT(*) AS trip_count, AVG(total_amount) AS avg_amount FROM yellow_tripdata_t1_2022 GROUP BY DOLocationID ORDER BY trip_count DESC LIMIT 10",
+      "ground_truth_sql": "SELECT DOLocationID, COUNT(*) AS trip_count, AVG(total_amount) AS avg_amount FROM yellow_tripdata_s1_2022 GROUP BY DOLocationID ORDER BY trip_count DESC LIMIT 10",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 5.966,
-        "t_spark_sec": 0.9791,
-        "t_nl_sec": 1.4261,
-        "t_total_sec": 8.3713
+        "t_sql_sec": 6.1441,
+        "t_spark_sec": 1.6652,
+        "t_nl_sec": 1.0521,
+        "t_total_sec": 8.8615
       },
-      "generated_sql": "SELECT\n  DOLocationID,\n  COUNT(*) AS frequenza,\n  AVG(total_amount) AS importo_medio_totale\nFROM yellow_tripdata_t1_2022\nGROUP BY DOLocationID\nORDER BY frequenza DESC\nLIMIT 10",
-      "nl_answer": "La zona di arrivo più frequente è **DOLocationID 236** con **420 352** viaggi e un importo medio totale di **15,54**.  \nLe altre nove zone, in ordine di frequenza, sono:  \n- **237** (378 542 viaggi, 14,80)  \n- **161** (308 820 viaggi, 16,34)  \n- **170** (273 731 viaggi, 16,59)  \n- **141** (265 809 viaggi, 15,98)  \n- **239** (265 293 viaggi, 16,92)  \n- **142** (255 235 viaggi, 16,24)  \n- **48** (249 990 viaggi, 18,19)  \n- **230** (239 998 viaggi, 20,03)  \n- **238** (227 813 viaggi, 17,39)."
+      "generated_sql": "SELECT \n    DOLocationID,\n    COUNT(*) AS num_corse,\n    AVG(total_amount) AS importo_medio_totale\nFROM yellow_tripdata_s1_2022\nGROUP BY DOLocationID\nORDER BY num_corse DESC\nLIMIT 10",
+      "nl_answer": "Le 10 zone di arrivo più frequenti sono: DOLocationID 236 (importo medio 15,84), 237 (15,11), 161 (17,30), 170 (17,45), 230 (21,46), 239 (17,45), 142 (16,72), 141 (16,33), 48 (19,45) e 162 (17,60)."
     },
     {
       "id": 17,
       "difficulty": "Medium",
       "question": "Calcola la distanza media percorsa e l'importo medio per le corse con più di 4 passeggeri.",
-      "ground_truth_sql": "SELECT AVG(trip_distance) AS avg_dist, AVG(total_amount) AS avg_tot FROM yellow_tripdata_t1_2022 WHERE passenger_count > 4",
+      "ground_truth_sql": "SELECT AVG(trip_distance) AS avg_dist, AVG(total_amount) AS avg_tot FROM yellow_tripdata_s1_2022 WHERE passenger_count > 4",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.3981,
-        "t_spark_sec": 0.9706,
-        "t_nl_sec": 1.209,
-        "t_total_sec": 6.5777
+        "t_sql_sec": 4.5802,
+        "t_spark_sec": 0.8585,
+        "t_nl_sec": 1.6171,
+        "t_total_sec": 7.0558
       },
-      "generated_sql": "SELECT\n    AVG(trip_distance) AS avg_trip_distance,\n    AVG(total_amount)   AS avg_total_amount\nFROM yellow_tripdata_t1_2022\nWHERE passenger_count > 4",
-      "nl_answer": "La distanza media percorsa è **3.1635487853844912** km.  \nL’importo medio per le corse con più di 4 passeggeri è **19.419828581954548**."
+      "generated_sql": "SELECT AVG(trip_distance) AS avg_distance, AVG(total_amount) AS avg_amount\nFROM yellow_tripdata_s1_2022\nWHERE passenger_count > 4",
+      "nl_answer": "La distanza media percorsa è **3.364776527150174** e l’importo medio è **20.41373551429798**."
     },
     {
       "id": 18,
       "difficulty": "Medium",
       "question": "Quante corse hanno un importo totale (total_amount) superiore a 100 euro o dollari?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022 WHERE total_amount > 100",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022 WHERE total_amount > 100",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.676,
-        "t_spark_sec": 0.5693,
-        "t_nl_sec": 0.2475,
-        "t_total_sec": 1.4928
+        "t_sql_sec": 4.7367,
+        "t_spark_sec": 1.5778,
+        "t_nl_sec": 0.269,
+        "t_total_sec": 6.5835
       },
-      "generated_sql": "SELECT COUNT(*) AS num_trips_above_100\nFROM yellow_tripdata_t1_2022\nWHERE total_amount > 100\n  AND total_amount IS NOT NULL;",
-      "nl_answer": "19 747 corse hanno un importo totale superiore a 100."
+      "generated_sql": "SELECT COUNT(*) AS num_corse\nFROM yellow_tripdata_s1_2022\nWHERE total_amount > 100",
+      "nl_answer": "59 533 corse hanno un importo totale superiore a 100."
     },
     {
       "id": 19,
       "difficulty": "Medium",
       "question": "Mostrami la media della tariffa base (fare_amount) e dei pedaggi (tolls_amount) raggruppati per VendorID.",
-      "ground_truth_sql": "SELECT VendorID, AVG(fare_amount) AS avg_fare, AVG(tolls_amount) AS avg_tolls FROM yellow_tripdata_t1_2022 GROUP BY VendorID",
+      "ground_truth_sql": "SELECT VendorID, AVG(fare_amount) AS avg_fare, AVG(tolls_amount) AS avg_tolls FROM yellow_tripdata_s1_2022 GROUP BY VendorID",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.0359,
-        "t_spark_sec": 0.7668,
-        "t_nl_sec": 0.7165,
-        "t_total_sec": 4.5193
+        "t_sql_sec": 0.6195,
+        "t_spark_sec": 1.2431,
+        "t_nl_sec": 10.2707,
+        "t_total_sec": 12.1332
       },
-      "generated_sql": "SELECT\n  VendorID,\n  AVG(fare_amount) AS avg_fare_amount,\n  AVG(tolls_amount) AS avg_tolls_amount\nFROM yellow_tripdata_t1_2022\nGROUP BY VendorID",
-      "nl_answer": "La media della tariffa base e dei pedaggi per ciascun VendorID è la seguente:\n\n- VendorID 6: avg_fare_amount ≈ 41.99, avg_tolls_amount = 0.00  \n- VendorID 5: avg_fare_amount ≈ 54.64, avg_tolls_amount ≈ 3.92  \n- VendorID 1: avg_fare_amount ≈ 13.25, avg_tolls_amount ≈ 0.41  \n- VendorID 2: avg_fare_amount ≈ 13.37, avg_tolls_amount ≈ 0.43"
+      "generated_sql": "SELECT\n  VendorID,\n  AVG(fare_amount) AS avg_fare_amount,\n  AVG(tolls_amount) AS avg_tolls_amount\nFROM\n  yellow_tripdata_s1_2022\nGROUP BY\n  VendorID",
+      "nl_answer": "Per VendorID 1 la tariffa base media è di 13,88 e i pedaggi medi di 0,47; per VendorID 2 i valori sono rispettivamente 14,31 e 0,51. Per VendorID 5 la tariffa base media è di 55,24 e i pedaggi medi di 4,18, mentre per VendorID 6 la tariffa base media è di 44,94 e i pedaggi medi sono pari a 0,00."
     },
     {
       "id": 20,
       "difficulty": "Medium",
       "question": "Qual è il totale degli incassi (total_amount) e la mancia media per le corse pagate in contanti (payment_type = 2)?",
-      "ground_truth_sql": "SELECT SUM(total_amount) AS total_revenue, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_t1_2022 WHERE payment_type = 2",
+      "ground_truth_sql": "SELECT SUM(total_amount) AS total_revenue, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_s1_2022 WHERE payment_type = 2",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.7879,
-        "t_spark_sec": 0.7918,
-        "t_nl_sec": 0.9207,
-        "t_total_sec": 5.5004
+        "t_sql_sec": 3.7008,
+        "t_spark_sec": 1.0194,
+        "t_nl_sec": 0.7458,
+        "t_total_sec": 5.466
       },
-      "generated_sql": "SELECT\n    SUM(total_amount) AS total_incassi,\n    AVG(tip_amount) AS mancia_media\nFROM yellow_tripdata_t1_2022\nWHERE payment_type = 2",
-      "nl_answer": "Il totale degli incassi per corse pagate in contanti è **2.9147058269972004 × 10⁷**.  \nLa mancia media corrispondente è **7.077517247702215 × 10⁻⁴**."
+      "generated_sql": "SELECT\n  SUM(total_amount) AS total_incassi,\n  AVG(tip_amount) AS mancia_media\nFROM yellow_tripdata_s1_2022\nWHERE payment_type = 2",
+      "nl_answer": "Il totale degli incassi è **6.792873367027806E7** e la mancia media è **8.462901680846821E-4**."
     },
     {
       "id": 21,
       "difficulty": "Medium",
       "question": "Qual è la percentuale media di mancia rispetto alla tariffa base per il payment_type 1 (carta di credito)?",
-      "ground_truth_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage FROM yellow_tripdata_t1_2022 WHERE payment_type = 1 AND fare_amount > 0",
+      "ground_truth_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage FROM yellow_tripdata_s1_2022 WHERE payment_type = 1 AND fare_amount > 0",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.6808,
-        "t_spark_sec": 0.6422,
-        "t_nl_sec": 3.5193,
-        "t_total_sec": 4.8422
+        "t_sql_sec": 8.9999,
+        "t_spark_sec": 0.9689,
+        "t_nl_sec": 0.6785,
+        "t_total_sec": 10.6472
       },
-      "generated_sql": "SELECT AVG(tip_amount / fare_amount * 100) AS avg_tip_pct\nFROM yellow_tripdata_t1_2022\nWHERE payment_type = 1\n  AND fare_amount > 0\n  AND fare_amount IS NOT NULL\n  AND tip_amount IS NOT NULL;",
-      "nl_answer": "La percentuale media di mancia rispetto alla tariffa base per i pagamenti con carta di credito (payment_type 1) è pari a circa il **28,07%**."
+      "generated_sql": "SELECT AVG(tip_amount / fare_amount) * 100 AS avg_tip_percentage\nFROM yellow_tripdata_s1_2022\nWHERE payment_type = 1 AND fare_amount > 0",
+      "nl_answer": "La percentuale media di mancia rispetto alla tariffa base per il payment_type 1 (carta di credito) è **28,21 %**."
     },
     {
       "id": 22,
       "difficulty": "Medium",
       "question": "Mostrami le 5 tratte da partenza a destinazione (PULocationID e DOLocationID) più popolari.",
-      "ground_truth_sql": "SELECT PULocationID, DOLocationID, COUNT(*) AS route_count FROM yellow_tripdata_t1_2022 GROUP BY PULocationID, DOLocationID ORDER BY route_count DESC LIMIT 5",
+      "ground_truth_sql": "SELECT PULocationID, DOLocationID, COUNT(*) AS route_count FROM yellow_tripdata_s1_2022 GROUP BY PULocationID, DOLocationID ORDER BY route_count DESC LIMIT 5",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.2808,
-        "t_spark_sec": 1.56,
-        "t_nl_sec": 0.7679,
-        "t_total_sec": 5.6087
+        "t_sql_sec": 0.5212,
+        "t_spark_sec": 1.9233,
+        "t_nl_sec": 0.7537,
+        "t_total_sec": 3.1982
       },
-      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  COUNT(*) AS num_trips\nFROM yellow_tripdata_t1_2022\nGROUP BY PULocationID, DOLocationID\nORDER BY num_trips DESC\nLIMIT 5",
-      "nl_answer": "La tratta più frequentata è quella da PULocationID 237 a DOLocationID 236, con 63 173 viaggi.  \nLe altre quattro tratte più popolari sono:  \n- PULocationID 236 → DOLocationID 237 con 53 864 viaggi;  \n- PULocationID 264 → DOLocationID 264 con 44 769 viaggi;  \n- PULocationID 236 → DOLocationID 236 con 44 226 viaggi;  \n- PULocationID 237 → DOLocationID 237 con 41 589 viaggi."
+      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  COUNT(*) AS trip_count\nFROM\n  yellow_tripdata_s1_2022\nWHERE\n  PULocationID IS NOT NULL\n  AND DOLocationID IS NOT NULL\nGROUP BY\n  PULocationID,\n  DOLocationID\nORDER BY\n  trip_count DESC\nLIMIT 5",
+      "nl_answer": "I cinque percorsi più frequentati sono:\n\n1. PULocationID 237 → DOLocationID 236 – 135 238 viaggi  \n2. PULocationID 236 → DOLocationID 237 – 115 157 viaggi  \n3. PULocationID 264 → DOLocationID 264 – 100 359 viaggi  \n4. PULocationID 237 → DOLocationID 237 – 88 792 viaggi  \n5. PULocationID 236 → DOLocationID 236 – 88 574 viaggi."
     },
     {
       "id": 23,
       "difficulty": "Medium",
       "question": "Qual è il costo medio totale per corse con distanza percorsa tra 5 e 10 miglia o chilometri?",
-      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_t1_2022 WHERE trip_distance BETWEEN 5 AND 10",
+      "ground_truth_sql": "SELECT AVG(total_amount) FROM yellow_tripdata_s1_2022 WHERE trip_distance BETWEEN 5 AND 10",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 1.4965,
-        "t_spark_sec": 0.6917,
-        "t_nl_sec": 4.3468,
-        "t_total_sec": 6.535
+        "t_sql_sec": 5.3607,
+        "t_spark_sec": 0.8285,
+        "t_nl_sec": 0.3603,
+        "t_total_sec": 6.5494
       },
-      "generated_sql": "SELECT AVG(total_amount) AS avg_total_amount\nFROM yellow_tripdata_t1_2022\nWHERE trip_distance BETWEEN 5 AND 10\n  AND total_amount IS NOT NULL;",
-      "nl_answer": "Il costo medio totale per le corse con distanza percorsa tra 5 e 10 miglia o chilometri è di circa 33,51 dollari. Questo valore rappresenta la media aritmetica degli importi totali (total_amount) per le corse che soddisfano tale intervallo di distanza."
+      "generated_sql": "SELECT AVG(total_amount) AS avg_total_cost\nFROM yellow_tripdata_s1_2022\nWHERE trip_distance >= 5 AND trip_distance <= 10",
+      "nl_answer": "Il costo medio totale per corse con distanza compresa tra 5 e 10 miglia è di **34,13** unità monetarie."
     },
     {
       "id": 24,
       "difficulty": "Medium",
       "question": "Quante corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)?",
-      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_t1_2022 WHERE extra > 0",
+      "ground_truth_sql": "SELECT COUNT(*) FROM yellow_tripdata_s1_2022 WHERE extra > 0",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.4444,
-        "t_spark_sec": 0.2605,
-        "t_nl_sec": 0.4266,
-        "t_total_sec": 5.1316
+        "t_sql_sec": 3.5513,
+        "t_spark_sec": 0.5374,
+        "t_nl_sec": 0.5115,
+        "t_total_sec": 4.6003
       },
-      "generated_sql": "SELECT COUNT(*) AS num_corse\nFROM yellow_tripdata_t1_2022\nWHERE extra > 0",
-      "nl_answer": "5 327 988 corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)."
+      "generated_sql": "SELECT COUNT(*) AS numero_corse_con_supplemento\nFROM yellow_tripdata_s1_2022\nWHERE extra > 0",
+      "nl_answer": "11 635 969 corse hanno registrato un supplemento per traffico/ora di punta (extra > 0)."
     },
     {
       "id": 25,
       "difficulty": "Medium",
       "question": "Mostrami il totale dei pedaggi pagati (tolls_amount) per ciascun tipo di tariffa (RatecodeID).",
-      "ground_truth_sql": "SELECT RatecodeID, SUM(tolls_amount) AS total_tolls FROM yellow_tripdata_t1_2022 GROUP BY RatecodeID",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tolls_amount) AS total_tolls FROM yellow_tripdata_s1_2022 GROUP BY RatecodeID",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.3539,
-        "t_spark_sec": 0.4535,
-        "t_nl_sec": 0.8096,
-        "t_total_sec": 4.617
+        "t_sql_sec": 2.8732,
+        "t_spark_sec": 0.9439,
+        "t_nl_sec": 0.8266,
+        "t_total_sec": 4.6438
       },
-      "generated_sql": "SELECT\n  RatecodeID,\n  SUM(tolls_amount) AS total_tolls\nFROM yellow_tripdata_t1_2022\nGROUP BY RatecodeID\nORDER BY RatecodeID",
-      "nl_answer": "Il totale dei pedaggi pagati per ciascun RatecodeID è il seguente:  \n- NULL : 125 603,96 €  \n- 1,0 : 1 939 361,16 €  \n- 2,0 : 1 346 162,75 €  \n- 3,0 : 231 561,90 €  \n- 4,0 : 27 933,37 €  \n- 5,0 : 97 951,51 €  \n- 6,0 : 6,55 €  \n- 99,0 : 78 172,77 €."
+      "generated_sql": "SELECT \n    RatecodeID,\n    SUM(tolls_amount) AS total_tolls\nFROM yellow_tripdata_s1_2022\nGROUP BY RatecodeID",
+      "nl_answer": "Il totale dei pedaggi pagati per ciascun RatecodeID è: NULL = 401 589,30; 1,0 = 4 686 586,17; 2,0 = 3 516 917,96; 3,0 = 691 554,32; 4,0 = 67 768,50; 5,0 = 295 990,74; 6,0 = 6,55; 99,0 = 158 934,82."
     },
     {
       "id": 26,
       "difficulty": "Hard",
       "question": "Quali sono le 5 ore del giorno (0-23) con il maggior numero di corse e qual è la loro distanza media?",
-      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS pickup_hour, COUNT(*) AS total_trips, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_t1_2022 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY total_trips DESC LIMIT 5",
+      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS pickup_hour, COUNT(*) AS total_trips, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_s1_2022 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY total_trips DESC LIMIT 5",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.7383,
-        "t_spark_sec": 5.0612,
-        "t_nl_sec": 1.5548,
-        "t_total_sec": 7.3543
+        "t_sql_sec": 8.964,
+        "t_spark_sec": 3.6081,
+        "t_nl_sec": 0.9033,
+        "t_total_sec": 13.4754
       },
-      "generated_sql": "SELECT\n  HOUR(tpep_pickup_datetime) AS hour,\n  COUNT(*) AS trip_count,\n  AVG(trip_distance) AS avg_distance\nFROM\n  yellow_tripdata_t1_2022\nGROUP BY\n  hour\nORDER BY\n  trip_count DESC\nLIMIT 5",
-      "nl_answer": "L'ora con il maggior numero di corse è l’18:00, con 667 576 corse.  \nLe cinque ore con più corse sono: 18 (667 576 corse, distanza media 5.39 km), 17 (638 379 corse, 4.62 km), 15 (593 928 corse, 5.02 km), 16 (588 926 corse, 3.94 km) e 19 (586 788 corse, 4.58 km)."
+      "generated_sql": "SELECT\n  HOUR(tpep_pickup_datetime) AS hour_of_day,\n  COUNT(*) AS num_trips,\n  AVG(trip_distance) AS avg_distance\nFROM yellow_tripdata_s1_2022\nGROUP BY HOUR(tpep_pickup_datetime)\nORDER BY num_trips DESC\nLIMIT 5",
+      "nl_answer": "Le ore con il maggior numero di corse sono:  \n- 18 h: 1 427 778 corse, distanza media 5,49 km;  \n- 17 h: 1 355 352 corse, distanza media 4,83 km;  \n- 19 h: 1 267 721 corse, distanza media 4,44 km;  \n- 15 h: 1 260 256 corse, distanza media 5,72 km;  \n- 16 h: 1 249 568 corse, distanza media 4,16 km."
     },
     {
       "id": 27,
       "difficulty": "Hard",
       "question": "Calcola il totale del fatturato (total_amount) e la distanza media per ciascun giorno della settimana.",
-      "ground_truth_sql": "SELECT DAYOFWEEK(tpep_pickup_datetime) AS day_of_week, SUM(total_amount) AS total_revenue, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_t1_2022 GROUP BY DAYOFWEEK(tpep_pickup_datetime) ORDER BY day_of_week",
+      "ground_truth_sql": "SELECT DAYOFWEEK(tpep_pickup_datetime) AS day_of_week, SUM(total_amount) AS total_revenue, AVG(trip_distance) AS avg_distance FROM yellow_tripdata_s1_2022 GROUP BY DAYOFWEEK(tpep_pickup_datetime) ORDER BY day_of_week",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 21.2801,
-        "t_spark_sec": 5.3681,
-        "t_nl_sec": 1.757,
-        "t_total_sec": 28.4052
+        "t_sql_sec": 0.8891,
+        "t_spark_sec": 2.4817,
+        "t_nl_sec": 1.1064,
+        "t_total_sec": 4.4771
       },
-      "generated_sql": "SELECT\n    DATE_FORMAT(tpep_pickup_datetime, 'EEEE') AS giorno_settimana,\n    SUM(total_amount) AS fatturato_totale,\n    AVG(CASE WHEN trip_distance > 0 THEN trip_distance END) AS distanza_media\nFROM yellow_tripdata_t1_2022\nGROUP BY DATE_FORMAT(tpep_pickup_datetime, 'EEEE')\nORDER BY MIN(DAYOFWEEK(tpep_pickup_datetime));",
-      "nl_answer": "Sunday: fatturato 23 202 197,87 €, distanza media 6,244 km  \nMonday: fatturato 23 890 719,56 €, distanza media 5,989 km  \nTuesday: fatturato 25 745 098,49 €, distanza media 5,485 km  \nWednesday: fatturato 26 721 681,48 €, distanza media 5,646 km  \nThursday: fatturato 28 364 751,94 €, distanza media 4,934 km  \nFriday: fatturato 26 887 365,78 €, distanza media 5,940 km  \nSaturday: fatturato 25 223 699,75 €, distanza media 6,185 km"
+      "generated_sql": "SELECT\n  DAYOFWEEK(tpep_pickup_datetime) AS day_of_week,\n  SUM(total_amount) AS totale_fatturato,\n  AVG(trip_distance) AS distanza_media\nFROM\n  yellow_tripdata_s1_2022\nWHERE\n  trip_distance > 0\n  AND total_amount > 0\n  AND trip_distance IS NOT NULL\n  AND total_amount IS NOT NULL\nGROUP BY\n  DAYOFWEEK(tpep_pickup_datetime)\nORDER BY\n  day_of_week;",
+      "nl_answer": "Il totale del fatturato e la distanza media per giorno della settimana sono i seguenti:  \n- Domenica (1): totale fatturato ≈ 51 882 165,61 €, distanza media ≈ 6,196 km  \n- Lunedì (2): totale fatturato ≈ 53 379 454,10 €, distanza media ≈ 5,979 km  \n- Martedì (3): totale fatturato ≈ 58 883 084,51 €, distanza media ≈ 6,108 km  \n- Mercoledì (4): totale fatturato ≈ 60 928 271,36 €, distanza media ≈ 6,279 km  \n- Giovedì (5): totale fatturato ≈ 63 873 480,50 €, distanza media ≈ 5,584 km  \n- Venerdì (6): totale fatturato ≈ 61 892 275,65 €, distanza media ≈ 6,062 km  \n- Sabato (7): totale fatturato ≈ 57 519 601,93 €, distanza media ≈ 5,927 km"
     },
     {
       "id": 28,
       "difficulty": "Hard",
       "question": "Mostrami le 3 zone di partenza (PULocationID) che generano il maggior fatturato totale per corse con pagamenti con carta di credito (payment_type = 1).",
-      "ground_truth_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue FROM yellow_tripdata_t1_2022 WHERE payment_type = 1 GROUP BY PULocationID ORDER BY total_revenue DESC LIMIT 3",
+      "ground_truth_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue FROM yellow_tripdata_s1_2022 WHERE payment_type = 1 GROUP BY PULocationID ORDER BY total_revenue DESC LIMIT 3",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 1.2277,
-        "t_spark_sec": 1.2177,
-        "t_nl_sec": 1.1031,
-        "t_total_sec": 3.5485
+        "t_sql_sec": 5.5835,
+        "t_spark_sec": 1.164,
+        "t_nl_sec": 1.4635,
+        "t_total_sec": 8.211
       },
-      "generated_sql": "SELECT\n  PULocationID,\n  SUM(total_amount) AS total_revenue\nFROM\n  yellow_tripdata_t1_2022\nWHERE\n  payment_type = 1\n  AND total_amount IS NOT NULL\nGROUP BY\n  PULocationID\nORDER BY\n  total_revenue DESC\nLIMIT 3;",
-      "nl_answer": "Le tre zone di partenza con il maggior fatturato totale per corse con pagamento con carta di credito sono: PULocationID 132 con 1.697594193999555E7, PULocationID 138 con 8561270.530001465 e PULocationID 236 con 5326368.090002654."
+      "generated_sql": "SELECT PULocationID, SUM(total_amount) AS total_revenue\nFROM yellow_tripdata_s1_2022\nWHERE payment_type = 1\nGROUP BY PULocationID\nORDER BY total_revenue DESC\nLIMIT 3",
+      "nl_answer": "Le tre zone di partenza con il maggior fatturato totale per corse con pagamento con carta di credito sono:  \n- PULocationID 132 con 4.130956312997929E7,  \n- PULocationID 138 con 2.010329451000265E7,  \n- PULocationID 237 con 1.191622737000507E7.  \n\nQuesti valori rappresentano il totale delle entrate generate da ciascuna zona di partenza."
     },
     {
       "id": 29,
       "difficulty": "Hard",
       "question": "Qual è la durata media in minuti delle corse nel dataset?",
-      "ground_truth_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.1275,
-        "t_spark_sec": 1.2927,
-        "t_nl_sec": 0.9423,
-        "t_total_sec": 6.3625
+        "t_sql_sec": 2.9395,
+        "t_spark_sec": 1.8321,
+        "t_nl_sec": 0.4344,
+        "t_total_sec": 5.206
       },
-      "generated_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes\nFROM yellow_tripdata_t1_2022\nWHERE tpep_pickup_datetime IS NOT NULL\n  AND tpep_dropoff_datetime IS NOT NULL\n  AND UNIX_TIMESTAMP(tpep_dropoff_datetime) > UNIX_TIMESTAMP(tpep_pickup_datetime)",
-      "nl_answer": "La durata media delle corse è di **15,54 minuti**.  \nQuesto valore è stato calcolato come media delle differenze temporali tra pickup e drop‑off, espressa in minuti."
+      "generated_sql": "SELECT AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_minutes\nFROM yellow_tripdata_s1_2022\nWHERE tpep_dropoff_datetime IS NOT NULL\n  AND tpep_pickup_datetime IS NOT NULL\n  AND (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0",
+      "nl_answer": "La durata media delle corse è di **89,27 minuti**."
     },
     {
       "id": 30,
       "difficulty": "Hard",
       "question": "Classifica i tipi di pagamento attribuendo 'Carta' al codice 1, 'Contanti' al codice 2 e 'Altro' per il resto, e calcola il fatturato totale per ciascuna categoria.",
-      "ground_truth_sql": "SELECT CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END AS metodo_pagamento, SUM(total_amount) AS fatturato_totale FROM yellow_tripdata_t1_2022 GROUP BY CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END",
+      "ground_truth_sql": "SELECT CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END AS metodo_pagamento, SUM(total_amount) AS fatturato_totale FROM yellow_tripdata_s1_2022 GROUP BY CASE WHEN payment_type = 1 THEN 'Carta' WHEN payment_type = 2 THEN 'Contanti' ELSE 'Altro' END",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 7.1885,
-        "t_spark_sec": 0.9736,
-        "t_nl_sec": 0.763,
-        "t_total_sec": 8.9251
+        "t_sql_sec": 8.383,
+        "t_spark_sec": 1.061,
+        "t_nl_sec": 0.5681,
+        "t_total_sec": 10.0121
       },
-      "generated_sql": "SELECT\n  CASE\n    WHEN payment_type = 1 THEN 'Carta'\n    WHEN payment_type = 2 THEN 'Contanti'\n    ELSE 'Altro'\n  END AS categoria_pagamento,\n  SUM(total_amount) AS fatturato_totale\nFROM yellow_tripdata_t1_2022\nGROUP BY\n  CASE\n    WHEN payment_type = 1 THEN 'Carta'\n    WHEN payment_type = 2 THEN 'Contanti'\n    ELSE 'Altro'\n  END\nORDER BY fatturato_totale DESC",
-      "nl_answer": "Il fatturato totale è:  \n- **Carta**: 1.4312096053928196 × 10⁸  \n- **Contanti**: 2.9147058269972004 × 10⁷  \n- **Altro**: 7 767 496.059999855  \n\nLa categoria con il fatturato più alto è “Carta”, seguita da “Contanti” e infine da “Altro”."
+      "generated_sql": "SELECT \n  CASE payment_type \n    WHEN 1 THEN 'Carta' \n    WHEN 2 THEN 'Contanti' \n    ELSE 'Altro' \n  END AS categoria_pagamento,\n  SUM(total_amount) AS fatturato_totale\nFROM yellow_tripdata_s1_2022\nGROUP BY 1",
+      "nl_answer": "Il fatturato totale per categoria di pagamento è:  \n- **Carta**: 326 953 602,29 €  \n- **Contanti**: 67 928 733,67 €  \n- **Altro**: 19 359 958,29 €."
     },
     {
       "id": 31,
       "difficulty": "Hard",
       "question": "Mostrami il fatturato totale e il numero di corse per ogni ora della notte (dalle 00:00 alle 05:59).",
-      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, SUM(total_amount) AS revenue, COUNT(*) AS trips FROM yellow_tripdata_t1_2022 WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour",
+      "ground_truth_sql": "SELECT HOUR(tpep_pickup_datetime) AS night_hour, SUM(total_amount) AS revenue, COUNT(*) AS trips FROM yellow_tripdata_s1_2022 WHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 GROUP BY HOUR(tpep_pickup_datetime) ORDER BY night_hour",
       "is_sql_valid": true,
       "is_exec_accurate": true,
-      "is_nl_accurate": true,
+      "is_nl_accurate": false,
       "latency": {
-        "t_sql_sec": 4.706,
-        "t_spark_sec": 1.7364,
-        "t_nl_sec": 1.1242,
-        "t_total_sec": 7.5666
+        "t_sql_sec": 4.1137,
+        "t_spark_sec": 3.9472,
+        "t_nl_sec": 0.6104,
+        "t_total_sec": 8.6713
       },
-      "generated_sql": "SELECT\n  HOUR(tpep_pickup_datetime) AS hour_of_night,\n  SUM(total_amount) AS total_revenue,\n  COUNT(*) AS total_trips\nFROM yellow_tripdata_t1_2022\nWHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5\nGROUP BY HOUR(tpep_pickup_datetime)\nORDER BY hour_of_night",
-      "nl_answer": "Fatturato totale e numero di corse per ora della notte:  \n- 00:00‑00:59: 4 886 456,79 € e 231 823 corse;  \n- 01:00‑01:59: 3 108 674,03 € e 155 912 corse;  \n- 02:00‑02:59: 1 981 037,93 € e 104 468 corse;  \n- 03:00‑03:59: 1 420 754,70 € e 72 554 corse;  \n- 04:00‑04:59: 1 096 681,81 € e 47 619 corse;  \n- 05:00‑05:59: 1 433 562,52 € e 52 490 corse."
+      "generated_sql": "SELECT \n    HOUR(tpep_pickup_datetime) AS ora_notte,\n    SUM(total_amount) AS fatturato_totale,\n    COUNT(*) AS numero_corse\nFROM yellow_tripdata_s1_2022\nWHERE HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5\nGROUP BY HOUR(tpep_pickup_datetime)\nORDER BY ora_notte",
+      "nl_answer": "Fatturato totale e numero di corse per ogni ora della notte:\n\n- 00:00‑00:59: fatturato 11 700 137 270,00 €; 533 838 corse.  \n- 01:00‑01:59: fatturato 7 254 228,25 €; 351 806 corse.  \n- 02:00‑02:59: fatturato 4 588 579,34 €; 234 420 corse.  \n- 03:00‑03:59: fatturato 3 167 514,08 €; 154 654 corse.  \n- 04:00‑04:59: fatturato 2 776 613,91 €; 106 712 corse.  \n- 05:00‑05:59: fatturato 3 605 531,68 €; 122 598 corse."
     },
     {
       "id": 32,
       "difficulty": "Hard",
       "question": "Qual è la velocità media in miglia o chilometri orari delle corse per ciascun VendorID?",
-      "ground_truth_sql": "SELECT VendorID, AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph FROM yellow_tripdata_t1_2022 WHERE (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0 GROUP BY VendorID",
+      "ground_truth_sql": "SELECT VendorID, AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph FROM yellow_tripdata_s1_2022 WHERE (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0 GROUP BY VendorID",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 7.9038,
-        "t_spark_sec": 4.041,
-        "t_nl_sec": 1.1413,
-        "t_total_sec": 13.0861
+        "t_sql_sec": 2.9127,
+        "t_spark_sec": 2.2347,
+        "t_nl_sec": 0.7622,
+        "t_total_sec": 5.9097
       },
-      "generated_sql": "SELECT\n  VendorID,\n  AVG(\n    trip_distance / (\n      (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600.0\n    )\n  ) AS avg_speed_mph\nFROM yellow_tripdata_t1_2022\nWHERE\n  trip_distance > 0\n  AND (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0\nGROUP BY VendorID\nORDER BY VendorID",
-      "nl_answer": "La velocità media delle corse è: VendorID 1 = 14.64 mph (≈ 23.56 km/h); VendorID 2 = 31.29 mph (≈ 50.30 km/h); VendorID 5 = 20.46 mph (≈ 32.90 km/h); VendorID 6 = 814.33 mph (≈ 1 309.70 km/h)."
+      "generated_sql": "SELECT\n  VendorID,\n  AVG(trip_distance / ((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 3600)) AS avg_speed_mph\nFROM yellow_tripdata_s1_2022\nWHERE trip_distance > 0\n  AND (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0\nGROUP BY VendorID",
+      "nl_answer": "La velocità media delle corse, espressa in miglia orarie, è la seguente per ciascun VendorID:\n\n- VendorID 6: **797,39 mph**  \n- VendorID 5: **19,52 mph**  \n- VendorID 1: **15,04 mph**  \n- VendorID 2: **37,68 mph**"
     },
     {
       "id": 33,
       "difficulty": "Hard",
       "question": "Quali zone di partenza (PULocationID) hanno un numero di corse superiore a 10.000 e una mancia media superiore a 3?",
-      "ground_truth_sql": "SELECT PULocationID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_t1_2022 GROUP BY PULocationID ORDER BY avg_tip DESC LIMIT 5",
+      "ground_truth_sql": "SELECT PULocationID, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_s1_2022 GROUP BY PULocationID ORDER BY avg_tip DESC LIMIT 5",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 0.8248,
-        "t_spark_sec": 0.8657,
-        "t_nl_sec": 0.9725,
-        "t_total_sec": 2.663
+        "t_sql_sec": 9.9798,
+        "t_spark_sec": 1.3788,
+        "t_nl_sec": 1.1086,
+        "t_total_sec": 12.4672
       },
-      "generated_sql": "SELECT\n  PULocationID,\n  COUNT(*) AS num_trips,\n  AVG(tip_amount) AS avg_tip\nFROM\n  yellow_tripdata_t1_2022\nWHERE\n  tip_amount IS NOT NULL\nGROUP BY\n  PULocationID\nHAVING\n  COUNT(*) > 10000\n  AND AVG(tip_amount) > 3;",
-      "nl_answer": "Le zone di partenza con più di 10.000 corse e mancia media superiore a 3 sono: 264, 87, 138, 132, 13 e 70.  \nQueste corrispondono rispettivamente a 87 491, 41 802, 227 870, 362 331, 43 517 e 32 546 corse, con medie di mancia di 3,56, 3,09, 5,94, 6,97, 3,19 e 5,64."
+      "generated_sql": "SELECT PULocationID, COUNT(*) AS num_corse, AVG(tip_amount) AS mancia_media\nFROM yellow_tripdata_s1_2022\nGROUP BY PULocationID\nHAVING COUNT(*) > 10000 AND AVG(tip_amount) > 3",
+      "nl_answer": "I PULocationID che soddisfano i criteri sono: 65, 264, 87, 255, 209, 88, 33, 138, 132, 13.  \nTutte queste zone hanno più di 10.000 corse e una mancia media superiore a 3."
     },
     {
       "id": 34,
       "difficulty": "Hard",
       "question": "Calcola la distribuzione delle corse per fascia oraria: 'Mattina' (6-11), 'Pomeriggio' (12-17), 'Sera' (18-23), 'Notte' (0-5).",
-      "ground_truth_sql": "SELECT CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END AS fascia_oraria, COUNT(*) AS num_corse FROM yellow_tripdata_t1_2022 GROUP BY CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END",
+      "ground_truth_sql": "SELECT CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END AS fascia_oraria, COUNT(*) AS num_corse FROM yellow_tripdata_s1_2022 GROUP BY CASE WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina' WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio' WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera' ELSE 'Notte' END",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.2009,
-        "t_spark_sec": 1.4538,
-        "t_nl_sec": 0.9733,
-        "t_total_sec": 6.628
+        "t_sql_sec": 14.2873,
+        "t_spark_sec": 1.3391,
+        "t_nl_sec": 0.9209,
+        "t_total_sec": 16.5473
       },
-      "generated_sql": "SELECT\n  CASE\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera'\n    ELSE 'Notte'\n  END AS fascia_oraria,\n  COUNT(*) AS numero_corse\nFROM yellow_tripdata_t1_2022\nGROUP BY\n  CASE\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 18 AND 23 THEN 'Sera'\n    ELSE 'Notte'\n  END\nORDER BY\n  MIN(HOUR(tpep_pickup_datetime))",
-      "nl_answer": "Il totale delle corse è 9 071 244.  \nLa distribuzione per fascia oraria è: Notte 664 866, Mattina 2 057 745, Pomeriggio 3 409 567 e Sera 2 939 066."
+      "generated_sql": "SELECT \n  CASE \n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 0 AND 5 THEN 'Notte'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 6 AND 11 THEN 'Mattina'\n    WHEN HOUR(tpep_pickup_datetime) BETWEEN 12 AND 17 THEN 'Pomeriggio'\n    ELSE 'Sera'\n  END AS fascia_oraria,\n  COUNT(*) AS numero_corse\nFROM yellow_tripdata_s1_2022\nGROUP BY fascia_oraria\nORDER BY fascia_oraria",
+      "nl_answer": "La distribuzione delle corse per fascia oraria è la seguente:  \n- Mattina (6‑11 h): 4 479 458 corse  \n- Notte (0‑5 h): 1 504 028 corse  \n- Pomeriggio (12‑17 h): 7 320 554 corse  \n- Sera (18‑23 h): 6 513 543 corse."
     },
     {
       "id": 35,
       "difficulty": "Hard",
       "question": "Quali sono le 5 coppie di partenza e arrivo (PULocationID, DOLocationID) con la durata media della corsa più lunga?",
-      "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM yellow_tripdata_t1_2022 GROUP BY PULocationID, DOLocationID ORDER BY avg_duration_min DESC LIMIT 5",
+      "ground_truth_sql": "SELECT PULocationID, DOLocationID, AVG((UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) / 60) AS avg_duration_min FROM yellow_tripdata_s1_2022 GROUP BY PULocationID, DOLocationID ORDER BY avg_duration_min DESC LIMIT 5",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 5.8111,
-        "t_spark_sec": 1.79,
-        "t_nl_sec": 0.9163,
-        "t_total_sec": 8.5174
+        "t_sql_sec": 0.8083,
+        "t_spark_sec": 2.5463,
+        "t_nl_sec": 1.3525,
+        "t_total_sec": 4.7072
       },
-      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  AVG(UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) AS avg_duration_seconds\nFROM yellow_tripdata_t1_2022\nWHERE\n  tpep_pickup_datetime IS NOT NULL\n  AND tpep_dropoff_datetime IS NOT NULL\n  AND tpep_dropoff_datetime > tpep_pickup_datetime\nGROUP BY PULocationID, DOLocationID\nORDER BY avg_duration_seconds DESC\nLIMIT 5",
-      "nl_answer": "La coppia con la durata media più lunga è (43, 121) con 100 502 secondi.  \nLe altre quattro coppie, in ordine decrescente, sono: (45, 174) – 86 272 s, (148, 44) – 86 197 s, (88, 194) – 86 027 s e (229, 109) – 85 831 s."
+      "generated_sql": "SELECT\n  PULocationID,\n  DOLocationID,\n  AVG(\n    UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)\n  ) AS avg_duration_seconds\nFROM\n  yellow_tripdata_s1_2022\nWHERE\n  tpep_pickup_datetime IS NOT NULL\n  AND tpep_dropoff_datetime IS NOT NULL\n  AND (UNIX_TIMESTAMP(tpep_dropoff_datetime) - UNIX_TIMESTAMP(tpep_pickup_datetime)) > 0\nGROUP BY\n  PULocationID,\n  DOLocationID\nORDER BY\n  avg_duration_seconds DESC\nLIMIT 5;",
+      "nl_answer": "Le cinque coppie di partenza e arrivo con la durata media più lunga sono:  \n- PULocationID 56 → DOLocationID 237, 2.064 402 436 666 666 6 × 10⁸ s;  \n- PULocationID 223 → DOLocationID 13, 7.741 638 6 × 10⁷ s;  \n- PULocationID 93 → DOLocationID 162, 3.176 142 905 128 205 2 × 10⁷ s;  \n- PULocationID 93 → DOLocationID 163, 1.510 731 895 121 951 2 × 10⁷ s;  \n- PULocationID 93 → DOLocationID 265, 8 978 419.521 739 13 s.  \n\nLe durate medie variano da circa 8,98 milioni di secondi a oltre 206 milioni di secondi."
     },
     {
       "id": 36,
       "difficulty": "Hard",
       "question": "Calcola la percentuale di corse che hanno pagato un pedaggio (tolls_amount > 0) rispetto al totale delle corse.",
-      "ground_truth_sql": "SELECT (COUNT(CASE WHEN tolls_amount > 0 THEN 1 END) * 100.0 / COUNT(*)) AS toll_trip_percentage FROM yellow_tripdata_t1_2022",
+      "ground_truth_sql": "SELECT (COUNT(CASE WHEN tolls_amount > 0 THEN 1 END) * 100.0 / COUNT(*)) AS toll_trip_percentage FROM yellow_tripdata_s1_2022",
       "is_sql_valid": true,
       "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 5.8168,
-        "t_spark_sec": 0.2765,
-        "t_nl_sec": 0.5446,
-        "t_total_sec": 6.6379
+        "t_sql_sec": 31.904,
+        "t_spark_sec": 1.1554,
+        "t_nl_sec": 0.4423,
+        "t_total_sec": 33.5018
       },
-      "generated_sql": "SELECT\n  ROUND(\n    100.0 * SUM(CASE WHEN tolls_amount > 0 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0),\n    2\n  ) AS percentage_trips_with_toll\nFROM yellow_tripdata_t1_2022",
-      "nl_answer": "6,11 % delle corse hanno pagato un pedaggio."
+      "generated_sql": "SELECT AVG(CASE WHEN tolls_amount > 0 THEN 1.0 ELSE 0.0 END) * 100 AS percentage\nFROM yellow_tripdata_s1_2022",
+      "nl_answer": "La percentuale di corse con pedaggio è **7,065 %**."
     },
     {
       "id": 37,
       "difficulty": "Hard",
       "question": "Mostrami l'importo totale delle mance e della tariffa base suddivisi per tipo di tariffa (RatecodeID) per corse con più di 2 passeggeri.",
-      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(fare_amount) AS total_fares FROM yellow_tripdata_t1_2022 WHERE passenger_count > 2 GROUP BY RatecodeID",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(fare_amount) AS total_fares FROM yellow_tripdata_s1_2022 WHERE passenger_count > 2 GROUP BY RatecodeID",
       "is_sql_valid": true,
-      "is_exec_accurate": true,
+      "is_exec_accurate": false,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 3.8541,
-        "t_spark_sec": 0.7134,
-        "t_nl_sec": 1.6051,
-        "t_total_sec": 6.1725
+        "t_sql_sec": 1.0069,
+        "t_spark_sec": 1.2683,
+        "t_nl_sec": 1.0033,
+        "t_total_sec": 3.2785
       },
-      "generated_sql": "SELECT\n  RatecodeID,\n  SUM(tip_amount) AS total_tip_amount,\n  SUM(fare_amount) AS total_fare_amount\nFROM yellow_tripdata_t1_2022\nWHERE passenger_count > 2\nGROUP BY RatecodeID",
-      "nl_answer": "RatecodeID 1.0: mance 1 606 721,16 € e tariffa 8 331 826,01 €; RatecodeID 4.0: mance 8 329,08 € e tariffa 72 330,50 €; RatecodeID 3.0: mance 24 929,86 € e tariffa 160 787,50 €; RatecodeID 2.0: mance 214 090,67 € e tariffa 1 332 037,20 €; RatecodeID 99.0: mance 0,00 € e tariffa 153,38 €; RatecodeID 6.0: mance 48,80 € e tariffa 30,50 €; RatecodeID 5.0: mance 49 529,31 € e tariffa 378 660,02 €."
+      "generated_sql": "SELECT\n  RatecodeID,\n  SUM(fare_amount) AS total_fare_amount,\n  SUM(tip_amount) AS total_tip_amount\nFROM\n  yellow_tripdata_s1_2022\nWHERE\n  passenger_count > 2\n  AND passenger_count IS NOT NULL\nGROUP BY\n  RatecodeID\nORDER BY\n  RatecodeID;",
+      "nl_answer": "Ecco i totali per ciascun RatecodeID (solo corse con più di 2 passeggeri):\n\n- **RatecodeID 1**: tariffa base = 19 707 491,75 €, mance = 3 631 922,71 €  \n- **RatecodeID 2**: tariffa base = 3 662 739,20 €, mance = 582 727,63 €  \n- **RatecodeID 3**: tariffa base = 495 560,50 €, mance = 76 931,10 €  \n- **RatecodeID 4**: tariffa base = 175 155,50 €, mance = 19 763,30 €  \n- **RatecodeID 5**: tariffa base = 1 167 526,11 €, mance = 155 842,49 €  \n- **RatecodeID 6**: tariffa base = 99,00 €, mance = 75,21 €  \n- **RatecodeID 99**: tariffa base = 325,58 €, mance = 3,66 €."
     },
     {
       "id": 38,
       "difficulty": "Hard",
       "question": "Qual è il valore massimo e la media della mancia (tip_amount) per le corse la cui distanza è superiore alla distanza media generale?",
-      "ground_truth_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_t1_2022 WHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_t1_2022)",
+      "ground_truth_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip FROM yellow_tripdata_s1_2022 WHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_s1_2022)",
       "is_sql_valid": true,
       "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 4.1823,
-        "t_spark_sec": 1.8111,
-        "t_nl_sec": 0.6454,
-        "t_total_sec": 6.6388
+        "t_sql_sec": 6.066,
+        "t_spark_sec": 1.3103,
+        "t_nl_sec": 0.6422,
+        "t_total_sec": 8.0185
       },
-      "generated_sql": "SELECT\n    MAX(tip_amount) AS max_tip_amount,\n    AVG(tip_amount) AS avg_tip_amount\nFROM yellow_tripdata_t1_2022\nWHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_t1_2022)",
-      "nl_answer": "Il valore massimo della mancia è **444,0**.  \nLa media delle mance per le corse con distanza superiore alla media generale è **6,030130493580806**."
+      "generated_sql": "SELECT MAX(tip_amount) AS max_tip, AVG(tip_amount) AS avg_tip\nFROM yellow_tripdata_s1_2022\nWHERE trip_distance > (SELECT AVG(trip_distance) FROM yellow_tripdata_s1_2022)",
+      "nl_answer": "Il valore massimo della mancia è **1400,16**.  \nLa media delle mance per le corse con distanza superiore alla media generale è **6,395850821245215**."
     },
     {
       "id": 39,
       "difficulty": "Hard",
       "question": "Mostrami i 3 giorni del mese in cui si è registrato il maggior fatturato totale.",
-      "ground_truth_sql": "SELECT TO_DATE(tpep_pickup_datetime) AS day, SUM(total_amount) AS total_revenue FROM yellow_tripdata_t1_2022 GROUP BY TO_DATE(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3",
+      "ground_truth_sql": "SELECT TO_DATE(tpep_pickup_datetime) AS day, SUM(total_amount) AS total_revenue FROM yellow_tripdata_s1_2022 GROUP BY TO_DATE(tpep_pickup_datetime) ORDER BY total_revenue DESC LIMIT 3",
       "is_sql_valid": true,
-      "is_exec_accurate": false,
+      "is_exec_accurate": true,
       "is_nl_accurate": true,
       "latency": {
-        "t_sql_sec": 18.4735,
-        "t_spark_sec": 1.2148,
-        "t_nl_sec": 0.7636,
-        "t_total_sec": 20.4519
+        "t_sql_sec": 19.6174,
+        "t_spark_sec": 2.0852,
+        "t_nl_sec": 1.1322,
+        "t_total_sec": 22.8348
       },
-      "generated_sql": "SELECT\n    DAYOFMONTH(tpep_pickup_datetime) AS giorno_del_mese,\n    SUM(total_amount) AS fatturato_totale\nFROM yellow_tripdata_t1_2022\nGROUP BY DAYOFMONTH(tpep_pickup_datetime)\nORDER BY fatturato_totale DESC\nLIMIT 3",
-      "nl_answer": "I tre giorni con il maggior fatturato totale sono il 18, il 26 e il 25 del mese.  \nIl fatturato totale registrato è rispettivamente: 6 742 295,64 € (18), 6 616 977,90 € (26) e 6 505 436,36 € (25)."
+      "generated_sql": "SELECT TO_DATE(tpep_pickup_datetime) AS giorno, SUM(total_amount) AS fatturato_totale\nFROM yellow_tripdata_s1_2022\nGROUP BY TO_DATE(tpep_pickup_datetime)\nORDER BY fatturato_totale DESC\nLIMIT 3",
+      "nl_answer": "I tre giorni con il maggior fatturato totale sono: 11 giugno 2022 (2 984 185,33 €), 19 maggio 2022 (2 973 584,03 €) e 9 giugno 2022 (2 962 533,64 €)."
     },
     {
       "id": 40,
       "difficulty": "Hard",
       "question": "Calcola l'incasso totale della tariffa aeroportuale (mTA_tax o congestion_surcharge) e della mancia per le corse appartenenti alla tariffa aeroporto (RatecodeID = 2 o 3).",
-      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(tolls_amount) AS total_tolls, SUM(total_amount) AS total_revenue FROM yellow_tripdata_t1_2022 WHERE RatecodeID IN (2, 3) GROUP BY RatecodeID",
+      "ground_truth_sql": "SELECT RatecodeID, SUM(tip_amount) AS total_tips, SUM(tolls_amount) AS total_tolls, SUM(total_amount) AS total_revenue FROM yellow_tripdata_s1_2022 WHERE RatecodeID IN (2, 3) GROUP BY RatecodeID",
       "is_sql_valid": true,
       "is_exec_accurate": false,
-      "is_nl_accurate": true,
+      "is_nl_accurate": false,
       "latency": {
-        "t_sql_sec": 28.3722,
-        "t_spark_sec": 0.4441,
-        "t_nl_sec": 2.3828,
-        "t_total_sec": 31.1991
+        "t_sql_sec": 1.4089,
+        "t_spark_sec": 0.5173,
+        "t_nl_sec": 0.1295,
+        "t_total_sec": 2.0557
       },
-      "generated_sql": "SELECT\n    SUM(mta_tax) AS totale_mta_tax,\n    SUM(congestion_surcharge) AS totale_congestion_surcharge,\n    SUM(tip_amount) AS totale_mancia\nFROM yellow_tripdata_t1_2022\nWHERE RatecodeID IN (2, 3)",
-      "nl_answer": "L’incasso totale della tariffa aeroportuale (mTA_tax + congestion_surcharge) è **699 668,80**.  \nLa mancia complessiva per le corse con RatecodeID = 2 o 3 è **2 462 926,07**."
+      "generated_sql": "SELECT\n  SUM(mta_tax + congestion_surcharge) AS total_airport_fare,\n  SUM(tip_amount) AS total_tip\nFROM yellow_tripdata_s1_2022\nWHERE RatecodeID IN (2,3);"
     }
   ]
 }
