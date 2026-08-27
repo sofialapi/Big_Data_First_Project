@@ -4,9 +4,7 @@ Progetto sviluppato per il corso di Big Data nell'A.A. 2025-2026 del corso di la
 # Interfaccia Generativa TAG ‘text-to-SQL’ per l'Analisi di Big Data
 
 ## Obiettivo del progetto
-L'obiettivo di questo progetto è la realizzazione di un'interfaccia Text-to-SQL basata sul paradigma TAG (Table Augmented Generation). Il sistema permette di interrogare dataset clinici e gestionali in formato tabellare attraverso il linguaggio naturale. Sfrutta Apache Spark (Spark SQL) per l'elaborazione distribuita dei dati e l'LLM Llama 3.3 (tramite le API esterne di Groq) per la traduzione della domanda in codice SQL e la generazione della risposta finale.
-
-Sviluppo di un'interfaccia Text-to-SQL basata sul paradigma Table Augmented Generation (TAG) per l'interrogazione di Big Data in linguaggio naturale senza competenze SQL. Il sistema gestisce dati multi-dominio (clinici e trasporti), disaccoppiando l'elaborazione distribuita (Apache Spark) dalla generazione linguistica (LLM via Groq/OpenRouter con fallback automatico).
+L'obiettivo di questo progetto è la realizzazione di un'interfaccia Text-to-SQL basata sul paradigma TAG (Table Augmented Generation). Il sistema permette di interrogare dataset tabellari di vari ambiti attraverso il linguaggio naturale. L'interfaccia sfrutta Apache Spark (Spark SQL) per l'elaborazione distribuita dei dati e l'LLM OpenAI GPT OSS 20B + sistema di fallback (tramite le API esterne di Groq e OpenRouter) per la traduzione della domanda in codice SQL e la generazione della risposta finale.
 
 ## Configurazione dell'ambiente
 Il software è configurato per l'esecuzione all'interno di un ambiente virtuale Python su una macchina virtuale Linux Ubuntu. 
@@ -29,9 +27,10 @@ sudo apt update && sudo apt install python3-tk -y
 ```bash
 export SPARK_HOME=/home/{il_tuo_nome_utente}/spark-3.5.8
 export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
-export LLM_API_KEY="inserisci_la_tua_api_key_di_groq"
+export GROQ_API_KEY="inserisci_la_tua_api_key_di_groq"
 export LLM_BASE_URL="https://api.groq.com/openai/v1"
-export LLM_MODEL_NAME="llama-3.3-70b-versatile"
+export LLM_MODEL_NAME="openai/gpt-oss-20b"
+export FALLBACK_API_KEY="inserisci_la_tua_api_key_di_openrouter"
 
 ```
 
