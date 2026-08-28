@@ -12,10 +12,10 @@ from main import extract_sql, generate_natural_language_answer, generate_sql_que
 from metadata_discovery import discover_meta_and_register_views
 
 
-class ClinicalTAGGui:
+class UniversalTAGGui:
     def __init__(self, root):
         self.root = root
-        self.root.title("Clinical TAG - Big Data Analytics")
+        self.root.title("TAG - Big Data Analytics")
         self.root.geometry("700x750")
         self.root.configure(bg="#f4f6f9")
 
@@ -40,7 +40,7 @@ class ClinicalTAGGui:
         # 1. HEADER TITLE
         header = tk.Label(
             self.root, 
-            text="INTERFACCIA GENERATIVA TAG PER BIG DATA CLINICI", 
+            text="INTERFACCIA GENERATIVA TAG PER BIG DATA ANALYTICS", 
             font=("Helvetica", 14, "bold"), 
             bg="#1e293b", 
             fg="white", 
@@ -79,7 +79,7 @@ class ClinicalTAGGui:
         # 3. CHAT SCREEN (AREA DI DIALOGO)
         chat_frame = tk.LabelFrame(
             self.root, 
-            text=" Sessione di Analisi Clinica ", 
+            text=" Sessione di Analisi Dati ", 
             font=("Helvetica", 10, "bold"), 
             bg="#f4f6f9", 
             padx=10, 
@@ -229,5 +229,5 @@ class ClinicalTAGGui:
 
 if __name__ == "__main__":
     root = TkinterDnD.Tk()
-    app = ClinicalTAGGui(root)
+    app = UniversalTAGGui(root)
     root.mainloop()
